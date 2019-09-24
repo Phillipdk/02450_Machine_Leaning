@@ -27,6 +27,7 @@ for i in range(len(tissue_names)):
 data = np.concatenate((breast_data, K), axis=1)
 del K, i, tiss, tissue_names, file_path
 
+np.savetxt("ordnet_data.csv", data, delimiter=",")
 
 [(plt.figure(), plt.plot(row)) for row in data.T[0:9]]
 
