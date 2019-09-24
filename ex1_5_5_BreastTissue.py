@@ -28,45 +28,45 @@ for i in range(len(tissue_names)):
 # Slå 1-out-of-K sammen data
 data = np.concatenate((breast_data, K), axis=1)
 
+# Remove outliers 
 for pos, val in enumerate(data):
-    print(pos, "  ", val[4])
     if val[4]>50000:
-        print("delete this one")
         data = np.delete(data, pos, 0)
 
+# Save to .txt file
 np.savetxt("ordnet_data.csv", data, delimiter=",")
 
 #[(plt.figure(), plt.plot(row)) for row in data.T[0:9]]
 
+# plotting all features against each other
 plt.figure(figsize=(10,10),dpi=100)
+
+# Iterating through the features twice
 for i in range(len(attributeNames)-1):
     for j in range(len(attributeNames)-1):
+        
+        # Defining the subplots
         plt.subplot(9,9, i*9 +j +1)
+
+        # plotting the the features
         plt.plot(data[:,i], data[:,j], '.')
 
+        # Setting a name for the columns
+        if i == 8:
+            plt.xlabel(attributeNames[j+1])
+        else:
+            plt.xticks([])
+        # Setting a name for the rows
+        if j == 0:
+            plt.ylabel(attributeNames[i+1])
+        else:
+            plt.yticks([])
 
-plt.figure(figsize=(10,10),dpi=100)
-for m1 in range(9): # number of features
-    for m2 in range(9): # number of features
-        plt.subplot(9, 9, m1*9 + m2 + 1) # iterates over 9x9 subplots
-        for i in range(len(tissue_types)):
-            plt.plot(np.array(data[:,m2]), np.array(data[:,m1]), '.')
-            #class_mask = (y==c)
-            #plt.plot(np.array(X[class_mask,m2]), np.array(X[class_mask,m1]), '.')
-            #if m1==M-1:
-            #    xlabel(attributeNames1[m2][0:13])
-            #else:
-            #    xticks([])
-            #if m2==0:
-            #    ylabel(attributeNames1[m1][0:13])
-            #else:
-            #    yticks([])
-            #ylim(0,X.max()*1.1)
-            #xlim(0,X.max()*1.1)
-#plt.subplots_adjust(left=0.1, bottom=None, right=None, top=None, wspace=0.05, hspace=0.05)
-#plt.legend(classNames)
-#plt.legend(classNames, loc='center left', bbox_to_anchor=(1, 0.5))
-plt.show()
+        # Set the x,y limits just above what is displayed
+        plt.xlim(0,data[:,i].max()*1.1)
+        plt.ylim(0,data[:,j].max()*1.1)
 
 
+# Pakker subplot lidt tættere sammen
+plt.subplots_adjust(left=0.1, bottom=None, right=None, top=None, wspace=0.05, hspace=0.05)
 
