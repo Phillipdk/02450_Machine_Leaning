@@ -7,8 +7,6 @@ import pandas as pd
 file_path = './BreastTissue.xls'
 breast_data = pd.read_excel(file_path, sheet_name = "Data", index_col=0)
 
-#del K, i, tiss, tissue_names, file_path
-
 # Show the attributes 
 attributeNames = np.array(breast_data.columns)
 
@@ -28,21 +26,27 @@ for i in range(len(tissue_names)):
 # Slå 1-out-of-K sammen data
 data = np.concatenate((breast_data, K), axis=1)
 
-
-for pos, val in enumerate(data):
-    print(pos, "  ", val[4])
+# Deleting outliers
+for pos, val in enumerate(data): 
     if val[4]>50000:
-        print("delete this one")
-
-
-
-for pos, val in enumerate(data):
-    print(pos, "  ", val[4])
-    if val[4]>50000:
-        print("delete this one")
         data = np.delete(data, pos, 0)
 
+# Saving in a txt file
 np.savetxt("ordnet_data.csv", data, delimiter=",")
 
-[(plt.figure(), plt.plot(row)) for row in data.T[0:9]]
+#[(plt.figure(), plt.plot(row)) for row in data.T[0:9]]
+
+
+plt.figure(figsize=(10,10),dpi=100)
+for i in range(len(attributeNames)-1):
+    for j in range(len(attributeNames)-1):
+        plt.subplot(9,9, i*9 +j +1)
+        plt.plot(data[:,i], data[:,j], '.')
+        
+
+
+
+
+
+
 
