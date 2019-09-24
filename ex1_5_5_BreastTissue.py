@@ -30,4 +30,4 @@ del K, i, tiss, tissue_names, file_path
 
 [(plt.figure(), plt.plot(row)) for row in data.T[0:9]]
 
-
+wildgefesgfhrsfgrgkg
