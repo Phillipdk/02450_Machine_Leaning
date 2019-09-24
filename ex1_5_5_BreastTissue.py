@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Load file in
-file_path = '../Data/BreastTissue.xls'
+file_path = './BreastTissue.xls'
 breast_data = pd.read_excel(file_path, sheet_name = "Data", index_col=0)
 
 # Show the attributes
@@ -30,4 +30,3 @@ del K, i, tiss, tissue_names, file_path
 
 [(plt.figure(), plt.plot(row)) for row in data.T[0:9]]
 
-wildgefesgfhrsfgrgkg
