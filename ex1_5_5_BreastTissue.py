@@ -7,7 +7,9 @@ import pandas as pd
 file_path = './BreastTissue.xls'
 breast_data = pd.read_excel(file_path, sheet_name = "Data", index_col=0)
 
-# Show the attributes
+#del K, i, tiss, tissue_names, file_path
+
+# Show the attributes 
 attributeNames = np.array(breast_data.columns)
 
 # Isolate the class types
@@ -25,7 +27,20 @@ for i in range(len(tissue_names)):
 
 # Slå 1-out-of-K sammen data
 data = np.concatenate((breast_data, K), axis=1)
-del K, i, tiss, tissue_names, file_path
+
+
+for pos, val in enumerate(data):
+    print(pos, "  ", val[4])
+    if val[4]>50000:
+        print("delete this one")
+
+
+
+for pos, val in enumerate(data):
+    print(pos, "  ", val[4])
+    if val[4]>50000:
+        print("delete this one")
+        np.delete(data, pos, 0)
 
 np.savetxt("ordnet_data.csv", data, delimiter=",")
 
