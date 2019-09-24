@@ -192,7 +192,7 @@ for i in range(12):
     y_up = X[:,c].max()+(X[:,c].max()-X[:,c].min())*0.1; y_down = X[:,c].min()-(X[:,c].max()-X[:,c].min())*0.1
     plt.ylim(y_down, y_up)
     plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.4)
-show()
+plt.show()
 
 
 # %%
