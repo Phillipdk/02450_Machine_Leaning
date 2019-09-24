@@ -21,17 +21,17 @@ data = pd.read_excel(file_path, sep='\t', header=0, sheet_name="Data")
 
 attributeNames = np.asanyarray(data.columns)
 
-print(attributeNames)
+#print(attributeNames)
 
 
 raw_data = data.get_values() 
 cols = range(2, 11) 
 X = raw_data[:, cols]
 
-print(X)
+#print(X)
 
 attributeNames1 = np.asarray(data.columns[cols])
-print(attributeNames1)
+#print(attributeNames1)
 
 #entries=data.sort(['i','j','ColumnA','ColumnB'])
 #attributeNames2 = data.row_values(rowx=0, start_colx=2, end_colx=8)
@@ -106,7 +106,7 @@ plt.show()
 # other format in one data matrix:
 data = np.concatenate((X_c, np.expand_dims(y_c,axis=1)), axis=1)
 # We need to do expand_dims to y_c for the dimensions of X_c and y_c to fit.
-print(data)
+#print(data)
 
 
 # We know that the petal length corresponds to the third column in the data
@@ -116,7 +116,7 @@ y_r = data[:, 2]
 # Similarly, our new X matrix is all the other information but without the 
 # petal length (since it's now the y variable):
 X_r = data[:, 0:11]
-print(X_r)
+#print(X_r)
 
 
 # Since the iris class information (which is now the last column in X_r) is a
@@ -134,7 +134,7 @@ species_encoding[np.arange(species.size), species] = 1
 # version of the species data) with the encoded version:
 X_r = np.concatenate( (X_r[:, 0:11], species_encoding), axis=1) 
 
-print(X_r)
+#print(X_r)
 
 # Now, X is of size 150x6 corresponding to the three measurements of the
 # Iris that are not the petal length as well as the three variables that
@@ -144,8 +144,8 @@ print(X_r)
 targetName_r = attributeNames_c[2]
 attributeNames_r = np.concatenate((attributeNames_c[3:11], classNames), axis=0)
 
-print(attributeNames_c)
-print(attributeNames_r)
+#print(attributeNames_c)
+#print(attributeNames_r)
 
 
 
@@ -177,24 +177,27 @@ plt.ylabel(targetName_r);
 
 
 # %%
-from matplotlib.pyplot import (figure, subplot, boxplot, title, xticks, ylim, show)
+#from matplotlib.pyplot import (figure, subplot, boxplot, title, xticks, ylim, show)
 
-figure(figsize=(10,6),dpi=100)
-for c in range(12):
-    subplot(3,3,c+1) 
-    boxplot(X[:,c],vert=False)
+plt.figure(figsize=(10,6),dpi=100)
+
+for i in range(12):
+    plt.subplot(3,4,i+1) 
+    plt.boxplot(X[:,c],vert=False)
     #title('Class: {0}'.format(classNames[c]))
-    title(''+attributeNames1[c][0:40])
+    plt.title(''+attributeNames1[c][0:40])
     
-    #yticks(range(1), [a[:9] for a in attributeNames[c]])
+    plt.yticks(range(1), [a[:9] for a in attributeNames[c]])
     
-    #y_up = X[:,c].max()+(X[:,c].max()-X[:,c].min())*0.1; y_down = X[:,c].min()-(X[:,c].max()-X[:,c].min())*0.1
-   #ylim(y_down, y_up)
+    y_up = X[:,c].max()+(X[:,c].max()-X[:,c].min())*0.1; y_down = X[:,c].min()-(X[:,c].max()-X[:,c].min())*0.1
+    plt.ylim(y_down, y_up)
     plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.4)
 show()
 
 
 # %%
+ 
+
 df = pd.DataFrame(X[:,0:9], columns=attributeNames1[0:])
 desc = df.describe()
 desc
@@ -242,7 +245,4 @@ plt.subplots_adjust(left=0.1, bottom=None, right=None, top=None, wspace=0.05, hs
 legend(classNames)
 legend(classNames, loc='center left', bbox_to_anchor=(1, 0.5))
 show()
-
-
-
 
