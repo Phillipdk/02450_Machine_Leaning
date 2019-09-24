@@ -40,7 +40,7 @@ for pos, val in enumerate(data):
     print(pos, "  ", val[4])
     if val[4]>50000:
         print("delete this one")
-        np.delete(data, pos, 0)
+        data = np.delete(data, pos, 0)
 
 np.savetxt("ordnet_data.csv", data, delimiter=",")
 
