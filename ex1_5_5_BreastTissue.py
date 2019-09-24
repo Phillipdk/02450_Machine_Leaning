@@ -54,13 +54,13 @@ for i in range(len(attributeNames)-1):
         # Setting a name for the columns
         if i == 8:
             plt.xlabel(attributeNames[j+1])
-        else:
-            plt.xticks([])
+        #else:
+        #    plt.xticks([])
         # Setting a name for the rows
         if j == 0:
             plt.ylabel(attributeNames[i+1])
-        else:
-            plt.yticks([])
+        #else:
+        #    plt.yticks([])
 
         # Set the x,y limits just above what is displayed
         plt.xlim(0,data[:,i].max()*1.1)
@@ -68,5 +68,5 @@ for i in range(len(attributeNames)-1):
 
 
 # Pakker subplot lidt tættere sammen
-plt.subplots_adjust(left=0.1, bottom=None, right=None, top=None, wspace=0.05, hspace=0.05)
+#plt.subplots_adjust(left=0.1, bottom=None, right=None, top=None, wspace=0.05, hspace=0.05)
 
