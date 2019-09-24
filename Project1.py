@@ -181,16 +181,16 @@ plt.ylabel(targetName_r);
 
 plt.figure(figsize=(10,6),dpi=100)
 
-for i in range(12):
-    plt.subplot(3,4,i+1) 
-    plt.boxplot(X[:,c],vert=False)
+for i in range(9):
+    plt.subplot(3,3,i+1) 
+    plt.boxplot(X[:,i],vert=False)
     #title('Class: {0}'.format(classNames[c]))
-    plt.title(''+attributeNames1[c][0:40])
+    plt.title(''+attributeNames1[i][0:40])
     
-    plt.yticks(range(1), [a[:9] for a in attributeNames[c]])
+#    plt.yticks(range(1), [a[:9] for a in attributeNames[c]])
     
-    y_up = X[:,c].max()+(X[:,c].max()-X[:,c].min())*0.1; y_down = X[:,c].min()-(X[:,c].max()-X[:,c].min())*0.1
-    plt.ylim(y_down, y_up)
+#    y_up = X[:,c].max()+(X[:,c].max()-X[:,c].min())*0.1; y_down = X[:,c].min()-(X[:,c].max()-X[:,c].min())*0.1
+    #plt.ylim(y_down, y_up)
     plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.4)
 plt.show()
 
