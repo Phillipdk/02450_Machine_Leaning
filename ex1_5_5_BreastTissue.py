@@ -59,6 +59,20 @@ g = g.map_offdiag(plt.scatter)
 g = g.add_legend()
 
 
+
+plt.scatter(x = scatterplot_data_nr1['I0'], 
+            y = scatterplot_data_nr1['DR'], 
+            s = scatterplot_data_nr1['P'], # <== 😀 Look here!
+            alpha=0.4, 
+            edgecolors='w'
+            )
+
+plt.xlabel('DATA1')
+plt.ylabel('DATA2')
+plt.title('DATA3', y=1.05)
+
+
+
 """
 for i in range(len(attributeNames)-1):
     for j in range(len(attributeNames)-1):
