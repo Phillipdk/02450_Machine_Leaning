@@ -1,0 +1,5003 @@
+==> ./ex0_4_3.py <==
+## exercise 0.4.3
+
+# In Python you need to 'import' packages and external functions before you can 
+# use them. We can import NumPy (which enables us to work with matrices, among 
+# other things) by writing 'import numpy as np'. 
+# We load the package into the ``namespace'' np to reference it easily,
+# now we can write 'np.sum(X)' instead of 'numpy.sum(X)'.
+import numpy as np 
+
+# Remember you can mark a part of the code and press
+# F9 to run that part alone.
+
+# define variable a with numbers in the range from 0 to 7 (not inclusive)
+a = np.arange(start=0,stop=7) 
+
+# define variable b with numbers in the range from 2 to 17 in steps of 4
+b = np.arange(start=2,stop=17,step=4) 
+
+# similar to b but without explicit decleration of the input arguments names
+c = np.arange(100, 95, -1) 
+
+d = np.arange(1.2, 1.9, 0.1) 
+
+e = np.pi*np.arange(0,2.5,.5) 
+
+==> ./ex0_4_4.py <==
+## exercise 0.4.4
+import numpy as np
+# Extracting the elements from vectors is easy. Consider the
+# following definition of x and the echoed results
+x = np.concatenate([np.zeros(2), np.arange(0, 3.6, 0.6), np.ones(3)])
+x[1:5] # take out elements 2 through 5 (notice 6 is not included)
+np.size(x) # return the size of x (equivalent to len(x) since x is an array)
+len(x) # return the length of x
+
+
+# Try writing help(len) and help(np.size)
+
+x[-1] # take the last element of x
+x[1::2] # return every other element of x starting from the 2nd
+
+# The length of x is 11; what is x[11] - and why?
+
+# Inserting numbers into vectors is also easy. Using the same
+# definition of x and observe the results when typing
+y = x;
+y[1::2]  = np.pi 
+# Notice that we're inserting the same scalar value "pi" into all elements 
+# that we index y with
+
+# You can also try:
+#y[1::2] = np.arange(2,12,2)
+
+# Observe the results when indexing the vector y with
+# y[1] and y[0]. Is y[0] defined? 
+==> ./ex0_4_5.py <==
+## exercise 0.4.5
+import numpy as np
+
+# Setup two ararys
+x = np.arange(1,6)
+y = np.arange(2,12,2)
+# Have a look at them by typing 'x' and 'y' in the console
+
+# There's a difference between matrix multiplication and elementwise 
+# multiplication, and specifically in Python its also important if you 
+# are using the multiply operator "*" on an array object or a matrix object!
+
+# Use the * operator to multiply the two arrays:
+x*y
+
+# Now, convert the arrays into matrices - 
+x = np.asmatrix(np.arange(1,6))
+y = np.asmatrix(np.arange(2,12,2))
+# Again, have a look at them by typing 'x' and 'y' in the console
+
+# Try using the * operator just as before now:
+#x*y 
+# You should now get an error - try to explain why.
+
+# array and matrix are two data structures added by NumPy package to the list of
+# basic data structures in Python (lists, tuples, sets). We shall use both 
+# array and matrix structures extensively throughout this course, therefore 
+# make sure that you understand differences between them 
+# (multiplication, dimensionality) and that you are able to convert them one 
+# to another (asmatrix(), asarray() functions). 
+# Generally speaking, array objects are used to represent scientific, numerical, 
+# N-dimensional data. matrix objects can be very handy when it comes to 
+# algebraic operations on 2-dimensional matrices.
+
+# The ambiguity can be circumvented by using explicit function calls:
+np.transpose(y)             # transposition/transpose of y
+y.transpose()               # also transpose
+y.T                         # also transpose
+
+np.multiply(x,y)            # element-wise multiplication
+
+np.dot(x,y.T)               # matrix multiplication
+x @ y.T                     # also matrix multiplication
+
+
+# There are various ways to make certain type of matrices.
+a1 = np.array([[1, 2, 3], [4, 5, 6]])   # define explicitly
+a2 = np.arange(1,7).reshape(2,3)        # reshape range of numbers
+a3 = np.zeros([3,3])                    # zeros array
+a4 = np.eye(3)                          # diagonal array
+a5 = np.random.rand(2,3)                # random array
+a6 = a1.copy()                          # copy
+a7 = a1                                 # alias
+m1 = np.matrix('1 2 3; 4 5 6; 7 8 9')   # define matrix by string
+m2 = np.asmatrix(a1.copy())             # copy array into matrix
+m3 = np.mat(np.array([1, 2, 3]))        # map array onto matrix
+a8 = np.asarray(m1)                     # map matrix onto array
+  
+# It is easy to extract and/or modify selected items from arrays/matrices. 
+# Here is how you can index matrix elements:
+m = np.matrix('1 2 3; 4 5 6; 7 8 9')
+m[0,0]		# first element
+m[-1,-1]	# last element
+m[0,:]		# first row
+m[:,1]		# second column
+m[1:3,-1]	# view on selected rows&columns
+
+# Similarly, you can selectively assign values to matrix elements or columns:
+m[-1,-1] = 10000
+m[0:2,-1] = np.matrix('100; 1000')
+m[:,0] = 0
+
+# Logical indexing can be used to change or take only elements that 
+# fulfil a certain constraint, e.g.
+m2[m2>0.5]          # display values in m2 that are larger than 0.5
+m2[m2<0.5] = 0      # set all elements that are less than 0.5 to 0 
+
+#Below, several examples of common matrix operations, 
+# most of which we will use in the following weeks.
+# First, define two matrices:
+m1 = 10 * np.mat(np.ones([3,3]))
+m2 = np.mat(np.random.rand(3,3))
+
+m1+m2               # matrix summation
+m1*m2               # matrix product
+np.multiply(m1,m2)  # element-wise multiplication
+m1>m2               # element-wise comparison
+m3 = np.hstack((m1,m2))    # combine/concatenate matrices horizontally 
+# note that this is not equivalent to e.g. 
+#   l = [m1, m2]
+# in which case l is a list, and l[0] is m1
+m4 = np.vstack((m1,m2))    # combine/concatenate matrices vertically 
+m3.shape            # shape of matrix
+m3.mean()           # mean value of all the elements
+m3.mean(axis=0)     # mean values of the columns
+m3.mean(axis=1)     # mean values of the rows
+m3.transpose()      # transpose, also: m3.T
+m2.I                # compute inverse matrix
+
+==> ./ex0_5_1.py <==
+## exercise 0.5.1
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.arange(0, 1, 0.1)
+f = np.exp(x)
+
+plt.figure(1)
+plt.plot(x, f)
+plt.xlabel('x')
+plt.ylabel('f(x)=exp(x)')
+plt.title('The exponential function')
+plt.show()
+==> ./ex0_5_2.py <==
+## exercise 0.5.2
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# We simulate measurements every 100 ms for a period of 10 seconds 
+t = np.arange(0, 10, 0.1)
+
+# The data from the sensors are generated as either a sine or a cosine 
+# with some Gaussian noise added.
+sensor1 = 3*np.sin(t)+0.5*np.random.normal(size=len(t))
+sensor2 = 3*np.cos(t)+0.5*np.random.normal(size=len(t))
+
+# Change the font size to make axis and title readable
+font_size = 15
+plt.rcParams.update({'font.size': font_size})
+
+# Define the name of the curves
+legend_strings = ['Sensor 1', 'Sensor 2']
+
+# Start plotting the simulated measurements
+plt.figure(1)
+# Plot the sensor 1 output as a function of time, and
+# make the curve red and fully drawn
+plt.plot(t, sensor1, 'r-')
+
+# Plot the sensor 2 output as a function of time, and
+# make the curve blue and dashed
+plt.plot(t, sensor2, 'b--')
+
+# Ensure that the limits on the axis fit the data 
+plt.axis('tight')
+
+# Add a grid in the background
+plt.grid()
+
+# Add a legend describing each curve, place it at the "best" location
+# so as to minimize the amount of curve it covers
+plt.legend(legend_strings,loc='best')
+
+# Add labels to the axes
+plt.xlabel('Time [s]')
+plt.ylabel('Voltage [mV]')
+
+# Add a title to the plot
+plt.title('Sensor outputs')
+
+# Export the figure
+plt.savefig('ex1_5_2.png')
+
+# Show the figure in the console
+plt.show()
+
+==> ./ex10_1_1.py <==
+# exercise 10.1.1
+from matplotlib.pyplot import figure, show
+from scipy.io import loadmat
+from toolbox_02450 import clusterplot
+from sklearn.cluster import k_means
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth1.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+# Number of clusters:
+K = 4
+
+# K-means clustering:
+centroids, cls, inertia = k_means(X,K)
+    
+# Plot results:
+figure(figsize=(14,9))
+clusterplot(X, cls, centroids, y)
+show()
+
+print('Ran Exercise 10.1.1')
+==> ./ex10_1_3.py <==
+# exercise 10.1.3
+from matplotlib.pyplot import figure, title, plot, ylim, legend, show
+import numpy as np
+from scipy.io import loadmat
+from toolbox_02450 import clusterval
+from sklearn.cluster import k_means
+
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth1.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+
+# Maximum number of clusters:
+K = 10
+
+# Allocate variables:
+Rand = np.zeros((K,))
+Jaccard = np.zeros((K,))
+NMI = np.zeros((K,))
+
+for k in range(K):
+    # run K-means clustering:
+    #cls = Pycluster.kcluster(X,k+1)[0]
+    centroids, cls, inertia = k_means(X,k+1)
+    # compute cluster validities:
+    Rand[k], Jaccard[k], NMI[k] = clusterval(y,cls)    
+        
+# Plot results:
+
+figure(1)
+title('Cluster validity')
+plot(np.arange(K)+1, Rand)
+plot(np.arange(K)+1, Jaccard)
+plot(np.arange(K)+1, NMI)
+legend(['Rand', 'Jaccard', 'NMI'], loc=4)
+show()
+
+print('Ran Exercise 10.1.3')
+==> ./ex10_1_5.py <==
+# exercise 10_1_5
+from matplotlib import pyplot as plt
+import numpy as np
+from scipy.io import loadmat
+from sklearn.cluster import k_means
+
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wildfaces.mat')
+#mat_data = loadmat('../Data/digits.mat') #<-- uncomment this for using the digits dataset 
+
+X = mat_data['X']
+N, M = X.shape
+# Image resolution and number of colors
+x = 40 #<-- change this for using the digits dataset
+y = 40 #<-- change this for using the digits dataset
+c = 3 #<-- change this for using the digits dataset
+
+
+# Number of clusters:
+K = 10
+
+# Number of repetitions with different initial centroid seeds
+S = 1
+
+# Run k-means clustering:
+centroids, cls, inertia = k_means(X, K, verbose=True, max_iter=100, n_init=S)
+
+
+# Plot results:
+
+# Plot centroids
+plt.figure(1)
+n1 = np.ceil(np.sqrt(K/2)); n2 = np.ceil(np.float(K)/n1)
+
+#For black and white, cmap=plt.cm.binary, else default
+cmap = plt.cm.binary if c==1 else None 
+
+for k in range(K):
+    plt.subplot(n1,n2,k+1)
+    # Reshape centroids to fit resolution and colors
+    img = np.reshape(centroids[k,:],(c,x,y)).T
+    if c == 1: # if color is single-color/gray scale
+        # Squeeze out singleton dimension
+        # and flip the image (cancel out previos transpose)
+        img = np.squeeze(img).T
+    plt.imshow(img,interpolation='None', cmap=cmap)
+    plt.xticks([]); plt.yticks([])
+    if k==np.floor((n2-1)/2): plt.title('Centroids')
+
+# Plot few randomly selected faces and their nearest centroids    
+L = 5       # number of images to plot
+j = np.random.randint(0, N, L)
+plt.figure(2)
+for l in range(L):
+    plt.subplot(2,L,l+1)
+    img = np.resize(X[j[l],:],(c,x,y)).T
+    if c == 1:
+        img = np.squeeze(img).T
+    plt.imshow(img,interpolation='None', cmap=cmap)
+    plt.xticks([]); plt.yticks([])
+    if l==np.floor((L-1)/2): plt.title('Randomly selected faces and their centroids')
+    plt.subplot(2,L,L+l+1)
+    img = np.resize(centroids[cls[j[l]],:],(c,x,y)).T
+    if c == 1:
+        img = np.squeeze(img).T
+    plt.imshow(img,interpolation='None', cmap=cmap)
+    plt.xticks([]); plt.yticks([])
+
+plt.show()
+
+print('Ran Exercise 10.1.5')
+==> ./ex10_2_1.py <==
+# exercise 10.2.1
+from matplotlib.pyplot import figure, show
+from scipy.io import loadmat
+from toolbox_02450 import clusterplot
+from scipy.cluster.hierarchy import linkage, fcluster, dendrogram
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth1.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+
+# Perform hierarchical/agglomerative clustering on data matrix
+Method = 'single'
+Metric = 'euclidean'
+
+Z = linkage(X, method=Method, metric=Metric)
+
+# Compute and display clusters by thresholding the dendrogram
+Maxclust = 4
+cls = fcluster(Z, criterion='maxclust', t=Maxclust)
+figure(1)
+clusterplot(X, cls.reshape(cls.shape[0],1), y=y)
+
+# Display dendrogram
+max_display_levels=6
+figure(2,figsize=(10,4))
+dendrogram(Z, truncate_mode='level', p=max_display_levels)
+
+show()
+
+print('Ran Exercise 10.2.1')
+==> ./ex11_1_1.py <==
+# exercise 11.1.1
+from matplotlib.pyplot import figure, show
+import numpy as np
+from scipy.io import loadmat
+from toolbox_02450 import clusterplot
+from sklearn.mixture import GaussianMixture
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth2.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+#X_old = X
+#X = np.hstack([X,X])
+N, M = X.shape
+C = len(classNames)
+# Number of clusters
+K = 4
+cov_type = 'full' # e.g. 'full' or 'diag'
+
+# define the initialization procedure (initial value of means)
+initialization_method = 'random'#  'random' or 'kmeans'
+# random signifies random initiation, kmeans means we run a K-means and use the
+# result as the starting point. K-means might converge faster/better than  
+# random, but might also cause the algorithm to be stuck in a poor local minimum 
+
+# type of covariance, you can try out 'diag' as well
+reps = 1
+# number of fits with different initalizations, best result will be kept
+# Fit Gaussian mixture model
+gmm = GaussianMixture(n_components=K, covariance_type=cov_type, n_init=reps, 
+                      tol=1e-6, reg_covar=1e-6, init_params=initialization_method).fit(X)
+cls = gmm.predict(X)    
+# extract cluster labels
+cds = gmm.means_        
+# extract cluster centroids (means of gaussians)
+covs = gmm.covariances_
+# extract cluster shapes (covariances of gaussians)
+if cov_type.lower() == 'diag':
+    new_covs = np.zeros([K,M,M])    
+    
+    count = 0    
+    for elem in covs:
+        temp_m = np.zeros([M,M])
+        new_covs[count] = np.diag(elem)
+        count += 1
+
+    covs = new_covs
+
+# Plot results:
+figure(figsize=(14,9))
+clusterplot(X, clusterid=cls, centroids=cds, y=y, covars=covs)
+show()
+
+## In case the number of features != 2, then a subset of features most be plotted instead.
+#figure(figsize=(14,9))
+#idx = [0,1] # feature index, choose two features to use as x and y axis in the plot
+#clusterplot(X[:,idx], clusterid=cls, centroids=cds[:,idx], y=y, covars=covs[:,idx,:][:,:,idx])
+#show()
+
+print('Ran Exercise 11.1.1')
+==> ./ex11_1_5.py <==
+# exercise 11.1.5
+from matplotlib.pyplot import figure, plot, legend, xlabel, show
+import numpy as np
+from scipy.io import loadmat
+from sklearn.mixture import GaussianMixture
+from sklearn import model_selection
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth1.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+
+# Range of K's to try
+KRange = range(1,11)
+T = len(KRange)
+
+covar_type = 'full'       # you can try out 'diag' as well
+reps = 3                  # number of fits with different initalizations, best result will be kept
+init_procedure = 'kmeans' # 'kmeans' or 'random'
+
+# Allocate variables
+BIC = np.zeros((T,))
+AIC = np.zeros((T,))
+CVE = np.zeros((T,))
+
+# K-fold crossvalidation
+CV = model_selection.KFold(n_splits=10,shuffle=True)
+
+for t,K in enumerate(KRange):
+        print('Fitting model for K={0}'.format(K))
+
+        # Fit Gaussian mixture model
+        gmm = GaussianMixture(n_components=K, covariance_type=covar_type, 
+                              n_init=reps, init_params=init_procedure,
+                              tol=1e-6, reg_covar=1e-6).fit(X)
+        
+        # Get BIC and AIC
+        BIC[t,] = gmm.bic(X)
+        AIC[t,] = gmm.aic(X)
+
+        # For each crossvalidation fold
+        for train_index, test_index in CV.split(X):
+
+            # extract training and test set for current CV fold
+            X_train = X[train_index]
+            X_test = X[test_index]
+
+            # Fit Gaussian mixture model to X_train
+            gmm = GaussianMixture(n_components=K, covariance_type=covar_type, n_init=reps).fit(X_train)
+
+            # compute negative log likelihood of X_test
+            CVE[t] += -gmm.score_samples(X_test).sum()
+            
+
+# Plot results
+
+figure(1); 
+plot(KRange, BIC,'-*b')
+plot(KRange, AIC,'-xr')
+plot(KRange, 2*CVE,'-ok')
+legend(['BIC', 'AIC', 'Crossvalidation'])
+xlabel('K')
+show()
+
+print('Ran Exercise 11.1.5')
+==> ./ex11_2_1.py <==
+# exercise 11_2_1
+import numpy as np
+from matplotlib.pyplot import figure, hist, show
+
+# Number of data objects
+N = 1000
+
+# Number of attributes
+M = 1
+
+# x-values to evaluate the histogram
+x = np.linspace(-10, 10, 50)
+
+# Allocate variable for data
+X = np.empty((N,M))
+
+# Mean and covariances
+m = np.array([1, 3, 6])
+s = np.array([1, .5, 2])
+
+# Draw samples from mixture of gaussians
+c_sizes = np.random.multinomial(N, [1./3, 1./3, 1./3])
+for c_id, c_size in enumerate(c_sizes):
+    X[c_sizes.cumsum()[c_id]-c_sizes[c_id]:c_sizes.cumsum()[c_id],:] = np.random.normal(m[c_id], np.sqrt(s[c_id]), (c_size,M))
+
+
+# Plot histogram of sampled data
+figure()
+hist(X,x)
+show()
+
+print('Ran Exercise 11.2.1')
+==> ./ex11_2_2.py <==
+# exercise 11.2.2
+import numpy as np
+from matplotlib.pyplot import figure, subplot, hist, title, show, plot
+from scipy.stats.kde import gaussian_kde
+
+# Draw samples from mixture of gaussians (as in exercise 11.1.1)
+N = 1000; M = 1
+x = np.linspace(-10, 10, 50)
+X = np.empty((N,M))
+m = np.array([1, 3, 6]); s = np.array([1, .5, 2])
+c_sizes = np.random.multinomial(N, [1./3, 1./3, 1./3])
+for c_id, c_size in enumerate(c_sizes):
+    X[c_sizes.cumsum()[c_id]-c_sizes[c_id]:c_sizes.cumsum()[c_id],:] = np.random.normal(m[c_id], np.sqrt(s[c_id]), (c_size,M))
+
+
+# x-values to evaluate the KDE
+xe = np.linspace(-10, 10, 100)
+
+# Compute kernel density estimate
+kde = gaussian_kde(X.ravel())
+
+# Plot kernel density estimate
+figure(figsize=(6,7))
+subplot(2,1,1)
+hist(X,x)
+title('Data histogram')
+subplot(2,1,2)
+plot(xe, kde.evaluate(xe))
+title('Kernel density estimate')
+show()
+
+print('Ran Exercise 11.2.2')
+==> ./ex11_2_3.py <==
+# exercise 11.2.3
+import numpy as np
+from matplotlib.pyplot import figure, subplot, plot, hist, title, show
+from sklearn.neighbors import NearestNeighbors
+
+
+# Draw samples from mixture of gaussians (as in exercise 11.1.1)
+N = 1000; M = 1
+x = np.linspace(-10, 10, 50)
+X = np.empty((N,M))
+m = np.array([1, 3, 6]); s = np.array([1, .5, 2])
+c_sizes = np.random.multinomial(N, [1./3, 1./3, 1./3])
+for c_id, c_size in enumerate(c_sizes):
+    X[c_sizes.cumsum()[c_id]-c_sizes[c_id]:c_sizes.cumsum()[c_id],:] = np.random.normal(m[c_id], np.sqrt(s[c_id]), (c_size,M))
+
+
+# Number of neighbors
+K = 200
+
+# x-values to evaluate the KNN
+xe = np.linspace(-10, 10, 100)
+
+# Find the k nearest neighbors
+knn = NearestNeighbors(n_neighbors=K).fit(X)
+D, i = knn.kneighbors(np.matrix(xe).T)
+
+# Compute the density
+#D, i = knclassifier.kneighbors(np.matrix(xe).T)
+knn_density = 1./(D.sum(axis=1)/K)
+
+# Compute the average relative density
+DX, iX = knn.kneighbors(X)
+knn_densityX = 1./(DX[:,1:].sum(axis=1)/K)
+knn_avg_rel_density = knn_density/(knn_densityX[i[:,1:]].sum(axis=1)/K)
+
+
+# Plot KNN density
+figure(figsize=(6,7))
+subplot(2,1,1)
+hist(X,x)
+title('Data histogram')
+subplot(2,1,2)
+plot(xe, knn_density)
+title('KNN density')
+# Plot KNN average relative density
+figure(figsize=(6,7))
+subplot(2,1,1)
+hist(X,x)
+title('Data histogram')
+subplot(2,1,2)
+plot(xe, knn_avg_rel_density)
+title('KNN average relative density')
+
+show()
+
+print('Ran Exercise 11.2.3')
+==> ./ex11_3_1.py <==
+# exercise 11.3.1
+import numpy as np
+from matplotlib.pyplot import figure, bar, title, show
+from scipy.stats.kde import gaussian_kde
+
+
+# Draw samples from mixture of gaussians (as in exercise 11.1.1), add outlier
+N = 1000; M = 1
+x = np.linspace(-10, 10, 50)
+X = np.empty((N,M))
+m = np.array([1, 3, 6]); s = np.array([1, .5, 2])
+c_sizes = np.random.multinomial(N, [1./3, 1./3, 1./3])
+for c_id, c_size in enumerate(c_sizes):
+    X[c_sizes.cumsum()[c_id]-c_sizes[c_id]:c_sizes.cumsum()[c_id],:] = np.random.normal(m[c_id], np.sqrt(s[c_id]), (c_size,M))
+X[-1,0]=-10 # added outlier
+
+
+# Compute kernel density estimate
+kde = gaussian_kde(X.ravel())
+
+scores = kde.evaluate(X.ravel())
+idx = scores.argsort()
+scores.sort()
+
+print('The index of the lowest density object: {0}'.format(idx[0]))
+
+# Plot kernel density estimate
+figure()
+bar(range(20),scores[:20])
+title('Outlier score')
+show()
+
+print('Ran Exercise 11.3.1')
+==> ./ex11_3_2.py <==
+# exercise 11.3.2
+
+import numpy as np
+from matplotlib.pyplot import figure, bar, title, plot, show
+from toolbox_02450 import gausKernelDensity
+
+# Draw samples from mixture of gaussians (as in exercise 11.1.1)
+N = 1000; M = 1
+x = np.linspace(-10, 10, 50)
+X = np.empty((N,M))
+m = np.array([1, 3, 6]); s = np.array([1, .5, 2])
+c_sizes = np.random.multinomial(N, [1./3, 1./3, 1./3])
+for c_id, c_size in enumerate(c_sizes):
+    X[c_sizes.cumsum()[c_id]-c_sizes[c_id]:c_sizes.cumsum()[c_id],:] = np.random.normal(m[c_id], np.sqrt(s[c_id]), (c_size,M))
+
+
+
+# Estimate the optimal kernel density width, by leave-one-out cross-validation
+widths = 2.0**np.arange(-10,10)
+logP = np.zeros(np.size(widths))
+for i,w in enumerate(widths):
+    f, log_f = gausKernelDensity(X, w)
+    logP[i] = log_f.sum()
+val = logP.max()
+ind = logP.argmax()
+
+width=widths[ind]
+print('Optimal estimated width is: {0}'.format(width))
+
+# Estimate density for each observation not including the observation
+# itself in the density estimate
+density, log_density = gausKernelDensity(X, width)
+
+# Sort the densities
+i = (density.argsort(axis=0)).ravel()
+density = density[i]
+
+# Display the index of the lowest density data object
+print('Lowest density: {0} for data object: {1}'.format(density[0],i[0]))
+
+# Plot density estimate of outlier score
+figure(1)
+bar(range(20),density[:20].reshape(-1,))
+title('Density estimate')
+figure(2)
+plot(logP)
+title('Optimal width')
+show()
+
+print('Ran Exercise 11.3.2')
+==> ./ex11_4_1.py <==
+# exercise 11.4.1
+import numpy as np
+from matplotlib.pyplot import (figure, imshow, bar, title, xticks, yticks, cm,
+                               subplot, show)
+from scipy.io import loadmat
+from toolbox_02450 import gausKernelDensity
+from sklearn.neighbors import NearestNeighbors
+
+# load data from Matlab data file
+matdata = loadmat('../Data/digits.mat')
+X = np.matrix(matdata['X'])
+y = np.matrix(matdata['y'])
+N, M = np.shape(X)
+
+# Restrict the data to images of "2"
+X = X[y.A.ravel()==2,:]
+N, M = np.shape(X)
+
+
+
+### Gausian Kernel density estimator
+# cross-validate kernel width by leave-one-out-cross-validation
+# (efficient implementation in gausKernelDensity function)
+# evaluate for range of kernel widths
+widths = X.var(axis=0).max() * (2.0**np.arange(-10,3))
+logP = np.zeros(np.size(widths))
+for i,w in enumerate(widths):
+   print('Fold {:2d}, w={:f}'.format(i,w))
+   density, log_density = gausKernelDensity(X,w)
+   logP[i] = log_density.sum()
+   
+val = logP.max()
+ind = logP.argmax()
+
+width=widths[ind]
+print('Optimal estimated width is: {0}'.format(width))
+
+# evaluate density for estimated width
+density, log_density = gausKernelDensity(X,width)
+
+# Sort the densities
+i = (density.argsort(axis=0)).ravel()
+density = density[i].reshape(-1,)
+
+# Plot density estimate of outlier score
+figure(1)
+bar(range(20),density[:20])
+title('Density estimate')
+
+# Plot possible outliers
+figure(2)
+for k in range(1,21):
+    subplot(4,5,k)
+    imshow(np.reshape(X[i[k],:], (16,16)).T, cmap=cm.binary)
+    xticks([]); yticks([])
+    if k==3: title('Gaussian Kernel Density: Possible outliers')
+
+
+
+### K-neighbors density estimator
+# Neighbor to use:
+K = 5
+
+# Find the k nearest neighbors
+knn = NearestNeighbors(n_neighbors=K).fit(X)
+D, i = knn.kneighbors(X)
+
+density = 1./(D.sum(axis=1)/K)
+
+# Sort the scores
+i = density.argsort()
+density = density[i]
+
+# Plot k-neighbor estimate of outlier score (distances)
+figure(3)
+bar(range(20),density[:20])
+title('KNN density: Outlier score')
+# Plot possible outliers
+figure(4)
+for k in range(1,21):
+    subplot(4,5,k)
+    imshow(np.reshape(X[i[k],:], (16,16)).T, cmap=cm.binary)
+    xticks([]); yticks([])
+    if k==3: title('KNN density: Possible outliers')
+
+
+
+### K-nearest neigbor average relative density
+# Compute the average relative density
+
+knn = NearestNeighbors(n_neighbors=K).fit(X)
+D, i = knn.kneighbors(X)
+density = 1./(D.sum(axis=1)/K)
+avg_rel_density = density/(density[i[:,1:]].sum(axis=1)/K)
+
+# Sort the avg.rel.densities
+i_avg_rel = avg_rel_density.argsort()
+avg_rel_density = avg_rel_density[i_avg_rel]
+
+# Plot k-neighbor estimate of outlier score (distances)
+figure(5)
+bar(range(20),avg_rel_density[:20])
+title('KNN average relative density: Outlier score')
+# Plot possible outliers
+figure(6)
+for k in range(1,21):
+    subplot(4,5,k)
+    imshow(np.reshape(X[i_avg_rel[k],:], (16,16)).T, cmap=cm.binary)
+    xticks([]); yticks([])
+    if k==3: title('KNN average relative density: Possible outliers')
+
+
+
+### Distance to 5'th nearest neighbor outlier score
+K = 5
+
+# Find the k nearest neighbors
+knn = NearestNeighbors(n_neighbors=K).fit(X)
+D, i = knn.kneighbors(X)
+
+# Outlier score
+score = D[:,K-1]
+# Sort the scores
+i = score.argsort()
+score = score[i[::-1]]
+
+# Plot k-neighbor estimate of outlier score (distances)
+figure(7)
+bar(range(20),score[:20])
+title('5th neighbor distance: Outlier score')
+# Plot possible outliers
+figure(8)
+for k in range(1,21):
+    subplot(4,5,k)
+    imshow(np.reshape(X[i[k],:], (16,16)).T, cmap=cm.binary); 
+    xticks([]); yticks([])
+    if k==3: title('5th neighbor distance: Possible outliers')
+
+
+
+# Plot random digits (the first 20 in the data set), for comparison
+figure(9)
+for k in range(1,21):
+    subplot(4,5,k);
+    imshow(np.reshape(X[k,:], (16,16)).T, cmap=cm.binary); 
+    xticks([]); yticks([])
+    if k==3: title('Random digits from data set')    
+show()
+
+print('Ran Exercise 11.4.1')
+==> ./ex12_1_3.py <==
+# ex12_1_3
+import numpy as np
+# Load data. There is probably a library-way to parse the file but we will take the scenic route
+with open('../Data/courses.txt','r') as f:
+    D = f.read()
+    print("Raw data matrix is:")
+    print(D)
+D = [ [int(x) for x in ds.split(",")] for ds in D.split('\n') if len(ds) > 0]
+N = len(D)
+M = max( [max(v) for v in D])
+X = np.zeros( (N,M))
+for i in range(N):
+    d_m1 = [j-1 for j in D[i]]
+    X[i,d_m1] = 1
+
+# We should now have the correct binary data matrix:
+labels = ["02322", "02450", "02451", "02453", "02454", "02457", "02459", "02582"]
+print("Transformed data matrix X is:")
+print(labels)
+print(X)
+print("All-done!")
+==> ./ex12_1_4.py <==
+# install apyori using a standard method: conda install apyori or pip install apyori
+from apyori import apriori
+# Load resources from previous exercise
+import numpy as np
+from ex12_1_3 import X,labels
+# ex12_1_4
+# This is a helper function that transforms a binary matrix into transactions.
+# Note the format used for courses.txt was (nearly) in a transaction format,
+# however we will need the function later which is why we first transformed
+# courses.txt to our standard binary-matrix format.
+def mat2transactions(X, labels=[]):
+    T = []
+    for i in range(X.shape[0]):
+        l = np.nonzero(X[i, :])[0].tolist()
+        if labels:
+            l = [labels[i] for i in l]
+        T.append(l)
+    return T
+
+# apyori requires data to be in a transactions format, forunately we just wrote a helper function to do that.
+T = mat2transactions(X,labels)
+rules = apriori( T, min_support=0.8, min_confidence=1)
+
+# This function print the found rules and also returns a list of rules in the format:
+# [(x,y), ...]
+# where x -> y
+def print_apriori_rules(rules):
+    frules = []
+    for r in rules:
+        for o in r.ordered_statistics:        
+            conf = o.confidence
+            supp = r.support
+            x = ", ".join( list( o.items_base ) )
+            y = ", ".join( list( o.items_add ) )
+            print("{%s} -> {%s}  (supp: %.3f, conf: %.3f)"%(x,y, supp, conf))
+            frules.append( (x,y) )
+    return frules
+# Print rules found in the courses file.
+print_apriori_rules(rules)
+==> ./ex12_1_5.py <==
+# ex12_1_5
+# Load data from the wine dataset
+from scipy.io import loadmat
+mat_data = loadmat('../Data/wine.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0][0] for name in mat_data['attributeNames']]
+
+# We will now transform the wine dataset into a binary format. Notice the changed attribute names:
+from similarity import binarize2
+Xbin, attributeNamesBin = binarize2(X, attributeNames)
+print("X, i.e. the wine dataset, has now been transformed into:")
+print(Xbin)
+print(attributeNamesBin)
+==> ./ex12_1_6.py <==
+# ex12_1_6
+# Load resources from previous exercise
+from ex12_1_4 import mat2transactions, print_apriori_rules
+from ex12_1_5 import Xbin, attributeNamesBin
+from apyori import apriori
+
+# Given the processed data in the previous exercise this becomes easy:
+T = mat2transactions(Xbin,labels=attributeNamesBin)
+rules = apriori(T, min_support=0.3, min_confidence=.6)
+print_apriori_rules(rules)
+==> ./ex1_5_1.py <==
+# exercise 1.5.1
+import numpy as np
+import pandas as pd
+
+# Load the Iris csv data using the Pandas library
+filename = '../Data/iris.csv'
+df = pd.read_csv(filename)
+
+# Pandas returns a dataframe, (df) which could be used for handling the data.
+# We will however convert the dataframe to numpy arrays for this course as 
+# is also described in the table in the exercise
+raw_data = df.get_values() 
+
+# Notice that raw_data both contains the information we want to store in an array
+# X (the sepal and petal dimensions) and the information that we wish to store 
+# in y (the class labels, that is the iris species).
+
+# We start by making the data matrix X by indexing into data.
+# We know that the attributes are stored in the four columns from inspecting 
+# the file.
+cols = range(0, 4) 
+X = raw_data[:, cols]
+
+# We can extract the attribute names that came from the header of the csv
+attributeNames = np.asarray(df.columns[cols])
+
+# Before we can store the class index, we need to convert the strings that
+# specify the class of a given object to a numerical value. We start by 
+# extracting the strings for each sample from the raw data loaded from the csv:
+classLabels = raw_data[:,-1] # -1 takes the last column
+# Then determine which classes are in the data by finding the set of 
+# unique class labels 
+classNames = np.unique(classLabels)
+# We can assign each type of Iris class with a number by making a
+# Python dictionary as so:
+classDict = dict(zip(classNames,range(len(classNames))))
+# The function zip simply "zips" togetter the classNames with an integer,
+# like a zipper on a jacket. 
+# For instance, you could zip a list ['A', 'B', 'C'] with ['D', 'E', 'F'] to
+# get the pairs ('A','D'), ('B', 'E'), and ('C', 'F'). 
+# A Python dictionary is a data object that stores pairs of a key with a value. 
+# This means that when you call a dictionary with a given key, you 
+# get the stored corresponding value. Try highlighting classDict and press F9.
+# You'll see that the first (key, value)-pair is ('Iris-setosa', 0). 
+# If you look up in the dictionary classDict with the value 'Iris-setosa', 
+# you will get the value 0. Try it with classDict['Iris-setosa']
+
+# With the dictionary, we can look up each data objects class label (the string)
+# in the dictionary, and determine which numerical value that object is 
+# assigned. This is the class index vector y:
+y = np.array([classDict[cl] for cl in classLabels])
+# In the above, we have used the concept of "list comprehension", which
+# is a compact way of performing some operations on a list or array.
+# You could read the line  "For each class label (cl) in the array of 
+# class labels (classLabels), use the class label (cl) as the key and look up
+# in the class dictionary (classDict). Store the result for each class label
+# as an element in a list (because of the brackets []). Finally, convert the 
+# list to a numpy array". 
+# Try running this to get a feel for the operation: 
+# list = [0,1,2]
+# new_list = [element+10 for element in list]
+
+# We can determine the number of data objects and number of attributes using 
+# the shape of X
+N, M = X.shape
+
+# Finally, the last variable that we need to have the dataset in the 
+# "standard representation" for the course, is the number of classes, C:
+C = len(classNames)
+
+
+==> ./ex1_5_2.py <==
+# exercise 1.5.2
+import numpy as np
+
+# You can read data from excel spreadsheets after installing and importing xlrd
+# module. In most cases, you will need only few functions to accomplish it:
+# open_workbook(), col_values(), row_values()
+import xlrd
+# If you need more advanced reference, or if you are interested how to write 
+# data to excel files, see the following tutorial:
+# http://www.simplistix.co.uk/presentations/python-excel.pdf}
+
+# Load xls sheet with data
+# There's only a single sheet in the .xls, so we take out that sheet
+doc = xlrd.open_workbook('../Data/iris.xls').sheet_by_index(0)
+
+# Extract attribute names
+attributeNames = doc.row_values(rowx=0, start_colx=0, end_colx=4)
+# Try calling help(doc.row_values). You'll see that the above means
+# that we extract columns 0 through 4 from the first row of the document, 
+# which contains the header of the xls files (where the attributen names are)
+
+# Extract class names to python list, then encode with integers (dict) just as 
+# we did previously. The class labels are in the 5th column, in the rows 2 to 
+# and up to 151:
+classLabels = doc.col_values(4,1,151) # check out help(doc.col_values)
+classNames = sorted(set(classLabels))
+classDict = dict(zip(classNames,range(len(classNames))))
+
+# Extract vector y, convert to NumPy array
+y = np.array([classDict[value] for value in classLabels])
+
+# Preallocate memory, then extract data to matrix X
+X = np.empty((150,4))
+for i in range(4):
+    X[:,i] = np.array(doc.col_values(i,1,151)).T
+
+# Compute values of N, M and C.
+N = len(y)
+M = len(attributeNames)
+C = len(classNames)
+
+==> ./ex1_5_3.py <==
+# exercise 1.5.3
+import numpy as np
+
+from scipy.io import loadmat
+# You can load the matlab data (matlab's m-file) to Python environment with 
+# 'loadmat()' function imported from 'scipy.io' module. 
+# The matlab workspace is loaded as a dictionary, with keys corresponding to 
+# matlab variable names, and values to arrays representing matlab matrices.
+
+# Load Matlab data file to python dict structure
+iris_mat = loadmat('../Data/iris.mat', squeeze_me=True)
+# The argument squeeze_me ensures that there the variables we get from the 
+# MATLAB filed are not stored within "unneeded" array dimensions.
+
+# You can check which variables are in the loaded dict by calling
+# the function keys() for the dict:
+#mat_data.keys()
+# this will tell you that X, y, M, N and C are stored in the dictionary,
+# as well as some extra information about e.g. the used MATLAB version.
+
+# We'll extract the needed variables by using these keys:
+X = iris_mat['X']
+y = iris_mat['y']
+M = iris_mat['M']
+N = iris_mat['N']
+C = iris_mat['C']
+attributeNames = iris_mat['attributeNames']
+classNames = iris_mat['classNames']
+
+# Loading the Iris data from the .mat-file was quite easy, because all the work
+# of putting it into the correct format was already done. This is of course 
+# likely not the case for your own data, where you'll need to do something 
+# similar to the two previous exercises. We will, however, sometimes in the 
+# course use .mat-files in the exercises.
+==> ./ex1_5_4.py <==
+## exercise 1.5.4
+# Start by running the exercise 1.5.3 to load the Iris data in
+# "classification format":
+from ex1_5_3 import *
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+## Classification problem
+# The current variables X and y represent a classification problem, in
+# which a machine learning model will use the sepal and petal dimesions
+# (stored in the matrix X) to predict the class (species of Iris, stored in
+# the variable y). A relevant figure for this classification problem could
+# for instance be one that shows how the classes are distributed based on
+# two attributes in matrix X:
+X_c = X.copy();
+y_c = y.copy();
+attributeNames_c = attributeNames.copy();
+i = 1; j = 2;
+color = ['r','g', 'b']
+plt.title('Iris classification problem')
+for c in range(len(classNames)):
+    idx = y_c == c
+    plt.scatter(x=X_c[idx, i],
+                y=X_c[idx, j], 
+                c=color[c], 
+                s=50, alpha=0.5,
+                label=classNames[c])
+plt.legend()
+plt.xlabel(attributeNames_c[i])
+plt.ylabel(attributeNames_c[j])
+plt.show()
+# Consider, for instance, if it would be possible to make a single line in
+# the plot to delineate any two groups? Can you draw a line between
+# the Setosas and the Versicolors? The Versicolors and the Virginicas?
+
+## Regression problem
+# Since the variable we wish to predict is petal length,
+# petal length cannot any longer be in the data matrix X.
+# The first thing we do is store all the information we have in the
+# other format in one data matrix:
+data = np.concatenate((X_c, np.expand_dims(y_c,axis=1)), axis=1)
+# We need to do expand_dims to y_c for the dimensions of X_c and y_c to fit.
+
+# We know that the petal length corresponds to the third column in the data
+# matrix (see attributeNames), and therefore our new y variable is:
+y_r = data[:, 2]
+
+# Similarly, our new X matrix is all the other information but without the 
+# petal length (since it's now the y variable):
+X_r = data[:, [0, 1, 3, 4]]
+
+# Since the iris class information (which is now the last column in X_r) is a
+# categorical variable, we will do a one-out-of-K encoding of the variable:
+species = np.array(X_r[:, -1], dtype=int).T
+K = species.max()+1
+species_encoding = np.zeros((species.size, K))
+species_encoding[np.arange(species.size), species] = 1
+# The encoded information is now a 150x3 matrix. This corresponds to 150
+# observations, and 3 possible species. For each observation, the matrix
+# has a row, and each row has two 0s and a single 1. The placement of the 1
+# specifies which of the three Iris species the observations was.
+
+# We need to replace the last column in X (which was the not encoded
+# version of the species data) with the encoded version:
+X_r = np.concatenate( (X_r[:, :-1], species_encoding), axis=1) 
+
+# Now, X is of size 150x6 corresponding to the three measurements of the
+# Iris that are not the petal length as well as the three variables that
+# specifies whether or not a given observations is or isn't a certain type.
+# We need to update the attribute names and store the petal length name 
+# as the name of the target variable for a regression:
+targetName_r = attributeNames_c[2]
+attributeNames_r = np.concatenate((attributeNames_c[[0, 1, 3]], classNames), 
+                                  axis=0)
+
+# Lastly, we update M, since we now have more attributes:
+N,M = X_r.shape
+
+# A relevant figure for this regression problem could
+# for instance be one that shows how the target, that is the petal length,
+# changes with one of the predictors in X:
+i = 2  
+plt.title('Iris regression problem')
+plt.plot(X_r[:, i], y_r, 'o')
+plt.xlabel(attributeNames_r[i]);
+plt.ylabel(targetName_r);
+# Consider if you see a relationship between the predictor variable on the
+# x-axis (the variable from X) and the target variable on the y-axis (the
+# variable y). Could you draw a straight line through the data points for
+# any of the attributes (choose different i)? 
+# Note that, when i is 3, 4, or 5, the x-axis is based on a binary 
+# variable, in which case a scatter plot is not as such the best option for 
+# visulizing the information. 
+
+
+==> ./ex1_5_5.py <==
+## exercise 1.5.5
+import numpy as np
+import matplotlib.pyplot as plt
+
+# In this exercise we will rely on pandas for some of the processing steps:
+import pandas as pd
+
+# We start by defining the path to the file that we're we need to load.
+# Upon inspection, we saw that the messy_data.data was infact a file in the
+# format of a CSV-file with a ".data" extention instead.  
+file_path = '../Data/messy_data/messy_data.data'
+# First of we simply read the file in using readtable, however, we need to
+# tell the function that the file is tab-seperated. We also need to specify
+# that the header is in the second row:
+messy_data = pd.read_csv(file_path, sep='\t', header=1)
+# We also need to remove the added header line in the .data file which seems
+# to have included a shortend form the variables (check messy_data.head()):
+messy_data = messy_data.drop(index=0) 
+
+# We extract the attribute names:
+attributeNames = np.asarray(messy_data.columns)
+# As we progress through this script, we might change which attributes are
+# stored where. For simplicity in presenting the processing steps, we wont
+# keep track of those changes in attributeNames in this example script.
+
+# The last column is a unique string for each observation defining the
+# car make and model. We decide to extract this in a variable for itself
+# for now, and then remove it from messy_data:
+car_names = np.array(messy_data.carname)
+messy_data = messy_data.drop(['carname'], axis=1)
+
+# Inspect messy data by e.g.:
+#print(messy_data.to_string())
+
+# At this point, youll see that some of the missing values from the data
+# has already been represented as NaNs (in the displacement column). 
+# However, these were only the places where an empty element was in the file.
+# First off, we remove the question marks in displacement and replace
+# them with not a number, NaN:
+messy_data.displacement = messy_data.displacement.str.replace('?','NaN')
+
+# Similarly, we remove the formatting for a thousand seperator that is
+# present for the weight attribute:
+messy_data.weight = messy_data.weight.str.replace("'", '')
+# And lastly, we replace all the commas that were used as decimal seperatos
+# in the accceleration attribute with dots:
+messy_data.acceleration = messy_data.acceleration.str.replace(",", '.')
+
+# the data has some zero values that the README.txt tolds us were missing
+# values - this was specifically for the attributes mpg and displacement,
+# so we're careful only to replace the zeros in these attributes, since a
+# zero might be correct for some other variables:
+messy_data.mpg = messy_data.mpg.replace({'0': np.nan})
+messy_data.displacement = messy_data.displacement.replace({'0': np.nan})
+
+# We later on find out that a value of 99 for the mpg is not value that is
+# within reason for the MPG of the cars in this dataset. The observations
+# that has this value of MPG is therefore incorrect, and we should treat
+# the value as missing. How would you add a line of code to this data
+# cleanup script to account for this information?
+
+## X,y-format
+# If the modelling problem of interest was a classification problem where
+# we wanted to classify the origin attribute, we could now identify obtain
+# the data in the X,y-format as so:
+data = np.array(messy_data.get_values(), dtype=np.float64)
+X_c = data[:, :-1].copy()
+y_c = data[:, -1].copy()
+
+# However, if the problem of interest was to model the MPG based on the
+# other attributes (a regression problem), then the X,y-format is
+# obtained as:
+X_r = data[:, 1:].copy()
+y_r = data[:, 0].copy()
+
+# Since origin is categorical variable, we can do as in previos exercises
+# and do a one-out-of-K encoding:
+origin = np.array(X_r[:, -1], dtype=int).T-1
+K = origin.max()+1
+origin_encoding = np.zeros((origin.size, K))
+origin_encoding[np.arange(origin.size), origin] = 1
+X_r = np.concatenate((X_r[:, :-1], origin_encoding),axis=1)
+# Since the README.txt doesn't supply a lot of information about what the
+# levels in the origin variable mean, you'd have to either make an educated
+# guess based on the values in the context, or preferably obtain the
+# information from any papers that might be references in the README.
+# In this case, you can inspect origin and car_names, to see that (north)
+# american makes are all value 0 (try looking at car_names[origin == 0],
+# whereas origin value 1 is European, and value 2 is Asian.
+
+## Missing values
+# In the above X,y-matrices, we still have the missing values. In the
+# following we will go through how you could go about handling the missing
+# values before making your X,y-matrices as above.
+
+# Once we have identified all the missing data, we have to handle it
+# some way. Various apporaches can be used, but it is important
+# to keep it mind to never do any of them blindly. Keep a record of what
+# you do, and consider/discuss how it might affect your modelling.
+
+# The simplest way of handling missing values is to drop any records 
+# that display them, we do this by first determining where there are
+# missing values:
+missing_idx = np.isnan(data)
+# Observations with missing values have a row-sum in missing_idx
+# which is greater than zero:
+obs_w_missing = np.sum(missing_idx, 1) > 0
+data_drop_missing_obs = data[np.logical_not(obs_w_missing), :]
+# This reduces us to 15 observations of the original 29.
+
+# Another approach is to first investigate where the missing values are.
+# A quick way to do this is to visually look at the missing_idx:
+plt.title('Visual inspection of missing values')
+plt.imshow(missing_idx)
+plt.ylabel('Observations'); plt.xlabel('Attributes');
+plt.show()
+
+# From such a plot, we can see that the issue is the third column, the
+# displacement attribute. This can be confirmed by e.g. doing:
+#np.sum(missing_idx, 0)
+# which shows that 12 observations are missing a value in the third column. 
+# Therefore, another way to move forward is to disregard displacement 
+# (for now) and remove the attribute. We then remove the few
+# remaining observations with missing values:
+cols = np.ones((data.shape[1]), dtype=bool)
+cols[2] = 0
+data_wo_displacement = data[:, cols] 
+obs_w_missing_wo_displacement = np.sum(np.isnan(data_wo_displacement),1)>0
+data_drop_disp_then_missing = data[np.logical_not(obs_w_missing_wo_displacement), :]
+# Now we have kept all but two of the observations. This however, doesn't
+# necesarrily mean that this approach is superior to the previous one,
+# since we have now also lost any and all information that we could have
+# gotten from the displacement attribute. 
+
+# One could impute the missing values - "guess them", in some
+# sense - while trying to minimize the impact of the guess.
+# A simply way of imputing them is to replace the missing values
+# with the median of the attribute. We would have to do this for the
+# missing values for attributes 1 and 3:
+data_imputed = data.copy();
+for att in [0, 2]:
+     # We use nanmedian to ignore the nan values
+    impute_val = np.nanmedian(data[:, att])
+    idx = missing_idx[:, att]
+    data_imputed[idx, att] = impute_val;
+
+==> ./ex2_1_1.py <==
+# exercise 2.1.1
+import numpy as np
+import xlrd
+
+# Load xls sheet with data
+doc = xlrd.open_workbook('../Data/nanonose.xls').sheet_by_index(0)
+
+# Extract attribute names (1st row, column 4 to 12)
+attributeNames = doc.row_values(0, 3, 11)
+
+# Extract class names to python list,
+# then encode with integers (dict)
+classLabels = doc.col_values(0, 2, 92)
+classNames = sorted(set(classLabels))
+classDict = dict(zip(classNames, range(5)))
+
+# Extract vector y, convert to NumPy array
+y = np.asarray([classDict[value] for value in classLabels])
+
+# Preallocate memory, then extract excel data to matrix X
+X = np.empty((90, 8))
+for i, col_id in enumerate(range(3, 11)):
+    X[:, i] = np.asarray(doc.col_values(col_id, 2, 92))
+
+# Compute values of N, M and C.
+N = len(y)
+M = len(attributeNames)
+C = len(classNames)
+
+print('Ran Exercise 2.1.1')
+==> ./ex2_1_2.py <==
+# exercise 2.1.2
+
+# Imports the numpy and xlrd package, then runs the ex2_1_1 code
+from ex2_1_1 import *
+# (requires data structures from ex. 2.1.1)
+
+from matplotlib.pyplot import figure, plot, title, legend, xlabel, ylabel, show
+
+# Data attributes to be plotted
+i = 0
+j = 1
+
+##
+# Make a simple plot of the i'th attribute against the j'th attribute
+# Notice that X is of matrix type (but it will also work with a numpy array)
+# X = np.array(X) #Try to uncomment this line
+plot(X[:, i], X[:, j], 'o')
+
+# %%
+# Make another more fancy plot that includes legend, class labels, 
+# attribute names, and a title.
+f = figure()
+title('NanoNose data')
+
+for c in range(C):
+    # select indices belonging to class c:
+    class_mask = y==c
+    plot(X[class_mask,i], X[class_mask,j], 'o',alpha=.3)
+
+legend(classNames)
+xlabel(attributeNames[i])
+ylabel(attributeNames[j])
+
+# Output result to screen
+show()
+print('Ran Exercise 2.1.2')
+==> ./ex2_1_3.py <==
+# exercise 2.1.3
+# (requires data structures from ex. 2.2.1)
+from ex2_1_1 import *
+
+import matplotlib.pyplot as plt
+from scipy.linalg import svd
+
+# Subtract mean value from data
+Y = X - np.ones((N,1))*X.mean(axis=0)
+
+# PCA by computing SVD of Y
+U,S,V = svd(Y,full_matrices=False)
+
+# Compute variance explained by principal components
+rho = (S*S) / (S*S).sum() 
+
+threshold = 0.9
+
+# Plot variance explained
+plt.figure()
+plt.plot(range(1,len(rho)+1),rho,'x-')
+plt.plot(range(1,len(rho)+1),np.cumsum(rho),'o-')
+plt.plot([1,len(rho)],[threshold, threshold],'k--')
+plt.title('Variance explained by principal components');
+plt.xlabel('Principal component');
+plt.ylabel('Variance explained');
+plt.legend(['Individual','Cumulative','Threshold'])
+plt.grid()
+plt.show()
+
+print('Ran Exercise 2.1.3')
+==> ./ex2_1_4.py <==
+# exercise 2.1.4
+# (requires data structures from ex. 2.2.1 and 2.2.3)
+from ex2_1_1 import *
+
+from matplotlib.pyplot import figure, plot, title, xlabel, ylabel, show, legend
+from scipy.linalg import svd
+
+# Subtract mean value from data
+Y = X - np.ones((N,1))*X.mean(0)
+
+# PCA by computing SVD of Y
+U,S,Vh = svd(Y,full_matrices=False)
+# scipy.linalg.svd returns "Vh", which is the Hermitian (transpose)
+# of the vector V. So, for us to obtain the correct V, we transpose:
+V = Vh.T    
+
+# Project the centered data onto principal component space
+Z = Y @ V
+
+# Indices of the principal components to be plotted
+i = 0
+j = 1
+
+# Plot PCA of the data
+f = figure()
+title('NanoNose data: PCA')
+#Z = array(Z)
+for c in range(C):
+    # select indices belonging to class c:
+    class_mask = y==c
+    plot(Z[class_mask,i], Z[class_mask,j], 'o', alpha=.5)
+legend(classNames)
+xlabel('PC{0}'.format(i+1))
+ylabel('PC{0}'.format(j+1))
+
+# Output result to screen
+show()
+
+print('Ran Exercise 2.1.4')
+==> ./ex2_1_5.py <==
+# exercise 2.2.4
+
+# (requires data structures from ex. 2.2.1)
+from ex2_1_1 import *
+
+from scipy.linalg import svd
+
+Y = X - np.ones((N,1))*X.mean(0)
+U,S,Vh = svd(Y,full_matrices=False)
+V=Vh.T
+N,M = X.shape
+
+# We saw in 2.1.3 that the first 3 components explaiend more than 90
+# percent of the variance. Let's look at their coefficients:
+pcs = [0,1,2]
+legendStrs = ['PC'+str(e+1) for e in pcs]
+c = ['r','g','b']
+bw = .2
+r = np.arange(1,M+1)
+for i in pcs:    
+    plt.bar(r+i*bw, V[:,i], width=bw)
+plt.xticks(r+bw, attributeNames)
+plt.xlabel('Attributes')
+plt.ylabel('Component coefficients')
+plt.legend(legendStrs)
+plt.grid()
+plt.title('NanoNose: PCA Component Coefficients')
+plt.show()
+
+# Inspecting the plot, we see that the 2nd principal component has large
+# (in magnitude) coefficients for attributes A, E and H. We can confirm
+# this by looking at it's numerical values directly, too:
+print('PC2:')
+print(V[:,1].T)
+
+# How does this translate to the actual data and its projections?
+# Looking at the data for water:
+
+# Projection of water class onto the 2nd principal component.
+all_water_data = Y[y==4,:]
+
+print('First water observation')
+print(all_water_data[0,:])
+
+# Based on the coefficients and the attribute values for the observation
+# displayed, would you expect the projection onto PC2 to be positive or
+# negative - why? Consider *both* the magnitude and sign of *both* the
+# coefficient and the attribute!
+
+# You can determine the projection by (remove comments):
+print('...and its projection onto PC2')
+print(all_water_data[0,:]@V[:,1])
+# Try to explain why?
+==> ./ex2_1_6.py <==
+## exercise 2.1.6
+from ex2_1_1 import * 
+import matplotlib.pyplot as plt
+from scipy.linalg import svd
+
+r = np.arange(1,X.shape[1]+1)
+plt.bar(r, np.std(X,0))
+plt.xticks(r, attributeNames)
+plt.ylabel('Standard deviation')
+plt.xlabel('Attributes')
+plt.title('NanoNose: attribute standard deviations')
+
+## Investigate how standardization affects PCA
+
+# Try this *later* (for last), and explain the effect
+#X_s = X.copy() # Make a to be "scaled" version of X
+#X_s[:, 2] = 100*X_s[:, 2] # Scale/multiply attribute C with a factor 100
+# Use X_s instead of X to in the script below to see the difference.
+# Does it affect the two columns in the plot equally?
+
+
+# Subtract the mean from the data
+Y1 = X - np.ones((N, 1))*X.mean(0)
+
+# Subtract the mean from the data and divide by the attribute standard
+# deviation to obtain a standardized dataset:
+Y2 = X - np.ones((N, 1))*X.mean(0)
+Y2 = Y2*(1/np.std(Y2,0))
+# Here were utilizing the broadcasting of a row vector to fit the dimensions 
+# of Y2
+
+# Store the two in a cell, so we can just loop over them:
+Ys = [Y1, Y2]
+titles = ['Zero-mean', 'Zero-mean and unit variance']
+threshold = 0.9
+# Choose two PCs to plot (the projection)
+i = 0
+j = 1
+
+# Make the plot
+plt.figure(figsize=(10,15))
+plt.subplots_adjust(hspace=.4)
+plt.title('NanoNose: Effect of standardization')
+nrows=3
+ncols=2
+for k in range(2):
+    # Obtain the PCA solution by calculate the SVD of either Y1 or Y2
+    U,S,Vh = svd(Ys[k],full_matrices=False)
+    V=Vh.T # For the direction of V to fit the convention in the course we transpose
+    # For visualization purposes, we flip the directionality of the
+    # principal directions such that the directions match for Y1 and Y2.
+    if k==1: V = -V; U = -U; 
+    
+    # Compute variance explained
+    rho = (S*S) / (S*S).sum() 
+    
+    # Compute the projection onto the principal components
+    Z = U*S;
+    
+    # Plot projection
+    plt.subplot(nrows, ncols, 1+k)
+    C = len(classNames)
+    for c in range(C):
+        plt.plot(Z[y==c,i], Z[y==c,j], '.', alpha=.5)
+    plt.xlabel('PC'+str(i+1))
+    plt.xlabel('PC'+str(j+1))
+    plt.title(titles[k] + '\n' + 'Projection' )
+    plt.legend(classNames)
+    plt.axis('equal')
+    
+    # Plot attribute coefficients in principal component space
+    plt.subplot(nrows, ncols,  3+k)
+    for att in range(V.shape[1]):
+        plt.arrow(0,0, V[att,i], V[att,j])
+        plt.text(V[att,i], V[att,j], attributeNames[att])
+    plt.xlim([-1,1])
+    plt.ylim([-1,1])
+    plt.xlabel('PC'+str(i+1))
+    plt.ylabel('PC'+str(j+1))
+    plt.grid()
+    # Add a unit circle
+    plt.plot(np.cos(np.arange(0, 2*np.pi, 0.01)), 
+         np.sin(np.arange(0, 2*np.pi, 0.01)));
+    plt.title(titles[k] +'\n'+'Attribute coefficients')
+    plt.axis('equal')
+            
+    # Plot cumulative variance explained
+    plt.subplot(nrows, ncols,  5+k);
+    plt.plot(range(1,len(rho)+1),rho,'x-')
+    plt.plot(range(1,len(rho)+1),np.cumsum(rho),'o-')
+    plt.plot([1,len(rho)],[threshold, threshold],'k--')
+    plt.title('Variance explained by principal components');
+    plt.xlabel('Principal component');
+    plt.ylabel('Variance explained');
+    plt.legend(['Individual','Cumulative','Threshold'])
+    plt.grid()
+    plt.title(titles[k]+'\n'+'Variance explained')
+
+plt.show()
+        
+         
+==> ./ex2_2_1.py <==
+from matplotlib.pyplot import (figure, subplot, imshow, xlabel, title, 
+yticks, show,cm)
+from scipy.io import loadmat
+import numpy as np
+
+# Index of the digit to display
+i = 0
+
+# Load Matlab data file to python dict structure
+mat_data = loadmat('../Data/zipdata.mat')
+
+# Extract variables of interest
+testdata = mat_data['testdata']
+traindata = mat_data['traindata']
+X = traindata[:,1:]
+y = traindata[:,0]
+
+
+# Visualize the i'th digit as a vector
+f = figure()
+subplot(4,1,4);
+imshow(np.expand_dims(X[i,:],axis=0), extent=(0,256,0,10), cmap=cm.gray_r);
+xlabel('Pixel number');
+title('Digit in vector format');
+yticks([])
+
+# Visualize the i'th digit as an image
+subplot(2,1,1);
+I = np.reshape(X[i,:],(16,16))
+imshow(I, extent=(0,16,0,16), cmap=cm.gray_r);
+title('Digit as an image');
+
+show()
+
+print('Ran Exercise 2.2.1')
+==> ./ex2_2_2.py <==
+# exercise 2.2.2
+
+from matplotlib.pyplot import (figure, subplot, plot, xlabel, ylabel, title, 
+yticks, show,legend,imshow, cm)
+from scipy.io import loadmat
+import scipy.linalg as linalg
+import numpy as np
+
+# Digits to include in analysis (to include all, n = range(10) )
+n = [0,1]
+# Number of principal components for reconstruction
+K = 16
+# Digits to visualize
+nD = range(6);
+
+
+# Load Matlab data file to python dict structure
+# and extract variables of interest
+traindata = loadmat('../Data/zipdata.mat')['traindata']
+X = traindata[:,1:]
+y = traindata[:,0]
+
+N,M = X.shape
+C = len(n)
+
+classValues = n
+classNames = [str(num) for num in n]
+classDict = dict(zip(classNames,classValues))
+
+
+# Select subset of digits classes to be inspected
+class_mask = np.zeros(N).astype(bool)
+for v in n:
+    cmsk = (y == v)
+    class_mask = class_mask | cmsk
+X = X[class_mask,:]
+y = y[class_mask]
+N=X.shape[0]
+
+# Center the data (subtract mean column values)
+Xc = X - np.ones((N,1))*X.mean(0)
+
+# PCA by computing SVD of Y
+U,S,V = linalg.svd(Xc,full_matrices=False)
+#U = mat(U)
+V = V.T
+
+# Compute variance explained by principal components
+rho = (S*S) / (S*S).sum() 
+
+# Project data onto principal component space
+Z = Xc @ V
+
+# Plot variance explained
+figure()
+plot(rho,'o-')
+title('Variance explained by principal components');
+xlabel('Principal component');
+ylabel('Variance explained value');
+
+
+# Plot PCA of the data
+f = figure()
+title('pixel vectors of handwr. digits projected on PCs')
+for c in n:
+    # select indices belonging to class c:
+    class_mask = (y == c)
+    plot(Z[class_mask,0], Z[class_mask,1], 'o')
+legend(classNames)
+xlabel('PC1')
+ylabel('PC2')
+
+
+# Visualize the reconstructed data from the first K principal components
+# Select randomly D digits.
+figure(figsize=(10,3))
+W = Z[:,range(K)] @ V[:,range(K)].T
+D = len(nD)
+for d in range(D):
+    digit_ix = np.random.randint(0,N)
+    subplot(2, D, d+1)
+    I = np.reshape(X[digit_ix,:], (16,16))
+    imshow(I, cmap=cm.gray_r)
+    title('Original')
+    subplot(2, D, D+d+1)
+    I = np.reshape(W[digit_ix,:]+X.mean(0), (16,16))
+    imshow(I, cmap=cm.gray_r)
+    title('Reconstr.');
+    
+
+# Visualize the pricipal components
+figure(figsize=(8,6))
+for k in range(K):
+    N1 = np.ceil(np.sqrt(K)); N2 = np.ceil(K/N1)
+    subplot(N2, N1, k+1)
+    I = np.reshape(V[:,k], (16,16))
+    imshow(I, cmap=cm.hot)
+    title('PC{0}'.format(k+1));
+
+# output to screen
+show()
+
+print('Ran Exercise 2.2.2')
+==> ./ex2_3_1.py <==
+# exercise 2.3.1
+
+from matplotlib.pyplot import figure, plot, xlabel, ylabel, show
+from scipy.io import loadmat
+from sklearn.neighbors import KNeighborsClassifier
+import scipy.linalg as linalg
+import numpy as np
+
+# Number of principal components to use for classification,
+# i.e. the reduced dimensionality
+K = [8,10,15,20,30,40,50,60,100,150]
+
+# Load Matlab data file and extract training set and test set
+mat_data = loadmat('../Data/zipdata.mat')
+X = mat_data['traindata'][:,1:]
+y = mat_data['traindata'][:,0]
+Xtest = mat_data['testdata'][:,1:]
+ytest = mat_data['testdata'][:,0]
+N,M = X.shape
+Ntest = Xtest.shape[0] # or Xtest[:,0].shape
+
+# Subtract the mean from the data
+Y = X - np.ones((N,1))*X.mean(0)
+Ytest = Xtest - np.ones((Ntest,1))*X.mean(0)
+
+# Obtain the PCA solution  by calculate the SVD of Y
+U,S,V = linalg.svd(Y,full_matrices=False)
+V = V.T
+
+
+# Repeat classification for different values of K
+error_rates = []
+for k in K:
+    # Project data onto principal component space,
+    Z = Y @ V[:,:k]
+    Ztest = Ytest @ V[:,:k]
+
+    # Classify data with knn classifier
+    knn_classifier = KNeighborsClassifier(n_neighbors=1)
+    knn_classifier.fit(Z,y.ravel())
+    y_estimated = knn_classifier.predict(Ztest)
+
+    # Compute classification error rates
+    y_estimated = y_estimated.T
+    er = (sum(ytest!=y_estimated)/float(len(ytest)))*100
+    error_rates.append(er)
+    print('K={0}: Error rate: {1:.1f}%'.format(k, er))
+
+# Visualize error rates vs. number of principal components considered
+figure()
+plot(K,error_rates,'o-')
+xlabel('Number of principal components K')
+ylabel('Error rate [%]')
+show()
+
+print('Ran Exercise 2.3.1')
+==> ./ex3_1_2.py <==
+# exercise 3.1.4
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Load the textDocs.txt as a long string into raw_file:
+with open('../Data/textDocs.txt', 'r') as f:
+    raw_file = f.read()
+# raw_file contains sentences seperated by newline characters, 
+# so we split by '\n':
+corpus = raw_file.split('\n')
+# corpus is now list of "documents" (sentences), but some of them are empty, 
+# because textDocs.txt has a lot of empty lines, we filter/remove them:
+corpus = list(filter(None, corpus))
+
+# Display the result
+print('Document-term matrix analysis')
+print()
+print('Corpus (5 documents/sentences):')
+print(np.asmatrix(corpus))
+print()
+
+
+# To automatically obtain the bag of words representation, we use sklearn's
+# feature_extraction.text module, which has a function CountVectorizer.
+# We make a CounterVectorizer:
+vectorizer = CountVectorizer(token_pattern=r'\b[^\d\W]+\b')   
+# The token pattern is a regular expression (marked by the r), which ensures 
+# that the vectorizer ignores digit/non-word tokens - in this case, it ensures 
+# the 10 in the last document is not recognized as a token. It's not important
+# that you should understand it the regexp.
+
+# The object vectorizer can now be used to first 'fit' the vectorizer to the
+# corpus, and the subsequently transform the data. We start by fitting:
+vectorizer.fit(corpus)
+# The vectorizer has now determined the unique terms (or tokens) in the corpus
+# and we can extract them using:
+attributeNames = vectorizer.get_feature_names()
+print('Found terms:')
+print(attributeNames)
+print()
+
+# The next step is to count how many times each term is found in each document,
+# which we do using the transform function:
+X = vectorizer.transform(corpus)
+N,M = X.shape
+print('Number of documents (data objects, N):\t %i' % N)
+print('Number of terms (attributes, M):\t %i' % M )
+print()
+print('Document-term matrix:')
+print(X.toarray())
+print()
+print('Ran Exercise 3.1.2')
+==> ./ex3_1_3.py <==
+# exercise 3.1.4
+from sklearn.feature_extraction.text import CountVectorizer
+
+# As before, load the corpus and preprocess:
+with open('../Data/textDocs.txt', 'r') as f:
+    raw_file = f.read()
+corpus = raw_file.split('\n')
+corpus = list(filter(None, corpus))
+
+# Load and process the stop words in a similar manner:
+with open('../Data/stopWords.txt', 'r') as f:
+    raw_file = f.read()
+stopwords = raw_file.split('\n')
+
+# When making the CountVectorizer, we now input the stop words:
+vectorizer = CountVectorizer(token_pattern=r'\b[^\d\W]+\b', 
+                             stop_words=stopwords)    
+# Determine the terms in the corpus
+vectorizer.fit(corpus)
+# ... and count the frequency of each term within a document:
+X = vectorizer.transform(corpus)
+attributeNames = vectorizer.get_feature_names()
+N,M = X.shape
+
+# Display the result
+print('Document-term matrix analysis (using stop words)')
+print()
+print('Number of documents (data objects, N):\t %i' % N)
+print('Number of terms (attributes, M):\t %i' % M )
+print()
+print('Found terms (no stop words):')
+print(attributeNames)
+print()
+print('Document-term matrix:')
+print(X.toarray())
+print()
+print('Ran Exercise 3.1.3')
+==> ./ex3_1_4.py <==
+# exercise 3.1.4
+from sklearn.feature_extraction.text import CountVectorizer
+
+# We'll use a widely used stemmer based:
+# Porter, M. “An algorithm for suffix stripping.” Program 14.3 (1980): 130-137.
+# The stemmer is implemented in the most used natural language processing
+# package in Python, "Natural Langauge Toolkit" (NLTK):
+from nltk.stem import PorterStemmer
+
+# Load and process the corpus and stop words:
+with open('../Data/textDocs.txt', 'r') as f:
+    raw_file = f.read()
+corpus = raw_file.split('\n')
+corpus = list(filter(None, corpus))
+
+with open('../Data/stopWords.txt', 'r') as f:
+    raw_file = f.read()
+stopwords = raw_file.split('\n')
+
+# To enable stemming when using the sklearn-module, we need to parse an 
+# "analyzer" to the vectorizer we've been using. 
+# First, we make an object based on the PorterStemmer class, and we also make
+# an analyzer object:
+stemmer = PorterStemmer()
+analyzer = CountVectorizer(token_pattern=r'\b[^\d\W]+\b', 
+                           stop_words=stopwords).build_analyzer()
+# Using these we'll make a function that can stem words:
+def stemmed_words(doc):
+    return (stemmer.stem(w) for w in analyzer(doc))
+# ... and finally, we make a vectorizer just like we've done before:
+vectorizer = CountVectorizer(analyzer=stemmed_words)    
+
+# Determine the terms:
+vectorizer.fit(corpus)
+attributeNames = vectorizer.get_feature_names()
+
+# ... and count the occurences:
+X = vectorizer.transform(corpus)
+N,M = X.shape
+X = X.toarray()
+
+# Display the result
+print('Document-term matrix analysis (using stop words and stemming)')
+print()
+print('Number of documents (data objects, N):\t %i' % N)
+print('Number of terms (attributes, M):\t %i' % M )
+print()
+print('Found terms (no stop words, stemmed):')
+print(attributeNames)
+print()
+print('Document-term matrix:')
+print(X)
+print()
+print('Ran Exercise 3.1.4')
+print()
+==> ./ex3_1_5.py <==
+# exercise 3.1.5
+import numpy as np
+import scipy.linalg as linalg
+from similarity import similarity
+
+from ex3_1_4 import *
+
+# Query vector
+q = np.array([0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0])
+# notice, that you could get the query vector using the vectorizer, too:
+#q = vectorizer.transform(['matrix rank solv'])
+#q = np.asarray(q.toarray())
+# or use any other string:
+#q = vectorizer.transform(['Can I Google how to fix my problem?'])
+#q = np.asarray(q.toarray())
+
+# Method 1 ('for' loop - slow)
+N = np.shape(X)[0]; # get the number of data objects
+sim = np.zeros((N,1)) # allocate a vector for the similarity
+for i in range(N):
+    x = X[i,:] # Get the i'th data object (here: document)
+    sim[i] = q/linalg.norm(q) @ x.T/linalg.norm(x) # Compute cosine similarity
+
+# Method 2 (one line of code with no iterations - faster)
+sim = (q @ X.T).T / (np.sqrt(np.power(X,2).sum(axis=1)) * np.sqrt(np.power(q,2).sum()))
+
+# Method 3 (use the "similarity" function)
+sim = similarity(X, q, 'cos');
+
+
+# Display the result
+print('Query vector:\n {0}\n'.format(q))
+print('Similarity results:\n {0}'.format(sim))
+
+print('Ran Exercise 3.1.5')
+==> ./ex3_2_1.py <==
+# exercise 3.2.1
+import numpy as np
+
+x = np.array([-0.68, -2.11, 2.39, 0.26, 1.46, 1.33, 1.03, -0.41, -0.33, 0.47])
+
+# Compute values
+mean_x = x.mean()
+std_x = x.std(ddof=1)
+median_x = np.median(x)
+range_x = x.max()-x.min()
+
+# Display results
+print('Vector:',x)
+print('Mean:',mean_x)
+print('Standard Deviation:',std_x)
+print('Median:',median_x)
+print('Range:',range_x)
+
+print('Ran Exercise 3.2.1')
+==> ./ex3_3_1.py <==
+# exercise 3.3.1
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.io import loadmat
+from similarity import similarity
+
+# Image to use as query
+i = 1
+
+# Similarity: 'SMC', 'Jaccard', 'ExtendedJaccard', 'Cosine', 'Correlation' 
+similarity_measure = 'SMC'
+
+# Load the digits
+# Load Matlab data file to python dict structure
+X = loadmat('../Data/digits.mat')['X']
+# You can also try the CBCL faces dataset (remember to change 'transpose')
+#X = loadmat('../Data/wildfaces_grayscale.mat')['X']
+N, M = X.shape
+transpose = False # should the plotted images be transposed? 
+
+
+# Search the face database for similar faces
+# Index of all other images than i
+noti = list(range(0,i)) + list(range(i+1,N)) 
+# Compute similarity between image i and all others
+sim = similarity(X[i,:], X[noti,:], similarity_measure)
+sim = sim.tolist()[0]
+# Tuples of sorted similarities and their indices
+sim_to_index = sorted(zip(sim,noti))
+
+
+# Visualize query image and 5 most/least similar images
+plt.figure(figsize=(12,8))
+plt.subplot(3,1,1)
+
+img_hw = int(np.sqrt(len(X[0])))
+img = np.reshape(X[i], (img_hw,img_hw))
+if transpose: img = img.T
+plt.imshow(img, cmap=plt.cm.gray)
+plt.xticks([]); plt.yticks([])
+plt.title('Query image')
+plt.ylabel('image #{0}'.format(i))
+
+
+for ms in range(5):
+
+    # 5 most similar images found
+    plt.subplot(3,5,6+ms)
+    im_id = sim_to_index[-ms-1][1]
+    im_sim = sim_to_index[-ms-1][0]
+    img = np.reshape(X[im_id],(img_hw,img_hw))
+    if transpose: img = img.T
+    plt.imshow(img, cmap=plt.cm.gray)
+    plt.xlabel('sim={0:.3f}'.format(im_sim))
+    plt.ylabel('image #{0}'.format(im_id))
+    plt.xticks([]); plt.yticks([])
+    if ms==2: plt.title('Most similar images')
+
+    # 5 least similar images found
+    plt.subplot(3,5,11+ms)
+    im_id = sim_to_index[ms][1]
+    im_sim = sim_to_index[ms][0]
+    img = np.reshape(X[im_id],(img_hw,img_hw))
+    if transpose: img = img.T
+    plt.imshow(img, cmap=plt.cm.gray)
+    plt.xlabel('sim={0:.3f}'.format(im_sim))
+    plt.ylabel('image #{0}'.format(im_id))
+    plt.xticks([]); plt.yticks([])
+    if ms==2: plt.title('Least similar images')
+    
+plt.show()
+
+print('Ran Exercise 3.3.1')
+==> ./ex3_3_2.py <==
+# exercise 3.2.2
+
+import numpy as np
+from similarity import similarity
+
+# Generate two data objects with M random attributes
+M = 5;
+x = np.random.rand(1,M)
+y = np.random.rand(1,M)
+
+# Two constants
+a = 1.5
+b = 1.5
+
+# Check the statements in the exercise
+print("Cosine scaling: %.4f " % (similarity(x,y,'cos') - similarity(a*x,y,'cos'))[0,0])
+print("ExtendedJaccard scaling: %.4f " % (similarity(x,y,'ext') - similarity(a*x,y,'ext'))[0,0])
+print("Correlation scaling: %.4f " % (similarity(x,y,'cor') - similarity(a*x,y,'cor'))[0,0])
+print("Cosine translation: %.4f " % (similarity(x,y,'cos') - similarity(b+x,y,'cos'))[0,0])
+print("ExtendedJaccard translation: %.4f " % (similarity(x,y,'ext') - similarity(b+x,y,'ext'))[0,0])
+print("Correlation translation: %.4f " % (similarity(x,y,'cor') - similarity(b+x,y,'cor'))[0,0])
+
+print('Ran Exercise 3.2.2')
+==> ./ex4_1_1.py <==
+# exercise 4.1.1
+
+from matplotlib.pyplot import (figure, title, subplot, plot, hist, show)
+import numpy as np
+
+
+# Number of samples
+N = 200
+
+# Mean
+mu = 17
+
+# Standard deviation
+s = 2
+
+# Number of bins in histogram
+nbins = 20
+
+# Generate samples from the Normal distribution
+X = np.random.normal(mu,s,N).T 
+# or equally:
+X = np.random.randn(N).T * s + mu
+
+# Plot the samples and histogram
+figure(figsize=(12,4))
+title('Normal distribution')
+subplot(1,2,1)
+plot(X,'.')
+subplot(1,3,3)
+hist(X, bins=nbins)
+show()
+
+print('Ran Exercise 4.1.1')
+==> ./ex4_1_2.py <==
+# exercise 4.1.2
+
+from matplotlib.pyplot import (figure, title, subplot, plot, hist, show)
+import numpy as np
+# Number of samples
+N = 200
+
+# Mean
+mu = 17
+
+# Standard deviation
+s = 2
+
+# Number of bins in histogram
+nbins = 20
+
+# Generate samples from the Normal distribution
+X = np.random.normal(mu,s,N).T 
+# or equally:
+X = np.random.randn(N).T * s + mu
+
+# Plot the samples and histogram
+figure()
+title('Normal distribution')
+subplot(1,2,1)
+plot(X,'x')
+subplot(1,2,2)
+hist(X, bins=nbins)
+
+# Compute empirical mean and standard deviation
+mu_ = X.mean()
+s_ = X.std(ddof=1)
+
+print("Theoretical mean: ", mu)
+print("Theoretical std.dev.: ", s)
+print("Empirical mean: ", mu_)
+print("Empirical std.dev.: ", s_)
+
+show()
+
+print('Ran Exercise 4.1.2')
+==> ./ex4_1_3.py <==
+# exercise 4.1.3
+
+from matplotlib.pyplot import (figure, title, subplot, plot, hist, show)
+import numpy as np
+from scipy import stats
+
+# Number of samples
+N = 500
+
+# Mean
+mu = 17
+
+# Standard deviation
+s = 2
+
+# Number of bins in histogram
+nbins = 20
+
+# Generate samples from the Normal distribution
+X = np.random.normal(mu,s,N).T 
+# or equally:
+X = np.random.randn(N).T * s + mu
+
+# Plot the histogram
+f = figure()
+title('Normal distribution')
+hist(X, bins=nbins, density=True)
+
+# Over the histogram, plot the theoretical probability distribution function:
+x = np.linspace(X.min(), X.max(), 1000)
+pdf = stats.norm.pdf(x,loc=17,scale=2)
+plot(x,pdf,'.',color='red')
+
+# Compute empirical mean and standard deviation
+mu_ = X.mean()
+s_ = X.std(ddof=1)
+
+print("Theoretical mean: ", mu)
+print("Theoretical std.dev.: ", s)
+print("Empirical mean: ", mu_)
+print("Empirical std.dev.: ", s_)
+
+show()
+
+print('Ran Exercise 4.1.3')
+==> ./ex4_1_4.py <==
+# exercise 4.1.4
+
+import numpy as np
+
+# Number of samples
+N = 1000
+
+# Mean
+mu = np.array([13, 17])
+
+# Covariance matrix
+S = np.array([[4,3],[3,9]])
+
+# Generate samples from the Normal distribution
+X = np.random.multivariate_normal(mu, S, N)
+
+print('Ran Exercise 4.1.4')
+==> ./ex4_1_5.py <==
+# exercise 4.1.5
+
+from matplotlib.pyplot import (figure, title, subplot, plot, hist, show, 
+                               xlabel, ylabel, xticks, yticks, colorbar, cm, 
+                               imshow, suptitle)
+import numpy as np
+
+# Number of samples
+N = 1000
+
+# Standard deviation of x1
+s1 = 2
+
+# Standard deviation of x2
+s2 = 3
+
+# Correlation between x1 and x2
+corr = 0.5
+
+# Covariance matrix
+S = np.matrix([[s1*s1, corr*s1*s2], [corr*s1*s2, s2*s2]])
+
+# Mean
+mu = np.array([13, 17])
+
+# Number of bins in histogram
+nbins = 20
+
+# Generate samples from multivariate normal distribution
+X = np.random.multivariate_normal(mu, S, N)
+
+
+# Plot scatter plot of data
+figure(figsize=(12,8))
+suptitle('2-D Normal distribution')
+
+subplot(1,2,1)
+plot(X[:,0], X[:,1], 'x')
+xlabel('x1'); ylabel('x2')
+title('Scatter plot of data')
+
+subplot(1,2,2)
+x = np.histogram2d(X[:,0], X[:,1], nbins)
+imshow(x[0], cmap=cm.gray_r, interpolation='None', origin='lower')
+colorbar()
+xlabel('x1'); ylabel('x2'); xticks([]); yticks([]);
+title('2D histogram')
+
+show()
+
+print('Ran Exercise 4.1.5')
+==> ./ex4_1_6.py <==
+# exercise 4.1.6
+
+from matplotlib.pyplot import (figure, subplot, title, imshow, xticks, yticks, 
+                               show, cm)
+import scipy.linalg as linalg
+from scipy.io import loadmat
+import numpy as np
+
+# Digits to include in analysis (to include all: n = range(10))
+n = [0]
+
+# Load Matlab data file to python dict structure
+# and extract variables of interest
+traindata = loadmat('../Data/zipdata.mat')['traindata']
+X = traindata[:,1:]
+y = traindata[:,0]
+N, M = X.shape
+C = len(n)
+
+# Remove digits that are not to be inspected
+class_mask = np.zeros(N).astype(bool)
+for v in n:
+    cmsk = (y==v)
+    class_mask = class_mask | cmsk
+X = X[class_mask,:]
+y = y[class_mask]
+N = np.shape(X)[0]
+
+mu = X.mean(axis=0)
+s = X.std(ddof=1, axis=0)
+S = np.cov(X, rowvar=0, ddof=1)
+
+figure()
+subplot(1,2,1)
+I = np.reshape(mu, (16,16))
+imshow(I, cmap=cm.gray_r)
+title('Mean')
+xticks([]); yticks([])
+subplot(1,2,2)
+I = np.reshape(s, (16,16))
+imshow(I, cmap=cm.gray_r)
+title('Standard deviation')
+xticks([]); yticks([])
+
+show()
+
+print('Ran Exercise 4.1.6')
+==> ./ex4_1_7.py <==
+# exercise 4.1.7
+
+from matplotlib.pyplot import (figure, subplot, imshow, xticks, yticks, title,
+                               cm, show)
+import numpy as np
+from scipy.io import loadmat
+
+# Digits to include in analysis (to include all, n = range(10) )
+n = [1]
+
+# Number of digits to generate from normal distributions
+ngen = 10
+
+# Load Matlab data file to python dict structure
+# and extract variables of interest
+traindata = loadmat('../Data/zipdata.mat')['traindata']
+X = traindata[:,1:]
+y = traindata[:,0]
+N, M = np.shape(X) #or X.shape
+C = len(n)
+
+# Remove digits that are not to be inspected
+class_mask = np.zeros(N).astype(bool)
+for v in n:
+    cmsk = (y==v)
+    class_mask = class_mask | cmsk
+X = X[class_mask,:]
+y = y[class_mask]
+N = np.shape(X)[0] # or X.shape[0]
+
+mu = X.mean(axis=0)
+s = X.std(ddof=1, axis=0)
+S = np.cov(X, rowvar=0, ddof=1)
+
+# Generate 10 samples from 1-D normal distribution
+Xgen = np.random.randn(ngen,256)
+for i in range(ngen):
+    Xgen[i] = np.multiply(Xgen[i],s) + mu
+
+# Plot images
+figure()
+for k in range(ngen):
+    subplot(2, np.ceil(ngen/2.), k+1)
+    I = np.reshape(Xgen[k,:], (16,16))
+    imshow(I, cmap=cm.gray_r);
+    xticks([]); yticks([])
+    if k==1: title('Digits: 1-D Normal')
+
+
+# Generate 10 samples from multivariate normal distribution
+Xmvgen = np.random.multivariate_normal(mu, S, ngen)
+# Note if you are investigating a single class, then you may get: 
+# """RuntimeWarning: covariance is not positive-semidefinite."""
+# Which in general is troublesome, but here is due to numerical imprecission
+
+
+# Plot images
+figure()
+for k in range(ngen):
+    subplot(2, np.ceil(ngen/2.), k+1)
+    I = np.reshape(Xmvgen[k,:], (16,16))
+    imshow(I, cmap=cm.gray_r);
+    xticks([]); yticks([])
+    if k==1: title('Digits: Multivariate Normal')
+
+show()
+
+print('Ran Exercise 4.1.7')
+==> ./ex4_2_1.py <==
+# exercise 4.2.1
+
+import numpy as np
+import xlrd
+
+# Load xls sheet with data
+doc = xlrd.open_workbook('../Data/iris.xls').sheet_by_index(0)
+
+# Extract attribute names
+attributeNames = doc.row_values(0,0,4)
+
+# Extract class names to python list,
+# then encode with integers (dict)
+classLabels = doc.col_values(4,1,151)
+classNames = sorted(set(classLabels))
+classDict = dict(zip(classNames,range(len(classNames))))
+
+# Extract vector y, convert to NumPy matrix and transpose
+y = np.array([classDict[value] for value in classLabels])
+
+# Preallocate memory, then extract data to matrix X
+X = np.empty((150,4))
+for i in range(4):
+    X[:,i] = np.array(doc.col_values(i,1,151)).T
+
+# Compute values of N, M and C.
+N = len(y)
+M = len(attributeNames)
+C = len(classNames)
+
+print('Ran Exercise 4.2.1')
+==> ./ex4_2_2.py <==
+# Exercise 4.2.2
+
+from matplotlib.pyplot import figure, subplot, hist, xlabel, ylim, show
+import numpy as np
+# requires data from exercise 4.2.1
+from ex4_2_1 import *
+
+figure(figsize=(8,7))
+u = np.floor(np.sqrt(M)); v = np.ceil(float(M)/u)
+for i in range(M):
+    subplot(u,v,i+1)
+    hist(X[:,i], color=(0.2, 0.8-i*0.2, 0.4))
+    xlabel(attributeNames[i])
+    ylim(0,N/2)
+    
+show()
+
+print('Ran Exercise 4.2.2')
+==> ./ex4_2_3.py <==
+# Exercise 4.2.3
+
+from matplotlib.pyplot import boxplot, xticks, ylabel, title, show
+
+# requires data from exercise 4.2.1
+from ex4_2_1 import *
+
+boxplot(X)
+xticks(range(1,5),attributeNames)
+ylabel('cm')
+title('Fisher\'s Iris data set - boxplot')
+show()
+
+print('Ran Exercise 4.2.3')
+==> ./ex4_2_4.py <==
+# Exercise 4.2.4
+from matplotlib.pyplot import (figure, subplot, boxplot, title, xticks, ylim, 
+                               show)
+# requires data from exercise 4.1.1
+from ex4_2_1 import *
+
+figure(figsize=(14,7))
+for c in range(C):
+    subplot(1,C,c+1)
+    class_mask = (y==c) # binary mask to extract elements of class c
+    # or: class_mask = nonzero(y==c)[0].tolist()[0] # indices of class c
+    
+    boxplot(X[class_mask,:])
+    #title('Class: {0}'.format(classNames[c]))
+    title('Class: '+classNames[c])
+    xticks(range(1,len(attributeNames)+1), [a[:7] for a in attributeNames], rotation=45)
+    y_up = X.max()+(X.max()-X.min())*0.1; y_down = X.min()-(X.max()-X.min())*0.1
+    ylim(y_down, y_up)
+
+show()
+
+print('Ran Exercise 4.2.4')
+==> ./ex4_2_5.py <==
+# Exercise 4.2.5
+
+from matplotlib.pyplot import (figure, hold, subplot, plot, xlabel, ylabel, 
+                               xticks, yticks,legend,show)
+
+# requires data from exercise 4.2.1
+from ex4_2_1 import *
+
+figure(figsize=(12,10))
+for m1 in range(M):
+    for m2 in range(M):
+        subplot(M, M, m1*M + m2 + 1)
+        for c in range(C):
+            class_mask = (y==c)
+            plot(np.array(X[class_mask,m2]), np.array(X[class_mask,m1]), '.')
+            if m1==M-1:
+                xlabel(attributeNames[m2])
+            else:
+                xticks([])
+            if m2==0:
+                ylabel(attributeNames[m1])
+            else:
+                yticks([])
+            #ylim(0,X.max()*1.1)
+            #xlim(0,X.max()*1.1)
+legend(classNames)
+
+show()
+
+print('Ran Exercise 4.2.5')
+==> ./ex4_2_6.py <==
+# Exercise 4.2.6
+
+from matplotlib.pyplot import (figure, show, hold)
+from mpl_toolkits.mplot3d import Axes3D
+
+# requires data from exercise 4.1.1
+from ex4_2_1 import *
+
+# Indices of the variables to plot
+ind = [0, 1, 2]
+colors = ['blue', 'green', 'red']
+
+f = figure()
+ax = f.add_subplot(111, projection='3d') #Here the mpl_toolkits is used
+for c in range(C):
+    class_mask = (y==c)
+    s = ax.scatter(X[class_mask,ind[0]], X[class_mask,ind[1]], X[class_mask,ind[2]], c=colors[c])
+
+ax.view_init(30, 220)
+ax.set_xlabel(attributeNames[ind[0]])
+ax.set_ylabel(attributeNames[ind[1]])
+ax.set_zlabel(attributeNames[ind[2]])
+
+show()
+
+print('Ran Exercise 4.2.6')
+==> ./ex4_2_7.py <==
+# Exercise 4.2.7
+
+from matplotlib.pyplot import (figure, imshow, xticks, xlabel, ylabel, title, 
+                               colorbar, cm, show)
+from scipy.stats import zscore
+
+# requires data from exercise 4.2.1
+from ex4_2_1 import *
+
+X_standarized = zscore(X, ddof=1)
+
+figure(figsize=(12,6))
+imshow(X_standarized, interpolation='none', aspect=(4./N), cmap=cm.gray);
+xticks(range(4), attributeNames)
+xlabel('Attributes')
+ylabel('Data objects')
+title('Fisher\'s Iris data matrix')
+colorbar()
+
+show()
+
+print('Ran Exercise 4.2.7')
+==> ./ex4_3_1.py <==
+# exercise 4.3.1
+
+from matplotlib.pyplot import (figure, title, boxplot, xticks, subplot, hist,
+                               xlabel, ylim, yticks, show)
+import numpy as np
+from scipy.io import loadmat
+from scipy.stats import zscore
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+C = mat_data['C'][0,0]
+M = mat_data['M'][0,0]
+N = mat_data['N'][0,0]
+attributeNames = [name[0][0] for name in mat_data['attributeNames']]
+classNames = [cls[0][0] for cls in mat_data['classNames']]
+
+# We start with a box plot of each attribute
+figure()
+title('Wine: Boxplot')
+boxplot(X)
+xticks(range(1,M+1), attributeNames, rotation=45)
+
+# From this it is clear that there are some outliers in the Alcohol
+# attribute (10x10^14 is clearly not a proper value for alcohol content)
+# However, it is impossible to see the distribution of the data, because
+# the axis is dominated by these extreme outliers. To avoid this, we plot a
+# box plot of standardized data (using the zscore function).
+figure(figsize=(12,6))
+title('Wine: Boxplot (standarized)')
+boxplot(zscore(X, ddof=1), attributeNames)
+xticks(range(1,M+1), attributeNames, rotation=45)
+
+# This plot reveals that there are clearly some outliers in the Volatile
+# acidity, Density, and Alcohol attributes, i.e. attribute number 2, 8,
+# and 11. 
+
+# Next, we plot histograms of all attributes.
+figure(figsize=(14,9))
+u = np.floor(np.sqrt(M)); v = np.ceil(float(M)/u)
+for i in range(M):
+    subplot(u,v,i+1)
+    hist(X[:,i])
+    xlabel(attributeNames[i])
+    ylim(0, N) # Make the y-axes equal for improved readability
+    if i%v!=0: yticks([])
+    if i==0: title('Wine: Histogram')
+    
+
+# This confirms our belief about outliers in attributes 2, 8, and 11.
+# To take a closer look at this, we next plot histograms of the 
+# attributes we suspect contains outliers
+figure(figsize=(14,9))
+m = [1, 7, 10]
+for i in range(len(m)):
+    subplot(1,len(m),i+1)
+    hist(X[:,m[i]],50)
+    xlabel(attributeNames[m[i]])
+    ylim(0, N) # Make the y-axes equal for improved readability
+    if i>0: yticks([])
+    if i==0: title('Wine: Histogram (selected attributes)')
+
+
+# The histograms show that there are a few very extreme values in these
+# three attributes. To identify these values as outliers, we must use our
+# knowledge about the data set and the attributes. Say we expect volatide
+# acidity to be around 0-2 g/dm^3, density to be close to 1 g/cm^3, and
+# alcohol percentage to be somewhere between 5-20 % vol. Then we can safely
+# identify the following outliers, which are a factor of 10 greater than
+# the largest we expect.
+outlier_mask = (X[:,1]>20) | (X[:,7]>10) | (X[:,10]>200)
+valid_mask = np.logical_not(outlier_mask)
+
+# Finally we will remove these from the data set
+X = X[valid_mask,:]
+y = y[valid_mask]
+N = len(y)
+
+
+# Now, we can repeat the process to see if there are any more outliers
+# present in the data. We take a look at a histogram of all attributes:
+figure(figsize=(14,9))
+u = np.floor(np.sqrt(M)); v = np.ceil(float(M)/u)
+for i in range(M):
+    subplot(u,v,i+1)
+    hist(X[:,i])
+    xlabel(attributeNames[i])
+    ylim(0, N) # Make the y-axes equal for improved readability
+    if i%v!=0: yticks([])
+    if i==0: title('Wine: Histogram (after outlier detection)')
+
+# This reveals no further outliers, and we conclude that all outliers have
+# been detected and removed.
+
+show()
+
+print('Ran Exercise 4.3.1')
+==> ./ex4_3_2.py <==
+# exercise 4.3.2
+
+from matplotlib.pyplot import (figure, hold, subplot, plot, legend, show, 
+                               xlabel, ylabel, xticks, yticks, boxplot, setp,title,ylim)
+import numpy as np
+from scipy.io import loadmat
+from scipy.stats import zscore
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine.mat')
+X = mat_data['X']
+y = np.squeeze(mat_data['y'])
+C = mat_data['C'][0,0]
+M = mat_data['M'][0,0]
+N = mat_data['N'][0,0]
+
+attributeNames = [name[0][0] for name in mat_data['attributeNames']]
+classNames = [cls[0] for cls in mat_data['classNames'][0]]
+    
+# The histograms show that there are a few very extreme values in these
+# three attributes. To identify these values as outliers, we must use our
+# knowledge about the data set and the attributes. Say we expect volatide
+# acidity to be around 0-2 g/dm^3, density to be close to 1 g/cm^3, and
+# alcohol percentage to be somewhere between 5-20 % vol. Then we can safely
+# identify the following outliers, which are a factor of 10 greater than
+# the largest we expect.
+outlier_mask = (X[:,1]>20) | (X[:,7]>10) | (X[:,10]>200)
+valid_mask = np.logical_not(outlier_mask)
+
+# Finally we will remove these from the data set
+X = X[valid_mask,:]
+y = y[valid_mask]
+N = len(y)
+Xnorm = zscore(X, ddof=1)
+
+## Next we plot a number of atttributes
+Attributes = [1,4,5,6]
+NumAtr = len(Attributes)
+
+figure(figsize=(12,12))
+for m1 in range(NumAtr):
+    for m2 in range(NumAtr):
+        subplot(NumAtr, NumAtr, m1*NumAtr + m2 + 1)
+        for c in range(C):
+            class_mask = (y==c)
+            plot(X[class_mask,Attributes[m2]], X[class_mask,Attributes[m1]], '.')
+            if m1==NumAtr-1:
+                xlabel(attributeNames[Attributes[m2]])
+            else:
+                xticks([])
+            if m2==0:
+                ylabel(attributeNames[Attributes[m1]])
+            else:
+                yticks([])
+            #ylim(0,X.max()*1.1)
+            #xlim(0,X.max()*1.1)
+legend(classNames)
+show()
+
+print('Ran Exercise 4.3.2')
+==> ./ex5_1_1.py <==
+# exercise 5.1.1
+
+import numpy as np
+
+# Names of data objects
+dataobjectNames = [
+    'Human',
+    'Python',
+    'Salmon',
+    'Whale',
+    'Frog',
+    'Komodo dragon',
+    'Bat',
+    'Pigeon',
+    'Cat',
+    'Leopard shark',
+    'Turtle',
+    'Penguin',
+    'Porcupine',
+    'Eel',
+    'Salamander',
+    ]
+
+# Attribute names
+attributeNames = [
+    'Body temperature',
+    'Skin cover',
+    'Gives birth',
+    'Aquatic creature',
+    'Aerial creature',
+    'Has legs',
+    'Hibernates'
+    ]
+
+# Attribute values
+X = np.asarray(np.mat('''
+    1 1 1 0 0 1 0;
+    0 2 0 0 0 0 1;
+    0 2 0 1 0 0 0;
+    1 1 1 1 0 0 0;
+    0 0 0 2 0 1 1;
+    0 2 0 0 0 1 0;
+    1 1 1 0 1 1 1;
+    1 3 0 0 1 1 0;
+    1 4 1 0 0 1 0;
+    0 2 1 1 0 0 0;
+    0 2 0 2 0 1 0;
+    1 3 0 2 0 1 0;
+    1 5 1 0 0 1 1;
+    0 2 0 1 0 0 0;
+    0 0 0 2 0 1 1 '''))
+
+# Class indices
+y = np.asarray(np.mat('3 4 2 3 0 4 3 1 3 2 4 1 3 2 0').T).squeeze()
+
+# Class names
+classNames = ['Amphibian', 'Bird', 'Fish', 'Mammal', 'Reptile']
+    
+# Number data objects, attributes, and classes
+N, M = X.shape
+C = len(classNames)
+
+print('Ran Exercise 5.1.1')
+==> ./ex5_1_2.py <==
+# exercise 5.1.2
+import numpy as np
+from sklearn import tree
+from platform import system
+from os import getcwd
+from toolbox_02450 import windows_graphviz_call
+import matplotlib.pyplot as plt
+from matplotlib.image import imread
+
+# requires data from exercise 5.1.1
+from ex5_1_1 import *
+
+# Fit regression tree classifier, Gini split criterion, no pruning
+criterion='gini'
+dtc = tree.DecisionTreeClassifier(criterion=criterion, min_samples_split=2)
+dtc = dtc.fit(X,y)
+
+fname='tree_' + criterion
+# Export tree graph .gvz file to parse to graphviz
+out = tree.export_graphviz(dtc, out_file=fname + '.gvz', feature_names=attributeNames)
+
+# Depending on the platform, we handle the file differently, first for Linux 
+# Mac
+if system() == 'Linux' or system() == 'Darwin':
+    import graphviz
+    # Make a graphviz object from the file
+    src=graphviz.Source.from_file(fname + '.gvz')
+    print('\n\n\n To view the tree, write "src" in the command prompt \n\n\n')
+    
+# ... and then for Windows:
+if system() == 'Windows':
+    # N.B.: you have to update the path_to_graphviz to reflect the position you 
+    # unzipped the software in!
+    windows_graphviz_call(fname=fname,
+                          cur_dir=getcwd(),
+                          path_to_graphviz=r'C:\Program Files (x86)\Graphviz2.38')
+    plt.figure(figsize=(12,12))
+    plt.imshow(imread(fname + '.png'))
+    plt.box('off'); plt.axis('off')
+    plt.show()
+
+print('Ran Exercise 5.1.2')
+==> ./ex5_1_3.py <==
+# exercise 5.1.3
+import numpy as np
+from sklearn import tree
+from platform import system
+from os import getcwd
+from toolbox_02450 import windows_graphviz_call
+import matplotlib.pyplot as plt
+from matplotlib.image import imread
+
+# requires data from exercise 5.1.1
+from ex5_1_1 import *
+
+# Fit regression tree classifier, Gini split criterion, no pruning
+criterion='entropy'
+dtc = tree.DecisionTreeClassifier(criterion=criterion, min_samples_split=2)
+dtc = tree.DecisionTreeClassifier(criterion=criterion, min_samples_split=1.0/N)
+dtc = dtc.fit(X,y)
+
+fname='tree_' + criterion
+# Export tree graph .gvz file to parse to graphviz
+out = tree.export_graphviz(dtc, out_file=fname + '.gvz', feature_names=attributeNames)
+
+# Depending on the platform, we handle the file differently, first for Linux 
+# Mac
+if system() == 'Linux' or system() == 'Darwin':
+    import graphviz
+    # Make a graphviz object from the file
+    src=graphviz.Source.from_file(fname + '.gvz')
+    print('\n\n\n To view the tree, write "src" in the command prompt \n\n\n')
+    
+# ... and then for Windows:
+if system() == 'Windows':
+    # N.B.: you have to update the path_to_graphviz to reflect the position you 
+    # unzipped the software in!
+    windows_graphviz_call(fname=fname,
+                          cur_dir=getcwd(),
+                          path_to_graphviz=r'C:\Program Files (x86)\Graphviz2.38')
+    plt.figure(figsize=(12,12))
+    plt.imshow(imread(fname + '.png'))
+    plt.box('off'); plt.axis('off')
+    plt.show()
+
+print('Ran Exercise 5.1.3')
+==> ./ex5_1_4.py <==
+# exercise 5.1.4
+# requires Tree model from exercise 5.1.2
+from ex5_1_2 import *
+
+# Define a new data object (a dragon) with the attributes given in the text
+x = np.array([0, 2, 1, 2, 1, 1, 1]).reshape(1,-1)
+
+# Evaluate the classification tree for the new data object
+x_class = dtc.predict(x)[0]
+
+# Print results
+print('\nNew object attributes:')
+print(dict(zip(attributeNames,x[0])))
+print('\nClassification result:')
+print(classNames[x_class])
+
+print('Ran Exercise 5.1.4')
+==> ./ex5_1_5.py <==
+# exercise 5.1.5
+import numpy as np
+from scipy.io import loadmat
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine.mat')
+X = mat_data['X']
+y = mat_data['y'].astype(int).squeeze()
+C = mat_data['C'][0,0]
+M = mat_data['M'][0,0]
+N = mat_data['N'][0,0]
+
+attributeNames = [i[0][0] for i in mat_data['attributeNames']]
+classNames = [j[0] for i in mat_data['classNames'] for j in i]
+
+
+# Remove outliers
+outlier_mask = (X[:,1]>20) | (X[:,7]>10) | (X[:,10]>200)
+valid_mask = np.logical_not(outlier_mask)
+X = X[valid_mask,:]
+y = y[valid_mask]
+# Remove attribute 12 (Quality score)
+X = X[:,0:11]
+attributeNames = attributeNames[0:11]
+# Update N and M
+N, M = X.shape
+
+print('Ran Exercise 5.1.5')
+==> ./ex5_1_6.py <==
+# exercise 5.1.6
+import numpy as np
+from sklearn import tree
+from platform import system
+from os import getcwd
+from toolbox_02450 import windows_graphviz_call
+import matplotlib.pyplot as plt
+from matplotlib.image import imread
+
+# requires data from exercise 5.1.5
+from ex5_1_5 import *
+
+# Fit regression tree classifier, Gini split criterion, no pruning
+criterion='gini'
+dtc = tree.DecisionTreeClassifier(criterion=criterion, min_samples_split=100)
+dtc = dtc.fit(X,y)
+
+fname='tree_' + criterion + '_wine_data'
+# Export tree graph .gvz file to parse to graphviz
+out = tree.export_graphviz(dtc, out_file=fname + '.gvz', feature_names=attributeNames)
+
+# Depending on the platform, we handle the file differently, first for Linux 
+# Mac
+if system() == 'Linux' or system() == 'Darwin':
+    import graphviz
+    # Make a graphviz object from the file
+    src=graphviz.Source.from_file(fname + '.gvz')
+    print('\n\n\n To view the tree, write "src" in the command prompt \n\n\n')
+    
+# ... and then for Windows:
+if system() == 'Windows':
+    # N.B.: you have to update the path_to_graphviz to reflect the position you 
+    # unzipped the software in!
+    path_to_graphviz = r'C:\Program Files (x86)\Graphviz2.38' # CHANGE THIS
+    windows_graphviz_call(fname=fname,
+                          cur_dir=getcwd(),
+                          path_to_graphviz=path_to_graphviz)
+    plt.figure(figsize=(12,12))
+    plt.imshow(imread(fname + '.png'))
+    plt.box('off'); plt.axis('off')
+    plt.show()
+
+print('Ran Exercise 5.1.6')
+==> ./ex5_1_7.py <==
+# exercise 5.1.7
+# requires Tree model from exercise 5.1.5
+from ex5_1_6 import *
+
+# Define a new data object (new type of wine) with the attributes given in the text
+x = np.array([6.9, 1.09, .06, 2.1, .0061, 12, 31, .99, 3.5, .44, 12]).reshape(1,-1)
+
+# Evaluate the classification tree for the new data object
+x_class = dtc.predict(x)[0]
+
+# Print results
+print('\nNew object attributes:')
+for i in range(len(attributeNames)):
+    print('{0}: {1}'.format(attributeNames[i],x[0][i]))
+print('\nClassification result:')
+print(classNames[x_class])
+
+print('Ran Exercise 5.1.7')
+==> ./ex5_2_1.py <==
+# exercise 5.2.1
+
+from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, show
+import numpy as np
+
+# Number of data objects
+N = 100
+
+# Attribute values
+X = np.array(range(N))
+
+# Noise
+eps_mean, eps_std = 0, 0.1
+eps = np.array(eps_std*np.random.randn(N) + eps_mean)
+
+# Model parameters
+w0 = -0.5
+w1 = 0.01
+
+# Outputs
+y = w0 + w1*X + eps
+
+# Make a scatter plot
+figure()
+plot(X,y,'o')
+xlabel('X'); ylabel('y')
+title('Illustration of a linear relation with noise')
+
+show()
+
+print('Ran Exercise 5.2.1')
+==> ./ex5_2_2.py <==
+# exercise 5.2.2
+
+from matplotlib.pyplot import figure, plot, xlabel, ylabel, legend, show
+import sklearn.linear_model as lm
+import numpy as np
+
+# Use dataset as in the previous exercise
+N = 100
+X = np.array(range(N)).reshape(-1,1)
+eps_mean, eps_std = 0, 0.1
+eps = np.array(eps_std*np.random.randn(N) + eps_mean).reshape(-1,1)
+w0 = -0.5
+w1 = 0.01
+y = w0 + w1*X + eps
+y_true = y - eps
+
+# Fit ordinary least squares regression model
+model = lm.LinearRegression(fit_intercept=True)
+model = model.fit(X,y)
+# Compute model output:
+y_est = model.predict(X)
+# Or equivalently:
+#y_est = model.intercept_ + X @ model.coef_
+
+
+# Plot original data and the model output
+f = figure()
+
+plot(X,y,'.')
+plot(X,y_true,'-')
+plot(X,y_est,'-')
+xlabel('X'); ylabel('y')
+legend(['Training data', 'Data generator', 'Regression fit (model)'])
+
+show()
+
+print('Ran Exercise 5.2.2')
+==> ./ex5_2_3.py <==
+# exercise 5.2.3
+
+from matplotlib.pyplot import figure, plot, xlabel, ylabel, legend, show, ylim
+import numpy as np
+import sklearn.linear_model as lm
+
+# Parameters
+Kd = 5  # no of terms for data generator
+Km = 3  # no of terms for regression model
+N = 50  # no of data objects to train a model
+Xe =  np.linspace(-2,2,1000).reshape(-1,1) # X values to visualize true data and model
+eps_mean, eps_std = 0, 0.5          # noise parameters
+
+# Generate dataset (with noise)
+X = np.linspace(-2,2,N).reshape(-1,1)
+Xd = np.power(X, range(1,Kd+1))
+eps = (eps_std*np.random.randn(N) + eps_mean)
+w = -np.power(-.9, range(1,Kd+2))
+y = w[0] + Xd @ w[1:] + eps 
+
+
+# True data generator (assuming no noise)
+Xde = np.power(Xe, range(1,Kd+1))
+y_true = w[0] + Xde @ w[1:]
+
+
+
+# Fit ordinary least squares regression model
+Xm = np.power(X, range(1,Km+1))
+model = lm.LinearRegression()
+model = model.fit(Xm,y)
+
+# Predict values
+Xme = np.power(Xe, range(1,Km+1))
+y_est = model.predict(Xme)
+
+# Plot original data and the model output
+f = figure()
+plot(X,y,'.')
+plot(Xe,y_true,'-')
+plot(Xe,y_est,'-')
+xlabel('X'); ylabel('y'); ylim(-2,8)
+legend(['Training data', 'Data generator K={0}'.format(Kd), 'Regression fit (model) K={0}'.format(Km)])
+
+show()
+
+print('Ran Exercise 5.2.3')
+==> ./ex5_2_4.py <==
+# exercise 5.2.4
+from matplotlib.pylab import figure, subplot, plot, xlabel, ylabel, hist, show
+import sklearn.linear_model as lm
+
+# requires wine data from exercise 5.1.5
+from ex5_1_5 import *
+
+# Split dataset into features and target vector
+alcohol_idx = attributeNames.index('Alcohol')
+y = X[:,alcohol_idx]
+
+X_cols = list(range(0,alcohol_idx)) + list(range(alcohol_idx+1,len(attributeNames)))
+X = X[:,X_cols]
+
+# Fit ordinary least squares regression model
+model = lm.LinearRegression()
+model.fit(X,y)
+
+# Predict alcohol content
+y_est = model.predict(X)
+residual = y_est-y
+
+# Display scatter plot
+figure()
+subplot(2,1,1)
+plot(y, y_est, '.')
+xlabel('Alcohol content (true)'); ylabel('Alcohol content (estimated)');
+subplot(2,1,2)
+hist(residual,40)
+
+show()
+
+print('Ran Exercise 5.2.4')
+==> ./ex5_2_5.py <==
+# exercise 5.2.5
+from matplotlib.pylab import figure, plot, subplot, xlabel, ylabel, hist, show
+import sklearn.linear_model as lm
+
+# requires data from exercise 5.1.4
+from ex5_1_5 import *
+
+
+# Split dataset into features and target vector
+alcohol_idx = attributeNames.index('Alcohol')
+y = X[:,alcohol_idx]
+
+X_cols = list(range(0,alcohol_idx)) + list(range(alcohol_idx+1,len(attributeNames)))
+X = X[:,X_cols]
+
+# Additional nonlinear attributes
+fa_idx = attributeNames.index('Fixed acidity')
+va_idx = attributeNames.index('Volatile acidity')
+Xfa2 = np.power(X[:,fa_idx],2).reshape(-1,1)
+Xva2 = np.power(X[:,va_idx],2).reshape(-1,1)
+Xfava = (X[:,fa_idx]*X[:,va_idx]).reshape(-1,1)
+X = np.asarray(np.bmat('X, Xfa2, Xva2, Xfava'))
+
+# Fit ordinary least squares regression model
+model = lm.LinearRegression()
+model.fit(X,y)
+
+# Predict alcohol content
+y_est = model.predict(X)
+residual = y_est-y
+
+# Display plots
+figure(figsize=(12,8))
+
+subplot(2,1,1)
+plot(y, y_est, '.g')
+xlabel('Alcohol content (true)'); ylabel('Alcohol content (estimated)')
+
+subplot(4,1,3)
+hist(residual,40)
+
+subplot(4,3,10)
+plot(Xfa2, residual, '.r')
+xlabel('Fixed Acidity ^2'); ylabel('Residual')
+
+subplot(4,3,11)
+plot(Xva2, residual, '.r')
+xlabel('Volatile Acidity ^2'); ylabel('Residual')
+
+subplot(4,3,12)
+plot(Xfava, residual, '.r')
+xlabel('Fixed*Volatile Acidity'); ylabel('Residual')
+
+show()
+
+print('Ran Exercise 5.2.5')
+==> ./ex5_2_6.py <==
+# exercise 5.2.6
+from matplotlib.pylab import figure, plot, xlabel, ylabel, legend, ylim, show
+import sklearn.linear_model as lm
+
+# requires data from exercise 5.1.4
+from ex5_1_5 import *
+
+# Fit logistic regression model
+model = lm.logistic.LogisticRegression()
+model = model.fit(X,y)
+
+# Classify wine as White/Red (0/1) and assess probabilities
+y_est = model.predict(X)
+y_est_white_prob = model.predict_proba(X)[:, 0] 
+
+# Define a new data object (new type of wine), as in exercise 5.1.7
+x = np.array([6.9, 1.09, .06, 2.1, .0061, 12, 31, .99, 3.5, .44, 12]).reshape(1,-1)
+# Evaluate the probability of x being a white wine (class=0) 
+x_class = model.predict_proba(x)[0,0]
+
+# Evaluate classifier's misclassification rate over entire training data
+misclass_rate = np.sum(y_est != y) / float(len(y_est))
+
+# Display classification results
+print('\nProbability of given sample being a white wine: {0:.4f}'.format(x_class))
+print('\nOverall misclassification rate: {0:.3f}'.format(misclass_rate))
+
+f = figure();
+class0_ids = np.nonzero(y==0)[0].tolist()
+plot(class0_ids, y_est_white_prob[class0_ids], '.y')
+class1_ids = np.nonzero(y==1)[0].tolist()
+plot(class1_ids, y_est_white_prob[class1_ids], '.r')
+xlabel('Data object (wine sample)'); ylabel('Predicted prob. of class White');
+legend(['White', 'Red'])
+ylim(-0.01,1.5)
+
+show()
+
+print('Ran Exercise 5.2.6')
+==> ./ex6_1_1.py <==
+# exercise 6.1.1
+
+from matplotlib.pylab import figure, plot, xlabel, ylabel, legend, show
+from scipy.io import loadmat
+from sklearn import model_selection, tree
+import numpy as np
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine2.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+# Tree complexity parameter - constraint on maximum depth
+tc = np.arange(2, 21, 1)
+
+# Simple holdout-set crossvalidation
+test_proportion = 0.5
+X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size=test_proportion)
+
+# Initialize variables
+Error_train = np.empty((len(tc),1))
+Error_test = np.empty((len(tc),1))
+
+for i, t in enumerate(tc):
+    # Fit decision tree classifier, Gini split criterion, different pruning levels
+    dtc = tree.DecisionTreeClassifier(criterion='gini', max_depth=t)
+    dtc = dtc.fit(X_train,y_train)
+
+    # Evaluate classifier's misclassification rate over train/test data
+    y_est_test = np.asarray(dtc.predict(X_test),dtype=int)
+    y_est_train = np.asarray(dtc.predict(X_train), dtype=int)
+    misclass_rate_test = sum(y_est_test != y_test) / float(len(y_est_test))
+    misclass_rate_train = sum(y_est_train != y_train) / float(len(y_est_train))
+    Error_test[i], Error_train[i] = misclass_rate_test, misclass_rate_train
+    
+f = figure()
+plot(tc, Error_train*100)
+plot(tc, Error_test*100)
+xlabel('Model complexity (max tree depth)')
+ylabel('Error (%)')
+legend(['Error_train','Error_test'])
+    
+show()    
+
+print('Ran Exercise 6.1.1')
+==> ./ex6_1_2.py <==
+# exercise 6.1.2
+
+from matplotlib.pyplot import figure, plot, xlabel, ylabel, legend, show, boxplot
+from scipy.io import loadmat
+from sklearn import model_selection, tree
+import numpy as np
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine2.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+# Tree complexity parameter - constraint on maximum depth
+tc = np.arange(2, 21, 1)
+
+# K-fold crossvalidation
+K = 10
+CV = model_selection.KFold(n_splits=K,shuffle=True)
+
+# Initialize variable
+Error_train = np.empty((len(tc),K))
+Error_test = np.empty((len(tc),K))
+
+k=0
+for train_index, test_index in CV.split(X):
+    print('Computing CV fold: {0}/{1}..'.format(k+1,K))
+
+    # extract training and test set for current CV fold
+    X_train, y_train = X[train_index,:], y[train_index]
+    X_test, y_test = X[test_index,:], y[test_index]
+
+    for i, t in enumerate(tc):
+        # Fit decision tree classifier, Gini split criterion, different pruning levels
+        dtc = tree.DecisionTreeClassifier(criterion='gini', max_depth=t)
+        dtc = dtc.fit(X_train,y_train.ravel())
+        y_est_test = dtc.predict(X_test)
+        y_est_train = dtc.predict(X_train)
+        # Evaluate misclassification rate over train/test data (in this CV fold)
+        misclass_rate_test = np.sum(y_est_test != y_test) / float(len(y_est_test))
+        misclass_rate_train = np.sum(y_est_train != y_train) / float(len(y_est_train))
+        Error_test[i,k], Error_train[i,k] = misclass_rate_test, misclass_rate_train
+    k+=1
+
+    
+f = figure()
+boxplot(Error_test.T)
+xlabel('Model complexity (max tree depth)')
+ylabel('Test error across CV folds, K={0})'.format(K))
+
+f = figure()
+plot(tc, Error_train.mean(1))
+plot(tc, Error_test.mean(1))
+xlabel('Model complexity (max tree depth)')
+ylabel('Error (misclassification rate, CV K={0})'.format(K))
+legend(['Error_train','Error_test'])
+    
+show()
+
+print('Ran Exercise 6.1.2')
+==> ./ex6_2_1.py <==
+# exercise 6.2.1
+from matplotlib.pyplot import figure, plot, subplot, title, xlabel, ylabel, show, clim
+from scipy.io import loadmat
+import sklearn.linear_model as lm
+from sklearn import model_selection
+from toolbox_02450 import feature_selector_lr, bmplot
+import numpy as np
+
+# Load data from matlab file
+mat_data = loadmat('../Data/body.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+N, M = X.shape
+
+
+## Crossvalidation
+# Create crossvalidation partition for evaluation
+K = 5
+CV = model_selection.KFold(n_splits=K,shuffle=True)
+
+# Initialize variables
+Features = np.zeros((M,K))
+Error_train = np.empty((K,1))
+Error_test = np.empty((K,1))
+Error_train_fs = np.empty((K,1))
+Error_test_fs = np.empty((K,1))
+Error_train_nofeatures = np.empty((K,1))
+Error_test_nofeatures = np.empty((K,1))
+
+k=0
+for train_index, test_index in CV.split(X):
+    
+    # extract training and test set for current CV fold
+    X_train = X[train_index,:]
+    y_train = y[train_index]
+    X_test = X[test_index,:]
+    y_test = y[test_index]
+    internal_cross_validation = 10
+    
+    # Compute squared error without using the input data at all
+    Error_train_nofeatures[k] = np.square(y_train-y_train.mean()).sum()/y_train.shape[0]
+    Error_test_nofeatures[k] = np.square(y_test-y_test.mean()).sum()/y_test.shape[0]
+
+    # Compute squared error with all features selected (no feature selection)
+    m = lm.LinearRegression(fit_intercept=True).fit(X_train, y_train)
+    Error_train[k] = np.square(y_train-m.predict(X_train)).sum()/y_train.shape[0]
+    Error_test[k] = np.square(y_test-m.predict(X_test)).sum()/y_test.shape[0]
+
+    # Compute squared error with feature subset selection
+    #textout = 'verbose';
+    textout = '';
+    selected_features, features_record, loss_record = feature_selector_lr(X_train, y_train, internal_cross_validation,display=textout)
+    
+    Features[selected_features,k]=1
+    # .. alternatively you could use module sklearn.feature_selection
+    if len(selected_features) is 0:
+        print('No features were selected, i.e. the data (X) in the fold cannot describe the outcomes (y).' )
+    else:
+        m = lm.LinearRegression(fit_intercept=True).fit(X_train[:,selected_features], y_train)
+        Error_train_fs[k] = np.square(y_train-m.predict(X_train[:,selected_features])).sum()/y_train.shape[0]
+        Error_test_fs[k] = np.square(y_test-m.predict(X_test[:,selected_features])).sum()/y_test.shape[0]
+    
+        figure(k)
+        subplot(1,2,1)
+        plot(range(1,len(loss_record)), loss_record[1:])
+        xlabel('Iteration')
+        ylabel('Squared error (crossvalidation)')    
+        
+        subplot(1,3,3)
+        bmplot(attributeNames, range(1,features_record.shape[1]), -features_record[:,1:])
+        clim(-1.5,0)
+        xlabel('Iteration')
+
+    print('Cross validation fold {0}/{1}'.format(k+1,K))
+    print('Train indices: {0}'.format(train_index))
+    print('Test indices: {0}'.format(test_index))
+    print('Features no: {0}\n'.format(selected_features.size))
+
+    k+=1
+
+
+# Display results
+print('\n')
+print('Linear regression without feature selection:\n')
+print('- Training error: {0}'.format(Error_train.mean()))
+print('- Test error:     {0}'.format(Error_test.mean()))
+print('- R^2 train:     {0}'.format((Error_train_nofeatures.sum()-Error_train.sum())/Error_train_nofeatures.sum()))
+print('- R^2 test:     {0}'.format((Error_test_nofeatures.sum()-Error_test.sum())/Error_test_nofeatures.sum()))
+print('Linear regression with feature selection:\n')
+print('- Training error: {0}'.format(Error_train_fs.mean()))
+print('- Test error:     {0}'.format(Error_test_fs.mean()))
+print('- R^2 train:     {0}'.format((Error_train_nofeatures.sum()-Error_train_fs.sum())/Error_train_nofeatures.sum()))
+print('- R^2 test:     {0}'.format((Error_test_nofeatures.sum()-Error_test_fs.sum())/Error_test_nofeatures.sum()))
+
+figure(k)
+subplot(1,3,2)
+bmplot(attributeNames, range(1,Features.shape[1]+1), -Features)
+clim(-1.5,0)
+xlabel('Crossvalidation fold')
+ylabel('Attribute')
+
+
+# Inspect selected feature coefficients effect on the entire dataset and
+# plot the fitted model residual error as function of each attribute to
+# inspect for systematic structure in the residual
+
+f=2 # cross-validation fold to inspect
+ff=Features[:,f-1].nonzero()[0]
+if len(ff) is 0:
+    print('\nNo features were selected, i.e. the data (X) in the fold cannot describe the outcomes (y).' )
+else:
+    m = lm.LinearRegression(fit_intercept=True).fit(X[:,ff], y)
+    
+    y_est= m.predict(X[:,ff])
+    residual=y-y_est
+    
+    figure(k+1, figsize=(12,6))
+    title('Residual error vs. Attributes for features selected in cross-validation fold {0}'.format(f))
+    for i in range(0,len(ff)):
+       subplot(2,np.ceil(len(ff)/2.0),i+1)
+       plot(X[:,ff[i]],residual,'.')
+       xlabel(attributeNames[ff[i]])
+       ylabel('residual error')
+    
+    
+show()
+
+print('Ran Exercise 6.2.1')
+==> ./ex6_3_1.py <==
+# exercise 6.3.1
+
+from matplotlib.pyplot import figure, boxplot, xlabel, ylabel, show
+import numpy as np
+from scipy.io import loadmat
+import sklearn.linear_model as lm
+from sklearn import model_selection, tree
+from scipy import stats
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine2.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+## Crossvalidation
+# Create crossvalidation partition for evaluation
+K = 10
+CV = model_selection.KFold(n_splits=K,shuffle=True)
+#CV = model_selection.StratifiedKFold(n_splits=K)
+
+# Initialize variables
+Error_logreg = np.empty((K,1))
+Error_dectree = np.empty((K,1))
+n_tested=0
+
+k=0
+for train_index, test_index in CV.split(X,y):
+    print('CV-fold {0} of {1}'.format(k+1,K))
+    
+    # extract training and test set for current CV fold
+    X_train = X[train_index,:]
+    y_train = y[train_index]
+    X_test = X[test_index,:]
+    y_test = y[test_index]
+
+    # Fit and evaluate Logistic Regression classifier
+    model = lm.logistic.LogisticRegression(C=N)
+    model = model.fit(X_train, y_train)
+    y_logreg = model.predict(X_test)
+    Error_logreg[k] = 100*(y_logreg!=y_test).sum().astype(float)/len(y_test)
+    
+    # Fit and evaluate Decision Tree classifier
+    model2 = tree.DecisionTreeClassifier()
+    model2 = model2.fit(X_train, y_train)
+    y_dectree = model2.predict(X_test)
+    Error_dectree[k] = 100*(y_dectree!=y_test).sum().astype(float)/len(y_test)
+
+    k+=1
+
+# Test if classifiers are significantly different using methods in section 9.3.3
+# by computing credibility interval. Notice this can also be accomplished by computing the p-value using
+# [tstatistic, pvalue] = stats.ttest_ind(Error_logreg,Error_dectree)
+# and test if the p-value is less than alpha=0.05. 
+z = (Error_logreg-Error_dectree)
+zb = z.mean()
+nu = K-1
+sig =  (z-zb).std()  / np.sqrt(K-1)
+alpha = 0.05
+
+zL = zb + sig * stats.t.ppf(alpha/2, nu);
+zH = zb + sig * stats.t.ppf(1-alpha/2, nu);
+
+if zL <= 0 and zH >= 0 :
+    print('Classifiers are not significantly different')        
+else:
+    print('Classifiers are significantly different.')
+    
+# Boxplot to compare classifier error distributions
+figure()
+boxplot(np.concatenate((Error_logreg, Error_dectree),axis=1))
+xlabel('Logistic Regression   vs.   Decision Tree')
+ylabel('Cross-validation error [%]')
+
+show()
+
+print('Ran Exercise 6.3.1')
+==> ./ex7_1_1.py <==
+# exercise 7.1.1
+
+from matplotlib.pyplot import (figure, plot, title, xlabel, ylabel, 
+                               colorbar, imshow, xticks, yticks, show)
+from scipy.io import loadmat
+from sklearn.neighbors import KNeighborsClassifier, DistanceMetric
+from sklearn.metrics import confusion_matrix
+from numpy import cov
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth1.mat') # <-- change the number to change dataset
+X = mat_data['X']
+X_train = mat_data['X_train']
+X_test = mat_data['X_test']
+y = mat_data['y'].squeeze()
+y_train = mat_data['y_train'].squeeze()
+y_test = mat_data['y_test'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+
+# Plot the training data points (color-coded) and test data points.
+figure(1)
+styles = ['.b', '.r', '.g', '.y']
+for c in range(C):
+    class_mask = (y_train==c)
+    plot(X_train[class_mask,0], X_train[class_mask,1], styles[c])
+
+
+# K-nearest neighbors
+K=5
+
+# Distance metric (corresponds to 2nd norm, euclidean distance).
+# You can set dist=1 to obtain manhattan distance (cityblock distance).
+dist=2
+metric = 'minkowski'
+metric_params = {} # no parameters needed for minkowski
+
+# You can set the metric argument to 'cosine' to determine the cosine distance
+#metric = 'cosine' 
+#metric_params = {} # no parameters needed for cosine
+
+# To use a mahalonobis distance, we need to input the covariance matrix, too:
+#metric='mahalanobis'
+#metric_params={'V': cov(X_train, rowvar=False)}
+
+# Fit classifier and classify the test points
+knclassifier = KNeighborsClassifier(n_neighbors=K, p=dist, 
+                                    metric=metric,
+                                    metric_params=metric_params)
+knclassifier.fit(X_train, y_train)
+y_est = knclassifier.predict(X_test)
+
+
+# Plot the classfication results
+styles = ['ob', 'or', 'og', 'oy']
+for c in range(C):
+    class_mask = (y_est==c)
+    plot(X_test[class_mask,0], X_test[class_mask,1], styles[c], markersize=10)
+    plot(X_test[class_mask,0], X_test[class_mask,1], 'kx', markersize=8)
+title('Synthetic data classification - KNN');
+
+# Compute and plot confusion matrix
+cm = confusion_matrix(y_test, y_est);
+accuracy = 100*cm.diagonal().sum()/cm.sum(); error_rate = 100-accuracy;
+figure(2);
+imshow(cm, cmap='binary', interpolation='None');
+colorbar()
+xticks(range(C)); yticks(range(C));
+xlabel('Predicted class'); ylabel('Actual class');
+title('Confusion matrix (Accuracy: {0}%, Error Rate: {1}%)'.format(accuracy, error_rate));
+
+show()
+
+print('Ran Exercise 7.1.1')
+==> ./ex7_1_2.py <==
+# exercise 7.1.2
+
+from matplotlib.pyplot import figure, plot, xlabel, ylabel, show
+import numpy as np
+from scipy.io import loadmat
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import model_selection
+
+# requires data from exercise 1.5.1
+from ex1_5_1 import *
+
+# Maximum number of neighbors
+L=40
+
+CV = model_selection.LeaveOneOut()
+errors = np.zeros((N,L))
+i=0
+for train_index, test_index in CV.split(X, y):
+    print('Crossvalidation fold: {0}/{1}'.format(i+1,N))    
+    
+    # extract training and test set for current CV fold
+    X_train = X[train_index,:]
+    y_train = y[train_index]
+    X_test = X[test_index,:]
+    y_test = y[test_index]
+
+    # Fit classifier and classify the test points (consider 1 to 40 neighbors)
+    for l in range(1,L+1):
+        knclassifier = KNeighborsClassifier(n_neighbors=l);
+        knclassifier.fit(X_train, y_train);
+        y_est = knclassifier.predict(X_test);
+        errors[i,l-1] = np.sum(y_est[0]!=y_test[0])
+
+    i+=1
+    
+# Plot the classification error rate
+figure()
+plot(100*sum(errors,0)/N)
+xlabel('Number of neighbors')
+ylabel('Classification error rate (%)')
+show()
+
+print('Ran Exercise 7.1.2')
+==> ./ex7_2_3.py <==
+# exercise 7.2.3
+import numpy as np
+
+# Load list of names from files
+fmale = open('../Data/male.txt','r')
+ffemale = open('../Data/female.txt','r')
+mnames = fmale.readlines(); fnames = ffemale.readlines();
+names = mnames + fnames
+gender = [0]*len(mnames) + [1]*len(fnames)
+fmale.close(); ffemale.close();
+
+# Extract X, y and the rest of variables. Include only names of >4 characters.
+X = np.zeros((len(names),4))
+y = np.zeros((len(names),1))
+n=0
+for i in range(0,len(names)):
+    name = names[i].strip().lower()
+    if len(name)>3:
+        X[n,:] = [ord(name[0])-ord('a')+1, ord(name[1])-ord('a')+1, ord(name[-2])-ord('a')+1, ord(name[-1])-ord('a')+1]
+        y[n,0] = gender[i]
+        n+=1
+X = X[0:n,:]; y = y[0:n,:];
+
+N, M = X.shape; C = 2
+attributeNames = ['1st letter', '2nd letter', 'Next-to-last letter', 'Last letter']
+classNames = ['Female', 'Male'];
+
+print('Ran Exercise 7.2.3')
+==> ./ex7_2_4.py <==
+# exercise 7.2.4
+from sklearn.naive_bayes import MultinomialNB
+from sklearn import model_selection
+from sklearn.preprocessing import OneHotEncoder
+
+from ex7_2_3 import *
+np.random.seed(2450)
+y = y.squeeze()
+
+# Naive Bayes classifier parameters
+alpha = 1.0 # pseudo-count, additive parameter (Laplace correction if 1.0 or Lidtstone smoothing otherwise)
+fit_prior = True   # uniform prior (change to True to estimate prior from data)
+
+# K-fold crossvalidation
+K = 10
+CV = model_selection.KFold(n_splits=K,shuffle=True)
+
+X = X[:,0:4] # using all 4 letters,
+# for using e.g. only third letter or first and last try X[:,[2]] and X[:, [0,3]]
+
+# We need to specify that the data is categorical.
+# MultinomialNB does not have this functionality, but we can achieve similar
+# results by doing a one-hot-encoding - the intermediate steps in in training
+# the classifier are off, but the final result is corrent.
+# If we didn't do the converstion MultinomialNB assumes that the numbers are
+# e.g. discrete counts of tokens. Without the encoding, the value 26 wouldn't
+# mean "the token 'z'", but it would mean 26 counts of some token,
+# resulting in 1 and 2 meaning a difference in one count of a given token as
+# opposed to the desired 'a' versus 'b'.
+X = OneHotEncoder().fit_transform(X=X)
+
+errors = np.zeros(K)
+k=0
+for train_index, test_index in CV.split(X):
+    #print('Crossvalidation fold: {0}/{1}'.format(k+1,K))
+
+    # extract training and test set for current CV fold
+    X_train = X[train_index,:]
+    y_train = y[train_index]
+    X_test = X[test_index,:]
+    y_test = y[test_index]
+
+    nb_classifier = MultinomialNB(alpha=alpha,
+                                  fit_prior=fit_prior)
+    nb_classifier.fit(X_train, y_train)
+    y_est_prob = nb_classifier.predict_proba(X_test)
+    y_est = np.argmax(y_est_prob,1)
+
+    errors[k] = np.sum(y_est!=y_test,dtype=float)/y_test.shape[0]
+    k+=1
+
+# Plot the classification error rate
+print('Error rate: {0}%'.format(100*np.mean(errors)))
+
+print('Ran Exercise 7.2.4')
+
+==> ./ex8_1_1.py <==
+# exercise 8.1.1
+
+from matplotlib.pylab import (figure, semilogx, loglog, xlabel, ylabel, legend, 
+                           title, subplot, show, grid)
+import numpy as np
+from scipy.io import loadmat
+import sklearn.linear_model as lm
+from sklearn import model_selection
+from toolbox_02450 import rlr_validate
+
+mat_data = loadmat('../Data/body.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+N, M = X.shape
+
+# Add offset attribute
+X = np.concatenate((np.ones((X.shape[0],1)),X),1)
+attributeNames = [u'Offset']+attributeNames
+M = M+1
+
+## Crossvalidation
+# Create crossvalidation partition for evaluation
+K = 5
+CV = model_selection.KFold(K, shuffle=True)
+#CV = model_selection.KFold(K, shuffle=False)
+
+# Values of lambda
+lambdas = np.power(10.,range(-5,9))
+
+# Initialize variables
+#T = len(lambdas)
+Error_train = np.empty((K,1))
+Error_test = np.empty((K,1))
+Error_train_rlr = np.empty((K,1))
+Error_test_rlr = np.empty((K,1))
+Error_train_nofeatures = np.empty((K,1))
+Error_test_nofeatures = np.empty((K,1))
+w_rlr = np.empty((M,K))
+mu = np.empty((K, M-1))
+sigma = np.empty((K, M-1))
+w_noreg = np.empty((M,K))
+
+k=0
+for train_index, test_index in CV.split(X,y):
+    
+    # extract training and test set for current CV fold
+    X_train = X[train_index]
+    y_train = y[train_index]
+    X_test = X[test_index]
+    y_test = y[test_index]
+    internal_cross_validation = 10    
+    
+    opt_val_err, opt_lambda, mean_w_vs_lambda, train_err_vs_lambda, test_err_vs_lambda = rlr_validate(X_train, y_train, lambdas, internal_cross_validation)
+
+    # Standardize outer fold based on training set, and save the mean and standard
+    # deviations since they're part of the model (they would be needed for
+    # making new predictions) - for brevity we won't always store these in the scripts
+    mu[k, :] = np.mean(X_train[:, 1:], 0)
+    sigma[k, :] = np.std(X_train[:, 1:], 0)
+    
+    X_train[:, 1:] = (X_train[:, 1:] - mu[k, :] ) / sigma[k, :] 
+    X_test[:, 1:] = (X_test[:, 1:] - mu[k, :] ) / sigma[k, :] 
+    
+    Xty = X_train.T @ y_train
+    XtX = X_train.T @ X_train
+    
+    # Compute mean squared error without using the input data at all
+    Error_train_nofeatures[k] = np.square(y_train-y_train.mean()).sum(axis=0)/y_train.shape[0]
+    Error_test_nofeatures[k] = np.square(y_test-y_test.mean()).sum(axis=0)/y_test.shape[0]
+
+    # Estimate weights for the optimal value of lambda, on entire training set
+    lambdaI = opt_lambda * np.eye(M)
+    lambdaI[0,0] = 0 # Do no regularize the bias term
+    w_rlr[:,k] = np.linalg.solve(XtX+lambdaI,Xty).squeeze()
+    # Compute mean squared error with regularization with optimal lambda
+    Error_train_rlr[k] = np.square(y_train-X_train @ w_rlr[:,k]).sum(axis=0)/y_train.shape[0]
+    Error_test_rlr[k] = np.square(y_test-X_test @ w_rlr[:,k]).sum(axis=0)/y_test.shape[0]
+
+    # Estimate weights for unregularized linear regression, on entire training set
+    w_noreg[:,k] = np.linalg.solve(XtX,Xty).squeeze()
+    # Compute mean squared error without regularization
+    Error_train[k] = np.square(y_train-X_train @ w_noreg[:,k]).sum(axis=0)/y_train.shape[0]
+    Error_test[k] = np.square(y_test-X_test @ w_noreg[:,k]).sum(axis=0)/y_test.shape[0]
+    # OR ALTERNATIVELY: you can use sklearn.linear_model module for linear regression:
+    #m = lm.LinearRegression().fit(X_train, y_train)
+    #Error_train[k] = np.square(y_train-m.predict(X_train)).sum()/y_train.shape[0]
+    #Error_test[k] = np.square(y_test-m.predict(X_test)).sum()/y_test.shape[0]
+
+    # Display the results for the last cross-validation fold
+    if k == K-1:
+        figure(k, figsize=(12,8))
+        subplot(1,2,1)
+        semilogx(lambdas,mean_w_vs_lambda.T[:,1:],'.-') # Don't plot the bias term
+        xlabel('Regularization factor')
+        ylabel('Mean Coefficient Values')
+        grid()
+        # You can choose to display the legend, but it's omitted for a cleaner 
+        # plot, since there are many attributes
+        #legend(attributeNames[1:], loc='best')
+        
+        subplot(1,2,2)
+        title('Optimal lambda: 1e{0}'.format(np.log10(opt_lambda)))
+        loglog(lambdas,train_err_vs_lambda.T,'b.-',lambdas,test_err_vs_lambda.T,'r.-')
+        xlabel('Regularization factor')
+        ylabel('Squared error (crossvalidation)')
+        legend(['Train error','Validation error'])
+        grid()
+    
+    # To inspect the used indices, use these print statements
+    #print('Cross validation fold {0}/{1}:'.format(k+1,K))
+    #print('Train indices: {0}'.format(train_index))
+    #print('Test indices: {0}\n'.format(test_index))
+
+    k+=1
+
+show()
+# Display results
+print('Linear regression without feature selection:')
+print('- Training error: {0}'.format(Error_train.mean()))
+print('- Test error:     {0}'.format(Error_test.mean()))
+print('- R^2 train:     {0}'.format((Error_train_nofeatures.sum()-Error_train.sum())/Error_train_nofeatures.sum()))
+print('- R^2 test:     {0}\n'.format((Error_test_nofeatures.sum()-Error_test.sum())/Error_test_nofeatures.sum()))
+print('Regularized linear regression:')
+print('- Training error: {0}'.format(Error_train_rlr.mean()))
+print('- Test error:     {0}'.format(Error_test_rlr.mean()))
+print('- R^2 train:     {0}'.format((Error_train_nofeatures.sum()-Error_train_rlr.sum())/Error_train_nofeatures.sum()))
+print('- R^2 test:     {0}\n'.format((Error_test_nofeatures.sum()-Error_test_rlr.sum())/Error_test_nofeatures.sum()))
+
+print('Weights in last fold:')
+for m in range(M):
+    print('{:>15} {:>15}'.format(attributeNames[m], np.round(w_rlr[m,-1],2)))
+
+print('Ran Exercise 8.1.1')
+==> ./ex8_1_2.py <==
+# exercise 8.1.2
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.io import loadmat
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from toolbox_02450 import rocplot, confmatplot
+
+
+font_size = 15
+plt.rcParams.update({'font.size': font_size})
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine2.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+
+# Create crossvalidation partition for evaluation
+# using stratification and 95 pct. split between training and test 
+K = 20
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.95, stratify=y)
+# Try to change the test_size to e.g. 50 % and 99 % - how does that change the 
+# effect of regularization? How does differetn runs of  test_size=.99 compare 
+# to eachother?
+
+# Standardize the training and set set based on training set mean and std
+mu = np.mean(X_train, 0)
+sigma = np.std(X_train, 0)
+
+X_train = (X_train - mu) / sigma
+X_test = (X_test - mu) / sigma
+
+# Fit regularized logistic regression model to training data to predict 
+# the type of wine
+lambda_interval = np.logspace(-8, 2, 50)
+train_error_rate = np.zeros(len(lambda_interval))
+test_error_rate = np.zeros(len(lambda_interval))
+coefficient_norm = np.zeros(len(lambda_interval))
+for k in range(0, len(lambda_interval)):
+    mdl = LogisticRegression(penalty='l2', C=1/lambda_interval[k] )
+    
+    mdl.fit(X_train, y_train)
+
+    y_train_est = mdl.predict(X_train).T
+    y_test_est = mdl.predict(X_test).T
+    
+    train_error_rate[k] = np.sum(y_train_est != y_train) / len(y_train)
+    test_error_rate[k] = np.sum(y_test_est != y_test) / len(y_test)
+
+    w_est = mdl.coef_[0] 
+    coefficient_norm[k] = np.sqrt(np.sum(w_est**2))
+
+min_error = np.min(test_error_rate)
+opt_lambda_idx = np.argmin(test_error_rate)
+opt_lambda = lambda_interval[opt_lambda_idx]
+
+plt.figure(figsize=(8,8))
+#plt.plot(np.log10(lambda_interval), train_error_rate*100)
+#plt.plot(np.log10(lambda_interval), test_error_rate*100)
+#plt.plot(np.log10(opt_lambda), min_error*100, 'o')
+plt.semilogx(lambda_interval, train_error_rate*100)
+plt.semilogx(lambda_interval, test_error_rate*100)
+plt.semilogx(opt_lambda, min_error*100, 'o')
+plt.text(1e-8, 3, "Minimum test error: " + str(np.round(min_error*100,2)) + ' % at 1e' + str(np.round(np.log10(opt_lambda),2)))
+plt.xlabel('Regularization strength, $\log_{10}(\lambda)$')
+plt.ylabel('Error rate (%)')
+plt.title('Classification error')
+plt.legend(['Training error','Test error','Test minimum'],loc='upper right')
+plt.ylim([0, 4])
+plt.grid()
+plt.show()    
+
+plt.figure(figsize=(8,8))
+plt.semilogx(lambda_interval, coefficient_norm,'k')
+plt.ylabel('L2 Norm')
+plt.xlabel('Regularization strength, $\log_{10}(\lambda)$')
+plt.title('Parameter vector L2 norm')
+plt.grid()
+plt.show()    
+
+print('Ran Exercise 9.1.1')
+==> ./ex8_2_2.py <==
+# exercise 8.2.2
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.io import loadmat
+from sklearn import model_selection
+from toolbox_02450 import train_neural_net, draw_neural_net, visualize_decision_boundary
+import torch
+plt.rcParams.update({'font.size': 12})
+
+# read XOR DATA from matlab datafile
+mat_data = loadmat('../Data/xor.mat')
+X = mat_data['X']
+y = mat_data['y']
+
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0] for name in mat_data['classNames'].squeeze()]
+N, M = X.shape
+C = len(classNames)
+
+# K-fold CrossValidation (4 folds here to speed up this example)
+K = 4
+CV = model_selection.KFold(K,shuffle=True)
+
+# Setup figure for display of the decision boundary for the several crossvalidation folds.
+decision_boundaries = plt.figure(1, figsize=(10,10))
+# Determine a size of a plot grid that fits visualizations for the chosen number
+# of cross-validation splits, if K=4, this is simply a 2-by-2 grid.
+subplot_size_1 = int(np.floor(np.sqrt(K))) 
+subplot_size_2 = int(np.ceil(K/subplot_size_1))
+# Set overall title for all of the subplots
+plt.suptitle('Data and model decision boundaries', fontsize=20)
+# Change spacing of subplots
+plt.subplots_adjust(left=0, bottom=0, right=1, top=.9, wspace=.5, hspace=0.25)
+
+# Setup figure for display of learning curves and error rates in fold
+summaries, summaries_axes = plt.subplots(1, 2, figsize=(10,5))
+# Make a list for storing assigned color of learning curve for up to K=10
+color_list = ['tab:orange', 'tab:green', 'tab:purple', 'tab:brown', 'tab:pink',
+              'tab:gray', 'tab:olive', 'tab:cyan', 'tab:red', 'tab:blue']
+
+# Define the model structure
+n_hidden_units = 1 # number of hidden units in the signle hidden layer
+# The lambda-syntax defines an anonymous function, which is used here to 
+# make it easy to make new networks within each cross validation fold
+model = lambda: torch.nn.Sequential(
+                    torch.nn.Linear(M, n_hidden_units), #M features to H hiden units
+                    # 1st transfer function, either Tanh or ReLU:
+                    #torch.nn.ReLU(), 
+                    torch.nn.Tanh(),   
+                    torch.nn.Linear(n_hidden_units, 1), # H hidden units to 1 output neuron
+                    torch.nn.Sigmoid() # final tranfer function
+                    )
+# Since we're training a neural network for binary classification, we use a 
+# binary cross entropy loss (see the help(train_neural_net) for more on
+# the loss_fn input to the function)
+loss_fn = torch.nn.BCELoss()
+# Train for a maximum of 10000 steps, or until convergence (see help for the 
+# function train_neural_net() for more on the tolerance/convergence))
+max_iter = 10000
+print('Training model of type:\n{}\n'.format(str(model())))
+
+# Do cross-validation:
+errors = [] # make a list for storing generalizaition error in each loop
+# Loop over each cross-validation split. The CV.split-method returns the 
+# indices to be used for training and testing in each split, and calling 
+# the enumerate-method with this simply returns this indices along with 
+# a counter k:
+for k, (train_index, test_index) in enumerate(CV.split(X,y)): 
+    print('\nCrossvalidation fold: {0}/{1}'.format(k+1,K))    
+    
+    # Extract training and test set for current CV fold, 
+    # and convert them to PyTorch tensors
+    X_train = torch.tensor(X[train_index,:], dtype=torch.float)
+    y_train = torch.tensor(y[train_index], dtype=torch.float)
+    X_test = torch.tensor(X[test_index,:], dtype=torch.float)
+    y_test = torch.tensor(y[test_index], dtype=torch.uint8)
+    
+    # Go to the file 'toolbox_02450.py' in the Tools sub-folder of the toolbox
+    # and see how the network is trained (search for 'def train_neural_net',
+    # which is the place the function below is defined)
+    net, final_loss, learning_curve = train_neural_net(model,
+                                                       loss_fn,
+                                                       X=X_train,
+                                                       y=y_train,
+                                                       n_replicates=3,
+                                                       max_iter=max_iter)
+    
+    print('\n\tBest loss: {}\n'.format(final_loss))
+    
+    # Determine estimated class labels for test set
+    y_sigmoid = net(X_test) # activation of final note, i.e. prediction of network
+    y_test_est = y_sigmoid > .5 # threshold output of sigmoidal function
+    
+    # Determine errors and error rate
+    e = (y_test_est != y_test)
+    error_rate = (sum(e).type(torch.float)/len(y_test)).data.numpy()
+    errors.append(error_rate) # store error rate for current CV fold 
+    
+    # Make a subplot for current cross validation fold that displays the 
+    # decision boundary over the original data, "background color" corresponds
+    # to the output of the sigmoidal transfer function (i.e. before threshold),
+    # white areas are areas of uncertainty, and a deaper red/blue means 
+    # that the network "is more sure" of a given class.
+    plt.figure(decision_boundaries.number)
+    plt.subplot(subplot_size_1,subplot_size_2,k+1)
+    plt.title('CV fold {0}'.format(k+1),color=color_list[k])
+    predict = lambda x: net(torch.tensor(x, dtype=torch.float)).data.numpy()
+    visualize_decision_boundary(predict, X, y, # provide data, along with function for prediction
+                                attributeNames, classNames, # provide information on attribute and class names
+                                train=train_index, test=test_index, # provide information on partioning
+                                show_legend=k==(K-1)) # only display legend for last plot
+    
+    # Display the learning curve for the best net in the current fold
+    h, = summaries_axes[0].plot(learning_curve, color=color_list[k])
+    h.set_label('CV fold {0}'.format(k+1))
+    summaries_axes[0].set_xlabel('Iterations')
+    summaries_axes[0].set_xlim((0, max_iter))
+    summaries_axes[0].set_ylabel('Loss')
+    summaries_axes[0].set_title('Learning curves')
+    
+# Display the error rate across folds
+summaries_axes[1].bar(np.arange(1, K+1), np.squeeze(np.asarray(errors)), color=color_list)
+summaries_axes[1].set_xlabel('Fold');
+summaries_axes[1].set_xticks(np.arange(1, K+1))
+summaries_axes[1].set_ylabel('Error rate');
+summaries_axes[1].set_title('Test misclassification rates')
+    
+# Show the plots
+plt.show(decision_boundaries.number)
+plt.show(summaries.number)
+
+# Display a diagram of the best network in last fold
+print('Diagram of best neural net in last fold:')
+weights = [net[i].weight.data.numpy().T for i in [0,2]]
+biases = [net[i].bias.data.numpy() for i in [0,2]]
+tf =  [str(net[i]) for i in [1,3]]
+draw_neural_net(weights, biases, tf)
+
+# Print the average classification error rate
+print('\nGeneralization error/average error rate: {0}%'.format(round(100*np.mean(errors),4)))
+
+print('Ran exercise 8.2.2.')
+==> ./ex8_2_5.py <==
+# exercise 8.2.5
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.io import loadmat
+import torch
+from sklearn import model_selection
+from toolbox_02450 import train_neural_net, draw_neural_net
+from scipy import stats
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine2.mat')
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+X = mat_data['X']
+y = mat_data['y']
+
+#Downsample: X = X[1:20,:] y = y[1:20,:]
+N, M = X.shape
+C = 2
+
+# Normalize data
+X = stats.zscore(X);
+
+# Parameters for neural network classifier
+n_hidden_units = 2     # number of hidden units
+n_replicates = 2        # number of networks trained in each k-fold
+max_iter = 10000         # stop criterion 2 (max epochs in training)
+
+# K-fold crossvalidation
+K = 3                   # only five folds to speed up this example
+CV = model_selection.KFold(K, shuffle=True)
+# Make figure for holding summaries (errors and learning curves)
+summaries, summaries_axes = plt.subplots(1,2, figsize=(10,5))
+# Make a list for storing assigned color of learning curve for up to K=10
+color_list = ['tab:orange', 'tab:green', 'tab:purple', 'tab:brown', 'tab:pink',
+              'tab:gray', 'tab:olive', 'tab:cyan', 'tab:red', 'tab:blue']
+
+# Define the model, see also Exercise 8.2.2-script for more information.
+model = lambda: torch.nn.Sequential(
+                    torch.nn.Linear(M, n_hidden_units), #M features to H hiden units
+                    torch.nn.Tanh(),   # 1st transfer function,
+                    torch.nn.Linear(n_hidden_units, 1), # H hidden units to 1 output neuron
+                    torch.nn.Sigmoid() # final tranfer function
+                    )
+loss_fn = torch.nn.BCELoss()
+
+print('Training model of type:\n\n{}\n'.format(str(model())))
+errors = [] # make a list for storing generalizaition error in each loop
+for k, (train_index, test_index) in enumerate(CV.split(X,y)): 
+    print('\nCrossvalidation fold: {0}/{1}'.format(k+1,K))    
+    
+    # Extract training and test set for current CV fold, convert to tensors
+    X_train = torch.tensor(X[train_index,:], dtype=torch.float)
+    y_train = torch.tensor(y[train_index], dtype=torch.float)
+    X_test = torch.tensor(X[test_index,:], dtype=torch.float)
+    y_test = torch.tensor(y[test_index], dtype=torch.uint8)
+    
+    # Train the net on training data
+    net, final_loss, learning_curve = train_neural_net(model,
+                                                       loss_fn,
+                                                       X=X_train,
+                                                       y=y_train,
+                                                       n_replicates=n_replicates,
+                                                       max_iter=max_iter)
+    
+    print('\n\tBest loss: {}\n'.format(final_loss))
+    
+    # Determine estimated class labels for test set
+    y_sigmoid = net(X_test)
+    y_test_est = y_sigmoid>.5
+    
+    # Determine errors and errors
+    e = y_test_est != y_test
+    error_rate = (sum(e).type(torch.float)/len(y_test)).data.numpy()
+    errors.append(error_rate) # store error rate for current CV fold 
+    
+    # Display the learning curve for the best net in the current fold
+    h, = summaries_axes[0].plot(learning_curve, color=color_list[k])
+    h.set_label('CV fold {0}'.format(k+1))
+    summaries_axes[0].set_xlabel('Iterations')
+    summaries_axes[0].set_xlim((0, max_iter))
+    summaries_axes[0].set_ylabel('Loss')
+    summaries_axes[0].set_title('Learning curves')
+    
+# Display the error rate across folds
+summaries_axes[1].bar(np.arange(1, K+1), np.squeeze(np.asarray(errors)), color=color_list)
+summaries_axes[1].set_xlabel('Fold');
+summaries_axes[1].set_xticks(np.arange(1, K+1))
+summaries_axes[1].set_ylabel('Error rate');
+summaries_axes[1].set_title('Test misclassification rates')
+
+print('Diagram of best neural net in last fold:')
+weights = [net[i].weight.data.numpy().T for i in [0,2]]
+biases = [net[i].bias.data.numpy() for i in [0,2]]
+tf =  [str(net[i]) for i in [1,3]]
+draw_neural_net(weights, biases, tf, attribute_names=attributeNames)
+
+# Print the average classification error rate
+print('\nGeneralization error/average error rate: {0}%'.format(round(100*np.mean(errors),4)))
+
+print('Ran Exercise 8.2.5')
+==> ./ex8_2_6.py <==
+# exercise 8.2.6
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.io import loadmat
+import torch
+from sklearn import model_selection
+from toolbox_02450 import train_neural_net, draw_neural_net
+from scipy import stats
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine2.mat')
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+X = mat_data['X']
+y = X[:,[10]]             # alcohol contents (target)
+X = X[:,1:10]           # the rest of features
+N, M = X.shape
+C = 2
+
+# Normalize data
+X = stats.zscore(X);
+                
+## Normalize and compute PCA (change to True to experiment with PCA preprocessing)
+do_pca_preprocessing = False
+if do_pca_preprocessing:
+    Y = stats.zscore(X,0);
+    U,S,V = np.linalg.svd(Y,full_matrices=False)
+    V = V.T
+    #Components to be included as features
+    k_pca = 3
+    X = X @ V[:,0:k_pca]
+    N, M = X.shape
+
+
+# Parameters for neural network classifier
+n_hidden_units = 2      # number of hidden units
+n_replicates = 1        # number of networks trained in each k-fold
+max_iter = 10000        # 
+
+# K-fold crossvalidation
+K = 3                   # only three folds to speed up this example
+CV = model_selection.KFold(K, shuffle=True)
+
+# Setup figure for display of learning curves and error rates in fold
+summaries, summaries_axes = plt.subplots(1,2, figsize=(10,5))
+# Make a list for storing assigned color of learning curve for up to K=10
+color_list = ['tab:orange', 'tab:green', 'tab:purple', 'tab:brown', 'tab:pink',
+              'tab:gray', 'tab:olive', 'tab:cyan', 'tab:red', 'tab:blue']
+# Define the model
+model = lambda: torch.nn.Sequential(
+                    torch.nn.Linear(M, n_hidden_units), #M features to n_hidden_units
+                    torch.nn.Tanh(),   # 1st transfer function,
+                    torch.nn.Linear(n_hidden_units, 1), # n_hidden_units to 1 output neuron
+                    # no final tranfer function, i.e. "linear output"
+                    )
+loss_fn = torch.nn.MSELoss() # notice how this is now a mean-squared-error loss
+
+print('Training model of type:\n\n{}\n'.format(str(model())))
+errors = [] # make a list for storing generalizaition error in each loop
+for (k, (train_index, test_index)) in enumerate(CV.split(X,y)): 
+    print('\nCrossvalidation fold: {0}/{1}'.format(k+1,K))    
+    
+    # Extract training and test set for current CV fold, convert to tensors
+    X_train = torch.tensor(X[train_index,:], dtype=torch.float)
+    y_train = torch.tensor(y[train_index], dtype=torch.float)
+    X_test = torch.tensor(X[test_index,:], dtype=torch.float)
+    y_test = torch.tensor(y[test_index], dtype=torch.uint8)
+    
+    # Train the net on training data
+    net, final_loss, learning_curve = train_neural_net(model,
+                                                       loss_fn,
+                                                       X=X_train,
+                                                       y=y_train,
+                                                       n_replicates=n_replicates,
+                                                       max_iter=max_iter)
+    
+    print('\n\tBest loss: {}\n'.format(final_loss))
+    
+    # Determine estimated class labels for test set
+    y_test_est = net(X_test)
+    
+    # Determine errors and errors
+    se = (y_test_est.float()-y_test.float())**2 # squared error
+    mse = (sum(se).type(torch.float)/len(y_test)).data.numpy() #mean
+    errors.append(mse) # store error rate for current CV fold 
+    
+    # Display the learning curve for the best net in the current fold
+    h, = summaries_axes[0].plot(learning_curve, color=color_list[k])
+    h.set_label('CV fold {0}'.format(k+1))
+    summaries_axes[0].set_xlabel('Iterations')
+    summaries_axes[0].set_xlim((0, max_iter))
+    summaries_axes[0].set_ylabel('Loss')
+    summaries_axes[0].set_title('Learning curves')
+
+# Display the MSE across folds
+summaries_axes[1].bar(np.arange(1, K+1), np.squeeze(np.asarray(errors)), color=color_list)
+summaries_axes[1].set_xlabel('Fold');
+summaries_axes[1].set_xticks(np.arange(1, K+1))
+summaries_axes[1].set_ylabel('MSE');
+summaries_axes[1].set_title('Test mean-squared-error')
+    
+print('Diagram of best neural net in last fold:')
+weights = [net[i].weight.data.numpy().T for i in [0,2]]
+biases = [net[i].bias.data.numpy() for i in [0,2]]
+tf =  [str(net[i]) for i in [1,2]]
+draw_neural_net(weights, biases, tf, attribute_names=attributeNames)
+
+# Print the average classification error rate
+print('\nEstimated generalization error, RMSE: {0}'.format(round(np.sqrt(np.mean(errors)), 4)))
+
+# When dealing with regression outputs, a simple way of looking at the quality
+# of predictions visually is by plotting the estimated value as a function of 
+# the true/known value - these values should all be along a straight line "y=x", 
+# and if the points are above the line, the model overestimates, whereas if the
+# points are below the y=x line, then the model underestimates the value
+plt.figure(figsize=(10,10));
+y_est = y_test_est.data.numpy(); y_true = y_test.data.numpy();
+axis_range = [np.min([y_est, y_true])-1,np.max([y_est, y_true])+1]
+plt.plot(axis_range,axis_range,'k--')
+plt.plot(y_true, y_est,'ob',alpha=.25)
+plt.legend(['Perfect estimation','Model estimations'])
+plt.title('Alcohol content: estimated versus true value (for last CV-fold)')
+plt.ylim(axis_range); plt.xlim(axis_range)
+plt.xlabel('True value')
+plt.ylabel('Estimated value')
+plt.grid()
+
+plt.show()
+
+print('Ran Exercise 8.2.5')
+==> ./ex8_3_1.py <==
+# exercise 8.3.1 Fit neural network classifiers using softmax output weighting
+from matplotlib.pyplot import figure, show, title
+from scipy.io import loadmat
+from toolbox_02450 import dbplotf, train_neural_net, visualize_decision_boundary
+import numpy as np
+import torch
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth1.mat')
+X = mat_data['X']
+X = X - np.ones((X.shape[0],1)) * np.mean(X,0)
+X_train = mat_data['X_train']
+X_test = mat_data['X_test']
+y = mat_data['y'].squeeze()
+y_train = mat_data['y_train'].squeeze()
+y_test = mat_data['y_test'].squeeze()
+
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+
+N, M = X.shape
+C = len(classNames)
+#%% Model fitting and prediction
+
+# Define the model structure
+n_hidden_units = 5 # number of hidden units in the signle hidden layer
+model = lambda: torch.nn.Sequential(
+                            torch.nn.Linear(M, n_hidden_units), #M features to H hiden units
+                            torch.nn.ReLU(), # 1st transfer function
+                            # Output layer:
+                            # H hidden units to C classes
+                            # the nodes and their activation before the transfer 
+                            # function is often referred to as logits/logit output
+                            torch.nn.Linear(n_hidden_units, C), # C logits
+                            # To obtain normalised "probabilities" of each class
+                            # we use the softmax-funtion along the "class" dimension
+                            # (i.e. not the dimension describing observations)
+                            torch.nn.Softmax(dim=1) # final tranfer function, normalisation of logit output
+                            )
+# Since we're training a multiclass problem, we cannot use binary cross entropy,
+# but instead use the general cross entropy loss:
+loss_fn = torch.nn.CrossEntropyLoss()
+# Train the network:
+net, _, _ = train_neural_net(model, loss_fn,
+                             X=torch.tensor(X_train, dtype=torch.float),
+                             y=torch.tensor(y_train, dtype=torch.long),
+                             n_replicates=3,
+                             max_iter=10000)
+# Determine probability of each class using trained network
+softmax_logits = net(torch.tensor(X_test, dtype=torch.float))
+# Get the estimated class as the class with highest probability (argmax on softmax_logits)
+y_test_est = (torch.max(softmax_logits, dim=1)[1]).data.numpy() 
+# Determine errors
+e = (y_test_est != y_test)
+print('Number of miss-classifications for ANN:\n\t {0} out of {1}'.format(sum(e),len(e)))
+
+predict = lambda x:  (torch.max(net(torch.tensor(x, dtype=torch.float)), dim=1)[1]).data.numpy() 
+figure(1,figsize=(9,9))
+visualize_decision_boundary(predict, [X_train, X_test], [y_train, y_test], attributeNames, classNames)
+title('ANN decision boundaries')
+
+show()
+
+print('Ran Exercise 8.3.1')
+==> ./ex8_3_2.py <==
+# exercise 8.3.2 Fit multinomial regression
+from matplotlib.pyplot import figure, show, title
+from scipy.io import loadmat
+from toolbox_02450 import dbplotf, train_neural_net, visualize_decision_boundary
+import numpy as np
+import sklearn.linear_model as lm
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth1.mat')
+X = mat_data['X']
+X = X - np.ones((X.shape[0],1)) * np.mean(X,0)
+X_train = mat_data['X_train']
+X_test = mat_data['X_test']
+y = mat_data['y'].squeeze()
+y_train = mat_data['y_train'].squeeze()
+y_test = mat_data['y_test'].squeeze()
+
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+
+N, M = X.shape
+C = len(classNames)
+#%% Model fitting and prediction
+
+# Multinomial logistic regression
+logreg = lm.LogisticRegression(solver='lbfgs', multi_class='multinomial', tol=1e-4, random_state=1)
+logreg.fit(X_train,y_train)
+
+# To display coefficients use print(logreg.coef_). For a 4 class problem with a 
+# feature space, these weights will have shape (4, 2).
+
+# Number of miss-classifications
+print('Number of miss-classifications for Multinormal regression:\n\t {0} out of {1}'.format(np.sum(logreg.predict(X_test)!=y_test),len(y_test)))
+
+predict = lambda x: np.argmax(logreg.predict_proba(x),1)
+figure(2,figsize=(9,9))
+visualize_decision_boundary(predict, [X_train, X_test], [y_train, y_test], attributeNames, classNames)
+title('LogReg decision boundaries')
+
+show()
+
+print('Ran Exercise 8.3.2')
+==> ./ex8_3_3.py <==
+# exercise 8.3.3 Fit regularized multinomial regression
+import matplotlib.pyplot as plt
+from scipy.io import loadmat
+from toolbox_02450 import dbplotf, train_neural_net, visualize_decision_boundary
+import numpy as np
+import sklearn.linear_model as lm
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth2.mat')
+X = mat_data['X']
+X_train = mat_data['X_train']
+X_test = mat_data['X_test']
+y = mat_data['y'].squeeze()
+y_train = mat_data['y_train'].squeeze()
+y_test = mat_data['y_test'].squeeze()
+
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+
+N, M = X.shape
+C = len(classNames)
+
+#%% Model fitting and prediction
+# Standardize data based on training set
+mu = np.mean(X_train, 0)
+sigma = np.std(X_train, 0)
+X_train = (X_train - mu) / sigma
+X_test = (X_test - mu) / sigma
+
+# Fit multinomial logistic regression model
+regularization_strength = 1e-3
+#Try a high strength, e.g. 1e5, especially for synth2, synth3 and synth4
+mdl = lm.LogisticRegression(solver='lbfgs', multi_class='multinomial', 
+                               tol=1e-4, random_state=1, 
+                               penalty='l2', C=1/regularization_strength)
+mdl.fit(X_train,y_train)
+y_test_est = mdl.predict(X_test)
+
+test_error_rate = np.sum(y_test_est!=y_test) / len(y_test)
+
+predict = lambda x: np.argmax(mdl.predict_proba(x),1)
+plt.figure(2,figsize=(9,9))
+visualize_decision_boundary(predict, [X_train, X_test], [y_train, y_test], attributeNames, classNames)
+plt.title('LogReg decision boundaries')
+plt.show()
+
+
+# Number of miss-classifications
+print('Error rate: \n\t {0} % out of {1}'.format(test_error_rate*100,len(y_test)))
+# %%
+
+plt.figure(2, figsize=(9,9))
+plt.hist([y_train, y_test, y_test_est], color=['red','green','blue'], density=True)
+plt.legend(['Training labels','Test labels','Estimated test labels'])
+
+
+print('Ran Exercise 8.3.2')
+==> ./ex9_1_1.py <==
+# exercise 9.1.1
+
+from matplotlib.pyplot import figure, show
+#import numpy as np
+from scipy.io import loadmat
+from sklearn.model_selection import StratifiedKFold
+from sklearn.linear_model import LogisticRegression
+from toolbox_02450 import rocplot, confmatplot
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine2.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+# K-fold crossvalidation with stratified folds
+K = 2
+CV = StratifiedKFold(K, shuffle=True)
+
+k=0
+for train_index, test_index in CV.split(X,y):
+    print(train_index)
+    # extract training and test set for current CV fold
+    X_train, y_train = X[train_index,:], y[train_index]
+    X_test, y_test = X[test_index,:], y[test_index]
+
+    logit_classifier = LogisticRegression()
+    logit_classifier.fit(X_train, y_train)
+
+    y_test_est = logit_classifier.predict(X_test).T
+    p = logit_classifier.predict_proba(X_test)[:,1].T
+
+    figure(k)
+    rocplot(p, y_test)
+
+    figure(k+1)
+    confmatplot(y_test,y_test_est)
+
+    k+=2
+    
+show()    
+
+print('Ran Exercise 9.1.1')
+==> ./ex9_1_2.py <==
+# exercise 9.1.2
+
+from matplotlib.pyplot import figure, show
+#import numpy as np
+from scipy.io import loadmat
+from sklearn.model_selection import StratifiedKFold
+from sklearn.linear_model import LogisticRegression
+from toolbox_02450 import rocplot, confmatplot
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/wine2.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'][0]]
+classNames = [name[0][0] for name in mat_data['classNames']]
+
+attribute_included = 10   # alcohol contents
+X = X[:,attribute_included].reshape(-1,1)
+attributeNames = attributeNames[attribute_included]
+N, M = X.shape
+C = len(classNames)
+
+# K-fold crossvalidation
+K = 2
+CV = StratifiedKFold(K, shuffle=True)
+
+k=0
+for train_index, test_index in CV.split(X,y):
+    print(train_index)
+    # extract training and test set for current CV fold
+    X_train, y_train = X[train_index,:], y[train_index]
+    X_test, y_test = X[test_index,:], y[test_index]
+
+    logit_classifier = LogisticRegression()
+    logit_classifier.fit(X_train, y_train)
+
+    y_test_est = logit_classifier.predict(X_test).T
+    p = logit_classifier.predict_proba(X_test)[:,1].T
+
+    figure(k)
+    rocplot(p,y_test)
+
+    figure(k+1)
+    confmatplot(y_test,y_test_est)
+
+    k+=2
+    
+show()    
+==> ./ex9_2_1.py <==
+# exercise 9.2.1
+
+
+from matplotlib.pyplot import figure, show
+import numpy as np
+from scipy.io import loadmat
+from toolbox_02450 import dbplot, dbprobplot, bootstrap
+from bin_classifier_ensemble import BinClassifierEnsemble
+from sklearn.linear_model import LogisticRegression
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth5.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+# Fit model using bootstrap aggregation (bagging):
+
+# Number of rounds of bagging
+L = 100
+
+# Weights for selecting samples in each bootstrap
+weights = np.ones((N,1),dtype=float)/N
+
+# Storage of trained log.reg. classifiers fitted in each bootstrap
+logits = [0]*L
+votes = np.zeros((N,))
+
+# For each round of bagging
+for l in range(L):
+
+    # Extract training set by random sampling with replacement from X and y
+    X_train, y_train = bootstrap(X, y, N, weights)
+    
+    # Fit logistic regression model to training data and save result
+    logit_classifier = LogisticRegression()
+    logit_classifier.fit(X_train, y_train)
+    logits[l] = logit_classifier
+    y_est = logit_classifier.predict(X).T
+    votes = votes + y_est
+
+    ErrorRate = (y!=y_est).sum(dtype=float)/N
+    print('Error rate: {:2.2f}%'.format(ErrorRate*100))    
+    
+# Estimated value of class labels (using 0.5 as threshold) by majority voting
+y_est_ensemble = votes>(L/2)
+
+# Compute error rate
+ErrorRate = (y!=y_est_ensemble).sum(dtype=float)/N
+print('Error rate: {:3.2f}%'.format(ErrorRate*100))
+
+ce = BinClassifierEnsemble(logits)
+figure(1); dbprobplot(ce, X, y, 'auto', resolution=200)
+figure(2); dbplot(ce, X, y, 'auto', resolution=200)
+
+show()
+
+print('Ran Exercise 9.2.1')
+==> ./ex9_2_2.py <==
+# exercise 9.2.2
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.io import loadmat
+from toolbox_02450 import dbplot, dbprobplot, bootstrap
+from bin_classifier_ensemble import BinClassifierEnsemble
+from sklearn.linear_model import LogisticRegression
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth5.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+# Fit model using bootstrap aggregation (boosting, AdaBoost):
+
+# Number of rounds of bagging
+L = 100
+
+# Weights for selecting samples in each bootstrap
+weights = np.ones((N,),dtype=float)/N
+
+# Storage of trained log.reg. classifiers fitted in each bootstrap
+logits = [0]*L
+alpha = np.ones( (L,) )
+votes = np.zeros((N,1))
+epsi = 0
+y_all = np.zeros((N,L))
+y = y > 0.5
+# For each round of bagging
+for l in range(L):
+    
+    # Extract training set by random sampling with replacement from X and y
+    while True : 
+        # not a thing of beauty, however log.reg. fails if presented with less than two classes. 
+        X_train, y_train = bootstrap(X, y, N, weights) 
+        if not (all(y_train==0) or all(y_train == 1)) : break      
+    
+    # Fit logistic regression model to training data and save result
+    # turn off regularization with C. 
+    logit_classifier = LogisticRegression(C=1000)
+
+    logit_classifier.fit(X_train, y_train )
+    logits[l] = logit_classifier
+    y_est = logit_classifier.predict(X).T > 0.5
+    
+    y_all[:,l] = 1.0 * y_est
+    v  = (y_est != y).T
+    ErrorRate = np.multiply(weights,v).sum()
+    epsi = ErrorRate
+    
+    alphai = 0.5 * np.log( (1-epsi)/epsi)
+    
+    weights[y_est == y] = weights[y_est == y] * np.exp( -alphai )
+    weights[y_est != y] = weights[y_est != y] * np.exp(  alphai )
+    
+    weights = weights / sum(weights)
+            
+    votes = votes + y_est
+    alpha[l] = alphai
+    print('Error rate: {:2.2f}%'.format(ErrorRate*100))
+    
+    
+# Estimated value of class labels (using 0.5 as threshold) by majority voting
+alpha = alpha/sum(alpha)
+y_est_ensemble = y_all @ alpha > 0.5
+
+#y_est_ensemble = votes > (L/2)
+#y_est_ensemble = mat(y_all) * mat(alpha) - (1-mat(y_all)) * mat(alpha) > 0
+ErrorRateEnsemble = sum(y_est_ensemble != y)/N
+
+# Compute error rate
+#ErrorRate = (y!=y_est_ensemble).sum(dtype=float)/N
+print('Error rate for ensemble classifier: {:.1f}%'.format(ErrorRateEnsemble*100))
+ 
+ce = BinClassifierEnsemble(logits,alpha)
+#ce = BinClassifierEnsemble(logits) # What happens if alpha is not included?
+plt.figure(1); dbprobplot(ce, X, y, 'auto', resolution=200)
+plt.figure(2); dbplot(ce, X, y, 'auto', resolution=200)
+#plt.figure(3); plt.plot(alpha);
+
+#%%
+plt.figure(4,figsize=(8,8))
+for i in range(2):
+    plt.plot(X[ (y_est_ensemble==i),0],X[ (y_est_ensemble==i),1],'br'[i] + 'o')
+
+## Incomment the below lines to investigate miss-classifications
+#for i in range(2):
+#    plt.plot(X[ (y==i),0],X[ (y==i),1],'br'[i] + '.')
+
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')    
+plt.show()
+
+print('Ran Exercise 9.2.2')
+==> ./ex9_2_3.py <==
+# exercise 9.2.3
+
+from matplotlib.pyplot import figure, show
+from scipy.io import loadmat
+from toolbox_02450 import dbplot, dbprobplot
+from sklearn.ensemble import RandomForestClassifier
+
+# Load Matlab data file and extract variables of interest
+mat_data = loadmat('../Data/synth7.mat')
+X = mat_data['X']
+y = mat_data['y'].squeeze()
+attributeNames = [name[0] for name in mat_data['attributeNames'].squeeze()]
+classNames = [name[0][0] for name in mat_data['classNames']]
+N, M = X.shape
+C = len(classNames)
+
+
+# Number of rounds of bagging
+L = 10
+
+# Fit model using random tree classifier:
+rf_classifier = RandomForestClassifier(L)
+rf_classifier.fit(X, y)
+y_est = rf_classifier.predict(X).T
+y_est_prob = rf_classifier.predict_proba(X).T
+
+# Compute classification error
+ErrorRate = (y!=y_est).sum(dtype=float)/N
+print('Error rate: {:.2f}%'.format(ErrorRate*100))    
+
+# Plot decision boundaries    
+figure(1); dbprobplot(rf_classifier, X, y, 'auto', resolution=400)
+figure(2); dbplot(rf_classifier, X, y, 'auto', resolution=400)
+
+show()
+
+print('Ran Exercise 9.2.3')
+==> ./run_apriori.py <==
+import numpy as np
+from subprocess import run
+import re
+import os
+import time
+from sys import platform
+
+if platform.startswith('linux'): #== "linux" or platform == "linux2":
+    ext = ''  # Linux
+    dir_sep = '/'
+elif platform.startswith('darwin'): #== "darwin":
+    ext = 'MAC'  # OS X
+    dir_sep = '/'
+elif platform.startswith('win'): #== "win32":
+    ext = '.exe'  # Windows
+    dir_sep = '\\'
+else:
+    raise NotImplementedError()
+
+filename = '..{0}Data{0}courses.txt'.format(dir_sep)
+minSup = 80
+minConf = 100
+maxRule = 4
+
+# Run Apriori Algorithm
+print('Mining for frequent itemsets by the Apriori algorithm')
+status1 = run('..{0}Tools{0}apriori{1} -f"," -s{2} -v"[Sup. %S]" {3} apriori_temp1.txt'
+              .format(dir_sep, ext, minSup, filename ), shell=True)
+
+if status1.returncode != 0:
+    print('An error occurred while calling apriori, a likely cause is that minSup was set to high such that no '
+          'frequent itemsets were generated or spaces are included in the path to the apriori files.')
+    exit()
+if minConf > 0:
+    print('Mining for associations by the Apriori algorithm')
+    status2 = run('..{0}Tools{0}apriori{1} -tr -f"," -o -n{2} -c{3} -s{4} -v"[Conf. %C,Sup. %S]" {5} apriori_temp2.txt'
+                  .format(dir_sep, ext, maxRule, minConf, minSup, filename ), shell=True)
+
+    if status2.returncode != 0:
+        print('An error occurred while calling apriori')
+        exit()
+print('Apriori analysis done, extracting results')
+
+# Extract information from stored files apriori_temp1.txt and apriori_temp2.txt
+f = open('apriori_temp1.txt', 'r')
+lines = f.readlines()
+f.close()
+# Extract Frequent Itemsets
+FrequentItemsets = [''] * len(lines)
+sup = np.zeros((len(lines), 1))
+for i, line in enumerate(lines):
+    FrequentItemsets[i] = line[0:-1]
+    sup[i] = re.findall(' [-+]?\d*\.\d+|\d+]', line)[0][1:-1]
+os.remove('apriori_temp1.txt')
+
+# Read the file
+f = open('apriori_temp2.txt', 'r')
+lines = f.readlines()
+f.close()
+# Extract Association rules
+AssocRules = [''] * len(lines)
+conf = np.zeros((len(lines), 1))
+for i, line in enumerate(lines):
+    AssocRules[i] = line[0:-1]
+    conf[i] = re.findall(' [-+]?\d*\.\d+|\d+,', line)[0][1:-1]
+os.remove('apriori_temp2.txt')
+
+# sort (FrequentItemsets by support value, AssocRules by confidence value)
+AssocRulesSorted = [AssocRules[item] for item in np.argsort(conf, axis=0).ravel()]
+AssocRulesSorted.reverse()
+FrequentItemsetsSorted = [FrequentItemsets[item] for item in np.argsort(sup, axis=0).ravel()]
+FrequentItemsetsSorted.reverse()
+
+# Print the results
+time.sleep(.5)
+print('\n')
+print('RESULTS:\n')
+print('Frequent itemsets:')
+for i, item in enumerate(FrequentItemsetsSorted):
+    print('Item: {0}'.format(item))
+print('\n')
+print('Association rules:')
+for i, item in enumerate(AssocRulesSorted):
+    print('Rule: {0}'.format(item))
+
