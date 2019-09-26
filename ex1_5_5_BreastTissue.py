@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from mpl_toolkits.mplot3d import axes3d, Axes3D
 
 # Load file in
 file_path = './BreastTissue.xls'
@@ -74,14 +75,15 @@ plt.title('DATA3', y=1.05)
 
 
 
-fig = plt.figure(figsize=(8, 6))
-ax = ptl.fig.add_subplot(111, projection='3d')
+fig = plt.figure()
+ax = Axes3D(fig)
 xs = scatterplot_data_nr1['I0']
-ys = scatterplot_data_nr1['DR'], 
-ss = scatterplot_data_nr1['P'],
-ax.set_xlabel('Residual Sugar')
-ax.set_ylabel('Fixed Acidity')
-ax.set_zlabel('Alcohol')
+ys = scatterplot_data_nr1['DR'],
+zs = scatterplot_data_nr1['P']
+ax.scatter(xs, ys, zs, s=50, alpha=1, edgecolors='b')
+ax.set_xlabel('A/DA')
+ax.set_ylabel('HFS')
+ax.set_zlabel('P')
 plt.show()
 
 
