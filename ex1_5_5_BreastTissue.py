@@ -7,6 +7,12 @@ import pandas as pd
 file_path = './BreastTissue.xls'
 breast_data = pd.read_excel(file_path, sheet_name = "Data", index_col=0)
 
+<<<<<<< Updated upstream
+=======
+sns.pairplot(breast_data, hue="Class")
+plt.show()
+
+>>>>>>> Stashed changes
 #del K, i, tiss, tissue_names, file_path
 
 # Show the attributes 
@@ -34,6 +40,7 @@ for pos, val in enumerate(data):
         data = np.delete(data, pos, 0)
 
 # Save to .txt file
+<<<<<<< Updated upstream
 np.savetxt("ordnet_data.csv", data, delimiter=",")
 
 #[(plt.figure(), plt.plot(row)) for row in data.T[0:9]]
@@ -69,4 +76,30 @@ for i in range(len(attributeNames)-1):
 
 # Pakker subplot lidt tættere sammen
 #plt.subplots_adjust(left=0.1, bottom=None, right=None, top=None, wspace=0.05, hspace=0.05)
+=======
+#np.savetxt("ordnet_data.csv", data, delimiter=",")
+
+sns.scatterplot(y=data[:,2], x=data[:,3], hue=data[:,0])
+
+sns.relplot(x=data[:,1], y=data[:, 2], hue=data[:, 0], data=scatterplot_data_nr1)
+
+sns.set()
+g = sns.PairGrid(scatterplot_data_nr1, hue="Class")
+g = g.map_diag(plt.hist)
+g = g.map_offdiag(plt.scatter)
+g = g.add_legend()
+
+
+
+plt.scatter(x = scatterplot_data_nr1['I0'], 
+            y = scatterplot_data_nr1['DR'], 
+            s = scatterplot_data_nr1['P'], # <== 😀 Look here!
+            alpha=0.4, 
+            edgecolors='w'
+            )
+
+plt.xlabel('DATA1')
+plt.ylabel('DATA2')
+plt.title('DATA3', y=1.05)
+>>>>>>> Stashed changes
 
