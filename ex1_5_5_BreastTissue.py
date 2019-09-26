@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns 
+import scipy as sci
 
 # Load file in
 file_path = './BreastTissue.xls'
@@ -16,20 +17,25 @@ plt.show()
 attributeNames = np.array(breast_data.columns)
 
 # Isolate the class types
+# len(tissue_names) = 106
 tissue_names = np.array(breast_data.Class)
-breast_data = breast_data.drop(['Class'], axis=1)
+# Removes the column with class definitions as prep for 1-out-of-K
+breast_data_M = breast_data.drop(['Class'], axis=1)
+
+
+
 
 # Lav 1-out-of-K coding
 tissue_types = []
 [tissue_types.append(elem) for elem in tissue_names if elem not in tissue_types]
 
-K = np.zeros((len(breast_data), len(tissue_types)))
+K = np.zeros((len(breast_data_M), len(tissue_types)))
 
 for i in range(len(tissue_names)):
     K[i][tissue_types.index(tissue_names[i])] = 1
 
 # Slå 1-out-of-K sammen data
-data = np.concatenate((breast_data, K), axis=1)
+data = np.concatenate((breast_data_M, K), axis=1)
 
 # Remove outliers 
 for pos, val in enumerate(data):
