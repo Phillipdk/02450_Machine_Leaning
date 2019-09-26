@@ -13,7 +13,7 @@ scatterplot_data_nr1 = breast_data
 g = sns.PairGrid(scatterplot_data_nr1)
 g = g.map(plt.scatter)
 
-sns.clustermap(scatterplot_data_nr1[1:, :])
+#sns.clustermap(scatterplot_data_nr1[1:, :])
 
 #del K, i, tiss, tissue_names, file_path
 
@@ -48,9 +48,9 @@ for pos, val in enumerate(data):
 #i = 1, j = 2
 
 
-sns.scatterplot(y=data[:,2], x=data[:,3], hue=data[:,0])
+#sns.scatterplot(y=data[:,2], x=data[:,3], hue=data[:,0])
 
-sns.relplot(x=data[:,1], y=data[:, 2], hue=data[:, 0], data=scatterplot_data_nr1)
+#sns.relplot(x=data[:,1], y=data[:, 2], hue=data[:, 0], data=scatterplot_data_nr1)
 
 sns.set()
 g = sns.PairGrid(scatterplot_data_nr1, hue="Class")
@@ -71,6 +71,18 @@ plt.xlabel('DATA1')
 plt.ylabel('DATA2')
 plt.title('DATA3', y=1.05)
 
+
+
+
+fig = plt.figure(figsize=(8, 6))
+ax = ptl.fig.add_subplot(111, projection='3d')
+xs = scatterplot_data_nr1['I0']
+ys = scatterplot_data_nr1['DR'], 
+ss = scatterplot_data_nr1['P'],
+ax.set_xlabel('Residual Sugar')
+ax.set_ylabel('Fixed Acidity')
+ax.set_zlabel('Alcohol')
+plt.show()
 
 
 
