@@ -144,7 +144,7 @@ def encircle(x,y, ax=None, **kw):
     hull = ConvexHull(p)
     poly = plt.Polygon(p[hull.vertices,:], **kw)
     ax.add_patch(poly)
-classnr = 2
+classnr =1
 # Draw polygon surrounding vertices    
 encircle(df.loc[cluster.labels_ == 0, dataClasses[classnr]], df.loc[cluster.labels_ == 0, dataClasses[classnr+1]], ec="k", fc="gold", alpha=0.2, linewidth=0)
 encircle(df.loc[cluster.labels_ == 1, dataClasses[classnr]], df.loc[cluster.labels_ == 1, dataClasses[classnr+1]], ec="k", fc="tab:blue", alpha=0.2, linewidth=0)
