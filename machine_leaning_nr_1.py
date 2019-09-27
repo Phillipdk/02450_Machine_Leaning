@@ -105,7 +105,7 @@ plt.show()
 
 
 #Density plots
-dataClasses = "I0", "PA500", "HFS", "DA", "Area", "A/DA", "Max IP", "DR", "IP"
+dataClasses = "I0", "PA500", "HFS", "DA", "Area", "A/DA", "Max IP", "DR", "P"
 for nameOfClass in dataClasses:
     plt.figure(figsize=(16,10), dpi= 80)
     sns.kdeplot(df.loc[df['Class'] == 'car', nameOfClass], shade=True, color="g", label="car", alpha=.7)
@@ -122,21 +122,17 @@ for nameOfClass in dataClasses:
 
 
 
-
+## -------------Det sidste plot her virker ikke efter hensigten endnu.
 from sklearn.cluster import AgglomerativeClustering
 from scipy.spatial import ConvexHull
-
 # Import Data
 #df = pd.read_csv('https://raw.githubusercontent.com/selva86/datasets/master/USArrests.csv')
-
 # Agglomerative Clustering
 cluster = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='ward')  
 cluster.fit_predict(df[['PA500', 'Max IP', 'A/DA', 'I0']])  
-
 # Plot
-plt.figure(figsize=(14, 10), dpi= 80)  
+plt.figure(figsize=(14, 10), dpi= 80)
 plt.scatter(df.iloc[:,0], df.iloc[:,1], c=cluster.labels_, cmap='tab10')  
-
 # Encircle
 def encircle(x,y, ax=None, **kw):
     if not ax: ax=plt.gca()
@@ -144,13 +140,16 @@ def encircle(x,y, ax=None, **kw):
     hull = ConvexHull(p)
     poly = plt.Polygon(p[hull.vertices,:], **kw)
     ax.add_patch(poly)
-classnr =1
+
+classnr = 'PA500'
+classnr1 = 'A/DA'
+
 # Draw polygon surrounding vertices    
-encircle(df.loc[cluster.labels_ == 0, dataClasses[classnr]], df.loc[cluster.labels_ == 0, dataClasses[classnr+1]], ec="k", fc="gold", alpha=0.2, linewidth=0)
-encircle(df.loc[cluster.labels_ == 1, dataClasses[classnr]], df.loc[cluster.labels_ == 1, dataClasses[classnr+1]], ec="k", fc="tab:blue", alpha=0.2, linewidth=0)
-encircle(df.loc[cluster.labels_ == 2, dataClasses[classnr]], df.loc[cluster.labels_ == 2, dataClasses[classnr+1]], ec="k", fc="tab:red", alpha=0.2, linewidth=0)
-encircle(df.loc[cluster.labels_ == 3, dataClasses[classnr]], df.loc[cluster.labels_ == 3, dataClasses[classnr+1]], ec="k", fc="tab:green", alpha=0.2, linewidth=0)
-encircle(df.loc[cluster.labels_ == 4, dataClasses[classnr]], df.loc[cluster.labels_ == 4, dataClasses[classnr+1]], ec="k", fc="tab:orange", alpha=0.2, linewidth=0)
+encircle(df.loc[cluster.labels_ == 0, classnr], df.loc[cluster.labels_ == 0, classnr1], ec="k", fc="gold", alpha=0.2, linewidth=0)
+#encircle(df.loc[cluster.labels_ == 1, classnr], df.loc[cluster.labels_ == 1, classnr1], ec="k", fc="tab:blue", alpha=0.2, linewidth=0)
+#encircle(df.loc[cluster.labels_ == 2, classnr], df.loc[cluster.labels_ == 2, classnr1], ec="k", fc="tab:red", alpha=0.2, linewidth=0)
+#encircle(df.loc[cluster.labels_ == 3, classnr], df.loc[cluster.labels_ == 3, classnr1], ec="k", fc="tab:green", alpha=0.2, linewidth=0)
+#encircle(df.loc[cluster.labels_ == 4, classnr], df.loc[cluster.labels_ == 4, classnr1], ec="k", fc="tab:orange", alpha=0.2, linewidth=0)
 
 # Decorations
 plt.xlabel('Murder'); plt.xticks(fontsize=12)
