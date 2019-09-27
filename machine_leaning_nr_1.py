@@ -103,18 +103,63 @@ sns.pairplot(df, kind="reg", hue="Class")
 plt.show()
 
 
-#
-plt.figure(figsize=(16,10), dpi= 80)
-sns.kdeplot(df.loc[df['Class'] == 'car', "I0"], shade=True, color="g", label="Cyl=4", alpha=.7)
-sns.kdeplot(df.loc[df['Class'] == 'fad', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
-sns.kdeplot(df.loc[df['Class'] == 'mas', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
-sns.kdeplot(df.loc[df['Class'] == 'gla', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
-sns.kdeplot(df.loc[df['Class'] == 'con', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
-sns.kdeplot(df.loc[df['Class'] == 'adi', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
-# Decoration
-plt.title('Density Plot of City Mileage by n_Cylinders', fontsize=22)
-plt.legend()
+
+#Density plots
+dataClasses = "I0", "PA500", "HFS", "DA", "Area", "A/DA", "Max IP", "DR", "IP"
+for nameOfClass in dataClasses:
+    plt.figure(figsize=(16,10), dpi= 80)
+    sns.kdeplot(df.loc[df['Class'] == 'car', nameOfClass], shade=True, color="g", label="car", alpha=.7)
+    sns.kdeplot(df.loc[df['Class'] == 'fad', nameOfClass], shade=True, color="deeppink", label="other", alpha=.7)
+    sns.kdeplot(df.loc[df['Class'] == 'mas', nameOfClass], shade=True, color="deeppink", label="other", alpha=.7)
+    sns.kdeplot(df.loc[df['Class'] == 'gla', nameOfClass], shade=True, color="deeppink", label="other", alpha=.7)
+    sns.kdeplot(df.loc[df['Class'] == 'con', nameOfClass], shade=True, color="deeppink", label="other", alpha=.7)
+    sns.kdeplot(df.loc[df['Class'] == 'adi', nameOfClass], shade=True, color="deeppink", label="other", alpha=.7)
+    # Decoration
+    plt.title('Density Plot of '+nameOfClass, fontsize=22)
+    plt.legend()
+    plt.show()
+
+
+
+
+
+from sklearn.cluster import AgglomerativeClustering
+from scipy.spatial import ConvexHull
+
+# Import Data
+#df = pd.read_csv('https://raw.githubusercontent.com/selva86/datasets/master/USArrests.csv')
+
+# Agglomerative Clustering
+cluster = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='ward')  
+cluster.fit_predict(df[['PA500', 'Max IP', 'A/DA', 'I0']])  
+
+# Plot
+plt.figure(figsize=(14, 10), dpi= 80)  
+plt.scatter(df.iloc[:,0], df.iloc[:,1], c=cluster.labels_, cmap='tab10')  
+
+# Encircle
+def encircle(x,y, ax=None, **kw):
+    if not ax: ax=plt.gca()
+    p = np.c_[x,y]
+    hull = ConvexHull(p)
+    poly = plt.Polygon(p[hull.vertices,:], **kw)
+    ax.add_patch(poly)
+classnr = 2
+# Draw polygon surrounding vertices    
+encircle(df.loc[cluster.labels_ == 0, dataClasses[classnr]], df.loc[cluster.labels_ == 0, dataClasses[classnr+1]], ec="k", fc="gold", alpha=0.2, linewidth=0)
+encircle(df.loc[cluster.labels_ == 1, dataClasses[classnr]], df.loc[cluster.labels_ == 1, dataClasses[classnr+1]], ec="k", fc="tab:blue", alpha=0.2, linewidth=0)
+encircle(df.loc[cluster.labels_ == 2, dataClasses[classnr]], df.loc[cluster.labels_ == 2, dataClasses[classnr+1]], ec="k", fc="tab:red", alpha=0.2, linewidth=0)
+encircle(df.loc[cluster.labels_ == 3, dataClasses[classnr]], df.loc[cluster.labels_ == 3, dataClasses[classnr+1]], ec="k", fc="tab:green", alpha=0.2, linewidth=0)
+encircle(df.loc[cluster.labels_ == 4, dataClasses[classnr]], df.loc[cluster.labels_ == 4, dataClasses[classnr+1]], ec="k", fc="tab:orange", alpha=0.2, linewidth=0)
+
+# Decorations
+plt.xlabel('Murder'); plt.xticks(fontsize=12)
+plt.ylabel('Assault'); plt.yticks(fontsize=12)
+plt.title('Agglomerative Clustering of USArrests (5 Groups)', fontsize=22)
 plt.show()
+
+
+
 
 
 """
