@@ -53,13 +53,12 @@ for pos, val in enumerate(data):
 
 #sns.relplot(x=data[:,1], y=data[:, 2], hue=data[:, 0], data=scatterplot_data_nr1)
 
+"""
 sns.set()
 g = sns.PairGrid(scatterplot_data_nr1, hue="Class")
 g = g.map_diag(plt.hist)
 g = g.map_offdiag(plt.scatter)
 g = g.add_legend()
-
-
 
 plt.scatter(x = scatterplot_data_nr1['I0'], 
             y = scatterplot_data_nr1['DR'], 
@@ -72,9 +71,6 @@ plt.xlabel('DATA1')
 plt.ylabel('DATA2')
 plt.title('DATA3', y=1.05)
 
-
-
-
 fig = plt.figure()
 ax = Axes3D(fig)
 xs = scatterplot_data_nr1['I0']
@@ -85,10 +81,40 @@ ax.set_xlabel('A/DA')
 ax.set_ylabel('HFS')
 ax.set_zlabel('P')
 plt.show()
+"""
 
 
 
 
+df = scatterplot_data_nr1
+# Plot corrolellogram se https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/#1.-Scatter-plot
+plt.figure(figsize=(12,10), dpi= 80)
+sns.heatmap(df.corr(), xticklabels=df.corr().columns, yticklabels=df.corr().columns, cmap='RdYlGn', center=0, annot=True)
+# Decorations
+plt.title('Correlogram', fontsize=22)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.show()
+
+
+#regression pairplot
+plt.figure(figsize=(10,8), dpi= 80)
+sns.pairplot(df, kind="reg", hue="Class")
+plt.show()
+
+
+#
+plt.figure(figsize=(16,10), dpi= 80)
+sns.kdeplot(df.loc[df['Class'] == 'car', "I0"], shade=True, color="g", label="Cyl=4", alpha=.7)
+sns.kdeplot(df.loc[df['Class'] == 'fad', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
+sns.kdeplot(df.loc[df['Class'] == 'mas', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
+sns.kdeplot(df.loc[df['Class'] == 'gla', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
+sns.kdeplot(df.loc[df['Class'] == 'con', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
+sns.kdeplot(df.loc[df['Class'] == 'adi', "I0"], shade=True, color="deeppink", label="Cyl=4", alpha=.7)
+# Decoration
+plt.title('Density Plot of City Mileage by n_Cylinders', fontsize=22)
+plt.legend()
+plt.show()
 
 
 """
