@@ -20,9 +20,7 @@ attributeNames = np.array(breast_data.columns)
 # len(tissue_names) = 106
 tissue_names = np.array(breast_data.Class)
 # Removes the column with class definitions as prep for 1-out-of-K
-breast_data_M = breast_data.drop(['Class'], axis=1)
-
-
+breast_data_M = np.array(breast_data.drop(['Class'], axis=1))
 
 
 # Lav 1-out-of-K coding
