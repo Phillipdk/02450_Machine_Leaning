@@ -122,110 +122,21 @@ for nameOfClass in dataClasses:
 
 
 
-## -------------Det sidste plot her virker ikke efter hensigten endnu.
-from sklearn.cluster import AgglomerativeClustering
-from scipy.spatial import ConvexHull
-# Import Data
-#df = pd.read_csv('https://raw.githubusercontent.com/selva86/datasets/master/USArrests.csv')
-# Agglomerative Clustering
-cluster = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='ward')  
-cluster.fit_predict(df[['PA500', 'Max IP', 'A/DA', 'I0']])  
-# Plot
-plt.figure(figsize=(14, 10), dpi= 80)
-plt.scatter(df.iloc[:,0], df.iloc[:,1], c=cluster.labels_, cmap='tab10')  
-# Encircle
-def encircle(x,y, ax=None, **kw):
-    if not ax: ax=plt.gca()
-    p = np.c_[x,y]
-    hull = ConvexHull(p)
-    poly = plt.Polygon(p[hull.vertices,:], **kw)
-    ax.add_patch(poly)
+import numpy as np
+import matplotlib.pyplot as plt
 
-classnr = 'PA500'
-classnr1 = 'A/DA'
+# Setup
+rng = np.random.RandomState(0)  # Seed RNG for replicability
+n = 100  # Number of samples to draw
 
-# Draw polygon surrounding vertices    
-encircle(df.loc[cluster.labels_ == 0, classnr], df.loc[cluster.labels_ == 0, classnr1], ec="k", fc="gold", alpha=0.2, linewidth=0)
-#encircle(df.loc[cluster.labels_ == 1, classnr], df.loc[cluster.labels_ == 1, classnr1], ec="k", fc="tab:blue", alpha=0.2, linewidth=0)
-#encircle(df.loc[cluster.labels_ == 2, classnr], df.loc[cluster.labels_ == 2, classnr1], ec="k", fc="tab:red", alpha=0.2, linewidth=0)
-#encircle(df.loc[cluster.labels_ == 3, classnr], df.loc[cluster.labels_ == 3, classnr1], ec="k", fc="tab:green", alpha=0.2, linewidth=0)
-#encircle(df.loc[cluster.labels_ == 4, classnr], df.loc[cluster.labels_ == 4, classnr1], ec="k", fc="tab:orange", alpha=0.2, linewidth=0)
+# Generate data
+x = rng.normal(size=n)  # Sample 1: X ~ N(0, 1)
+y = rng.standard_t(df=5, size=n)  # Sample 2: Y ~ t(5)
 
-# Decorations
-plt.xlabel('Murder'); plt.xticks(fontsize=12)
-plt.ylabel('Assault'); plt.yticks(fontsize=12)
-plt.title('Agglomerative Clustering of USArrests (5 Groups)', fontsize=22)
+# Quantile-quantile plot
+plt.figure()
+plt.scatter(np.sort(x), np.sort(y))
+plt.xlabel('X')
+plt.ylabel('Y')
 plt.show()
-
-
-
-
-
-"""
-for i in range(len(attributeNames)-1):
-    for j in range(len(attributeNames)-1):
-        
-        # Defining the subplots
-        plt.subplot(9,9, i*9 +j +1)
-
-        # plotting the the features
-        #plt.plot(data[:,i], data[:,j], '.')
-        sn.scatterplot(y=data[:,i], x=data[:,j], hue=data[:,0])
-
-        # Setting a name for the columns
-        if i == 8:
-            plt.xlabel(attributeNames[j+1])
-        #else:
-        #    plt.xticks([])
-        # Setting a name for the rows
-        if j == 0:
-            plt.ylabel(attributeNames[i+1])
-        #else:
-        #    plt.yticks([])
-
-        # Set the x,y limits just above what is displayed
-        plt.xlim(0,data[:,i].max()*1.1)
-        plt.ylim(0,data[:,j].max()*1.1)
-
-
-        
-    
-plt.figure(), plt.plot(data[1])
-
-
-
-
-
-# plotting all features against each other
-plt.figure(figsize=(10,10),dpi=100)
-
-# Iterating through the features twice
-for i in range(len(attributeNames)-1):
-    for j in range(len(attributeNames)-1):
-        
-        # Defining the subplots
-        plt.subplot(9,9, i*9 +j +1)
-
-        # plotting the the features
-        plt.plot(data[:,i], data[:,j], '.')
-
-        # Setting a name for the columns
-        if i == 8:
-            plt.xlabel(attributeNames[j+1])
-        #else:
-        #    plt.xticks([])
-        # Setting a name for the rows
-        if j == 0:
-            plt.ylabel(attributeNames[i+1])
-        #else:
-        #    plt.yticks([])
-
-        # Set the x,y limits just above what is displayed
-        plt.xlim(0,data[:,i].max()*1.1)
-        plt.ylim(0,data[:,j].max()*1.1)
-
-
-# Pakker subplot lidt tættere sammen
-#plt.subplots_adjust(left=0.1, bottom=None, right=None, top=None, wspace=0.05, hspace=0.05)
-
-"""
+plt.close()
