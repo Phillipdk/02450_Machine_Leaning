@@ -49,7 +49,7 @@ for i in range(len(breast_data_M[0])):
 
 # PCA
 #breast_data_M = np.random.normal(size=(3,3))
-U, s, VT = sci.linalg.svd(breast_data_M)
+U, s, VT = np.linalg.svd(breast_data_M)
 V = VT.T 
 
 S =  [elem**2/sum([elem2**2 for elem2 in s]) for elem in s]
