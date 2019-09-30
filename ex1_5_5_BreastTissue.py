@@ -54,10 +54,7 @@ V = VT.T
 
 S =  [elem**2/sum([elem2**2 for elem2 in s]) for elem in s]
 
-
-
-
-
+X = U*s*VT
 
 
 # Save to .txt file
