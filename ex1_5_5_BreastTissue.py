@@ -9,8 +9,8 @@ import scipy as sci
 file_path = './BreastTissue.xls'
 breast_data = pd.read_excel(file_path, sheet_name = "Data", index_col=0)
 
-sns.pairplot(breast_data, hue="Class")
-plt.show()
+#sns.pairplot(breast_data, hue="Class")
+#plt.show()
 
 # Save the attribute_names in a list: ['Class', 'IO', ..., 'P']
 # len(attributesNames) = 10
@@ -40,9 +40,31 @@ for pos, val in enumerate(data):
     if val[4]>50000:
         data = np.delete(data, pos, 0)
 
+
+# Mean prep for PCA
+for i in range(len(breast_data_M[0])):
+    mean = sum(breast_data_M[:,i]) / len(breast_data_M[:,i])
+    breast_data_M -= mean
+
+
+# PCA
+#breast_data_M = np.random.normal(size=(3,3))
+U, s, VT = sci.linalg.svd(breast_data_M)
+V = VT.T 
+
+S =  [elem**2/sum([elem2**2 for elem2 in s]) for elem in s]
+
+
+
+
+
+
+
 # Save to .txt file
 np.savetxt("ordnet_data.csv", data, delimiter=",")
 
+
+"""
 sns.scatterplot(y=data[:,2], x=data[:,3], hue=data[:,0])
 
 sns.relplot(x=data[:,1], y=data[:, 2], hue=data[:, 0], data=scatterplot_data_nr1)
@@ -65,3 +87,4 @@ plt.scatter(x = scatterplot_data_nr1['I0'],
 plt.xlabel('DATA1')
 plt.ylabel('DATA2')
 plt.title('DATA3', y=1.05)
+"""
